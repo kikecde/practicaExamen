@@ -1,0 +1,1 @@
+//DB_SOCKET='/Applications/XAMPP/xamppfiles/var/mysql/mysql.sock'
