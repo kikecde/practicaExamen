@@ -226,3 +226,11 @@ Route::resource('/user-list', UserManagement::class);
 //Movil Management
 Route::get('/laravel/movil-management', [MovilManagement::class, 'MovilManagement'])->name('laravel-example-movil-management');
 Route::resource('/movil-list', MovilManagement::class);
+
+
+Route::get('/app/movil/list', $controller_path . '\apps\MovilList@index')->name('app-movil-list');
+Route::get('/app/movil/view/account', $controller_path . '\apps\MovilViewAccount@index')->name('app-movil-view-account');
+Route::get('/app/movil/view/security', $controller_path . '\apps\MovilViewSecurity@index')->name('app-movil-view-security');
+Route::get('/app/movil/view/billing', $controller_path . '\apps\MovilViewBilling@index')->name('app-movil-view-billing');
+Route::get('/app/movil/view/notifications', $controller_path . '\apps\MovilViewNotifications@index')->name('app-user-movil-notifications');
+Route::get('/app/movil/view/connections', $controller_path . '\apps\MovilViewConnections@index')->name('app-movil-view-connections');
