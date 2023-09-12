@@ -7,6 +7,123 @@
   <span class="text-muted fw-light">Tables /</span> Basic Tables
 </h4>
 
+
+
+<?php
+// Suponiendo que ya tienes una conexión a la base de datos y has recuperado los datos necesarios
+// Aquí solo se muestra un ejemplo de cómo estructurar el frontend
+
+$funcionarios = [
+    [
+        'cedula' => '12345678',
+        'nombre' => 'Juan Pérez',
+        'departamento' => 'Emergencias',
+        'sector' => 'Zona A',
+        'funcion' => 'Paramédico'
+    ],
+    // ... otros funcionarios
+];
+
+$fechas = ['01/09', '02/09', '03/09']; // Fechas del mes
+?>
+
+
+
+<?php
+// Suponiendo que ya tienes una conexión a la base de datos y has recuperado los datos necesarios
+// Aquí solo se muestra un ejemplo de cómo estructurar el frontend
+
+$funcionarios = [
+    [
+        'cedula' => '12345678',
+        'nombre' => 'Juan Pérez',
+        'departamento' => 'Emergencias',
+        'sector' => 'Zona A',
+        'funcion' => 'Paramédico'
+    ],
+    // ... otros funcionarios
+];
+
+$mesSeleccionado = isset($_POST['mes']) ? $_POST['mes'] : date('m'); // Mes actual por defecto
+$diasDelMes = date('t', strtotime(date('Y') . '-' . $mesSeleccionado . '-01'));
+$fechas = [];
+for ($i = 1; $i <= $diasDelMes; $i++) {
+    $fechas[] = str_pad($i, 2, '0', STR_PAD_LEFT) . '/' . $mesSeleccionado;
+}
+?>
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Escala de Turnos</title>
+    <!-- Asegúrate de incluir Bootstrap y cualquier otro CSS necesario -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+
+<div class="container mt-5">
+    <h2>Escala de Turnos</h2>
+    <form method="post" action="">
+        <div class="mb-3">
+            <label for="mes" class="form-label">Selecciona el mes:</label>
+            <select name="mes" id="mes" class="form-control" onchange="this.form.submit()">
+                <?php for ($i = 1; $i <= 12; $i++): ?>
+                    <option value="<?= str_pad($i, 2, '0', STR_PAD_LEFT) ?>" <?= $mesSeleccionado == str_pad($i, 2, '0', STR_PAD_LEFT) ? 'selected' : '' ?>>
+                        <?= strftime('%B', mktime(0, 0, 0, $i, 1, date('Y'))) ?>
+                    </option>
+                <?php endfor; ?>
+            </select>
+        </div>
+    </form>
+    <div class="table-responsive">
+        <table class="table">
+            <thead class="table-dark">
+                <tr>
+                    <th>Nº</th>
+                    <th>CEDULA</th>
+                    <th>NOMBRES Y APELLIDOS</th>
+                    <th>DEPARTAMENTO</th>
+                    <th>SECTOR</th>
+                    <th>FUNCION</th>
+                    <?php foreach ($fechas as $fecha): ?>
+                        <?php
+                        $diaSemana = date('w', strtotime(date('Y') . '-' . $fecha));
+                        $clase = ($diaSemana == 6 || $diaSemana == 0) ? 'class="bg-secondary text-white"' : '';
+                        ?>
+                        <th <?= $clase ?>><?= $fecha ?></th>
+                    <?php endforeach; ?>
+                </tr>
+            </thead>
+            <tbody>
+                <?php foreach ($funcionarios as $index => $funcionario): ?>
+                    <tr>
+                        <td><?= $index + 1 ?></td>
+                        <td><?= $funcionario['cedula'] ?></td>
+                        <td><?= $funcionario['nombre'] ?></td>
+                        <td><?= $funcionario['departamento'] ?></td>
+                        <td><?= $funcionario['sector'] ?></td>
+                        <td><?= $funcionario['funcion'] ?></td>
+                        <?php foreach ($fechas as $fecha): ?>
+                            <td>
+                                <!-- Aquí debes insertar la lógica para determinar si el funcionario está de turno y si es de día o de noche -->
+                                D/N
+                            </td>
+                        <?php endforeach; ?>
+                    </tr>
+                <?php endforeach; ?>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+
+
+
+
+
 <!-- Basic Bootstrap Table -->
 <div class="card">
   <h5 class="card-header">Table Basic</h5>

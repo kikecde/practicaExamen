@@ -136,9 +136,14 @@
           "url": "laravel/user-management",
           "name": "User Management",
           "slug": "laravel-example-user-management"
+        },{
+          "url": "laravel/movil-management",
+          "name": "Movil Management",
+          "slug": "laravel-example-movil-management"
         }
       ]
     },
+
     {
       "menuHeader": "Apps & Pages"
     },
@@ -411,6 +416,49 @@
               "url": "app/user/view/connections",
               "name": "Connections",
               "slug": "app-user-view-connections"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Moviles",
+      "icon": "menu-icon tf-icons bx bxs-ambulance",
+      "slug": "app-movil",
+      "submenu": [
+        {
+          "url": "app/movil/list",
+          "name": "Lista",
+          "slug": "app-movil-list"
+        },
+        {
+          "name": "Ver",
+          "slug": "app-movil-view",
+          "submenu": [
+            {
+              "url": "app/movil/view/account",
+              "name": "Perfil",
+              "slug": "app-movil-view-account"
+            },
+            {
+              "url": "app/movil/view/security",
+              "name": "Security",
+              "slug": "app-movil-view-security"
+            },
+            {
+              "url": "app/movil/view/billing",
+              "name": "Billing & Plans",
+              "slug": "app-movil-view-billing"
+            },
+            {
+              "url": "app/movil/view/notifications",
+              "name": "Notifications",
+              "slug": "app-movil-view-notifications"
+            },
+            {
+              "url": "app/movil/view/connections",
+              "name": "Connections",
+              "slug": "app-movil-view-connections"
             }
           ]
         }
