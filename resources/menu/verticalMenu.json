@@ -348,6 +348,38 @@
       ]
     },
     {
+      "name": "Orden de Trabajo",
+      "icon": "menu-icon tf-icons bx bx-receipt",
+      "slug": "app-invoice",
+      "badge": [
+        "danger",
+        "4"
+      ],
+      "submenu": [
+        {
+          "url": "app/invoice/add2",
+          "name": "Generar OT",
+          "slug": "app-invoice-add2"
+        },
+        {
+          "url": "app/invoice/list",
+          "name": "Lista de OT",
+          "slug": "app-invoice-list"
+        },
+        {
+          "url": "app/invoice/preview",
+          "name": "Previsualizar OT",
+          "slug": "app-invoice-preview"
+        },
+        {
+          "url": "app/invoice/edit",
+          "name": "Editar OT",
+          "slug": "app-invoice-edit"
+        }
+
+      ]
+    },
+    {
       "name": "Invoice",
       "icon": "menu-icon tf-icons bx bx-food-menu",
       "slug": "app-invoice",
@@ -725,6 +757,11 @@
           "url": "wizard/ex-create-deal",
           "name": "Create Deal",
           "slug": "wizard-ex-create-deal"
+        },
+        {
+          "url": "pedido-traslado",
+          "name": "Pedidos Traslados/Estudios",
+          "slug": "pedido-traslado"
         }
       ]
     },

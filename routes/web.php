@@ -3,7 +3,14 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\laravel_example\UserManagement;
 use App\Http\Controllers\laravel_example\MovilManagement;
-
+use App\Http\Controllers\apps\MovilList;
+use App\Http\Controllers\apps\RRHHController;
+use App\Http\Controllers\apps\StatusMovilController;
+use App\Http\Controllers\apps\EstablecimientoController;
+use App\Http\Controllers\apps\SectorController;
+use App\Http\Controllers\apps\ServicioController;
+use App\Http\Controllers\apps\EstudioController;
+use App\Http\Controllers\apps\DistritoController;
 
 /*
 |--------------------------------------------------------------------------
@@ -222,15 +229,53 @@ Route::get('/maps/leaflet', $controller_path . '\maps\Leaflet@index')->name('map
 Route::get('/laravel/user-management', [UserManagement::class, 'UserManagement'])->name('laravel-example-user-management');
 Route::resource('/user-list', UserManagement::class);
 
-
 //Movil Management
 Route::get('/laravel/movil-management', [MovilManagement::class, 'MovilManagement'])->name('laravel-example-movil-management');
 Route::resource('/movil-list', MovilManagement::class);
 
 
-Route::get('/app/movil/list', $controller_path . '\apps\MovilList@index')->name('app-movil-list');
+//Route::get('/laravel/movil-management', [MovilList::class, 'MovilManagement'])->name('laravel-example-movil-management');
+//Route::resource('/movil/list', MovilList::class);
+//Route::get('/app/movil/list', $controller_path . '\apps\MovilList@index')->name('app-movil-list');
+//Route::get('/app/user/list', $controller_path . '\apps\UserList@index')->name('app-user-list');
 Route::get('/app/movil/view/account', $controller_path . '\apps\MovilViewAccount@index')->name('app-movil-view-account');
 Route::get('/app/movil/view/security', $controller_path . '\apps\MovilViewSecurity@index')->name('app-movil-view-security');
 Route::get('/app/movil/view/billing', $controller_path . '\apps\MovilViewBilling@index')->name('app-movil-view-billing');
 Route::get('/app/movil/view/notifications', $controller_path . '\apps\MovilViewNotifications@index')->name('app-user-movil-notifications');
 Route::get('/app/movil/view/connections', $controller_path . '\apps\MovilViewConnections@index')->name('app-movil-view-connections');
+
+
+//Orden de Trabajo
+Route::get('/app/invoice/list2', $controller_path . '\apps\InvoiceList2@index')->name('app-invoice-list2');
+Route::get('/app/invoice/preview2', $controller_path . '\apps\InvoicePreview2@index')->name('app-invoice-preview2');
+Route::get('/app/invoice/print2', $controller_path . '\apps\InvoicePrint2@index')->name('app-invoice-print2');
+Route::get('/app/invoice/edit2', $controller_path . '\apps\InvoiceEdit2@index')->name('app-invoice-edit2');
+Route::get('/app/invoice/add2', $controller_path . '\apps\InvoiceAdd2@index')->name('app-invoice-add2');
+
+
+//Funcionarios
+Route::resource('/rrhh', RRHHController::class);
+Route::get('/rrhh-list', $controller_path . '\apps\RRHHController@index')->name('rrhh-list');
+
+//StatusMovil
+
+Route::get('/store-scraped-data', [StatusMovilController::class, 'storeScrapedData']);
+
+Route::get('/pedido-traslado', $controller_path . '\apps\PedidoTraslado@index')->name('pedido-traslado');
+
+
+
+
+//Establecimiento>Servicio>Sector
+Route::get('/establecimientos', [EstablecimientoController::class, 'index'])->name('establecimientos.index');
+Route::get('/get-establecimientos-json', [EstablecimientoController::class, 'getEstablecimientosJson']);
+Route::get('/get-servicios/{idEst}', [ServicioController::class, 'getServicios'])->name('get-servicios');
+Route::get('/get-sectores/{idEst}', [SectorController::class, 'getSectores'])->name('get-sectores');
+
+
+//Establecimiento/Estudios
+Route::get('/get-estudios/{idEst}', [EstudioController::class, 'getEstudios'])->name('get-estudios');
+
+Route::get('/distritos', [DistritoController::class, 'index'])->name('distritos.index');
+Route::get('/get-distritos-json', [DistritoController::class, 'getDistritosJson']);
+

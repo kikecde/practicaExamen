@@ -32,16 +32,18 @@
 
   // Shipment statistics Chart
   // --------------------------------------------------------------------
+
+
   const shipmentEl = document.querySelector('#shipmentStatisticsChart'),
     shipmentConfig = {
       series: [
         {
-          name: 'Shipment',
+          name: 'Locales',
           type: 'column',
           data: [38, 45, 33, 38, 32, 50, 48, 40, 42, 37]
         },
         {
-          name: 'Delivery',
+          name: 'Nacionales',
           type: 'line',
           data: [23, 28, 23, 32, 28, 44, 32, 38, 26, 34]
         }
@@ -115,7 +117,7 @@
       },
       xaxis: {
         tickAmount: 10,
-        categories: ['1 Jan', '2 Jan', '3 Jan', '4 Jan', '5 Jan', '6 Jan', '7 Jan', '8 Jan', '9 Jan', '10 Jan'],
+        categories: dateArray,
         labels: {
           style: {
             colors: labelColor,

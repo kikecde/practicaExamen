@@ -1,6 +1,6 @@
 @extends('layouts/layoutMaster')
 
-@section('title', 'Academy Logistics Dashboard - Apps')
+@section('title', 'Ambulancias Dashboard - SEME XRS')
 
 @section('vendor-style')
 <link rel="stylesheet" href="{{asset('assets/vendor/libs/apex-charts/apex-charts.css')}}" />
@@ -14,6 +14,7 @@
 @endsection
 
 @section('vendor-script')
+<script src="{{asset('assets/vendor/libs/moment/moment.js')}}"></script>
 <script src="{{asset('assets/vendor/libs/apex-charts/apexcharts.js')}}"></script>
 <script src="{{asset('assets/vendor/libs/datatables-bs5/datatables-bootstrap5.js')}}"></script>
 @endsection
@@ -24,7 +25,7 @@
 
 @section('content')
 <h4 class="py-3 mb-4">
-  <span class="text-muted fw-light">Logistics /</span> Dashboard
+  <span class="text-muted fw-light">Logistica /</span> Dashboard
 </h4>
 
 <!-- Card Border Shadow -->
@@ -36,12 +37,12 @@
           <div class="avatar me-2">
             <span class="avatar-initial rounded bg-label-primary"><i class="bx bxs-truck"></i></span>
           </div>
-          <h4 class="ms-1 mb-0">42</h4>
+          <h4 class="ms-1 mb-0">3</h4>
         </div>
-        <p class="mb-1">On route vehicles</p>
+        <p class="mb-1">Móviles en transito</p>
         <p class="mb-0">
           <span class="fw-medium me-1">+18.2%</span>
-          <small class="text-muted">than last week</small>
+          <small class="text-muted">que semana anterior</small>
         </p>
       </div>
     </div>
@@ -53,12 +54,12 @@
           <div class="avatar me-2">
             <span class="avatar-initial rounded bg-label-warning"><i class='bx bx-error'></i></span>
           </div>
-          <h4 class="ms-1 mb-0">8</h4>
+          <h4 class="ms-1 mb-0">3</h4>
         </div>
-        <p class="mb-1">Vehicles with errors</p>
+        <p class="mb-1">Averías reportadas</p>
         <p class="mb-0">
-          <span class="fw-medium me-1">-8.7%</span>
-          <small class="text-muted">than last week</small>
+          <span class="fw-medium me-1">+8.7%</span>
+          <small class="text-muted">que semana anterior</small>
         </p>
       </div>
     </div>
@@ -72,10 +73,10 @@
           </div>
           <h4 class="ms-1 mb-0">27</h4>
         </div>
-        <p class="mb-1">Deviated from route</p>
+        <p class="mb-1">Pedidos Estudio</p>
         <p class="mb-0">
           <span class="fw-medium me-1">+4.3%</span>
-          <small class="text-muted">than last week</small>
+          <small class="text-muted">que semana anterior</small>
         </p>
       </div>
     </div>
@@ -87,12 +88,12 @@
           <div class="avatar me-2">
             <span class="avatar-initial rounded bg-label-info"><i class='bx bx-time-five'></i></span>
           </div>
-          <h4 class="ms-1 mb-0">13</h4>
+          <h4 class="ms-1 mb-0">2</h4>
         </div>
-        <p class="mb-1">Late vehicles</p>
+        <p class="mb-1">Pedidos Programados</p>
         <p class="mb-0">
-          <span class="fw-medium me-1">-2.5%</span>
-          <small class="text-muted">than last week</small>
+          <span class="fw-medium me-1">-12.5%</span>
+          <small class="text-muted">que semana anterior</small>
         </p>
       </div>
     </div>
@@ -105,15 +106,15 @@
     <div class="card h-100">
       <div class="card-header">
         <div class="card-title mb-0">
-          <h5 class="m-0">Vehicles overview</h5>
+          <h5 class="m-0">Tiempo por fase</h5>
         </div>
       </div>
       <div class="card-body">
         <div class="d-none d-lg-flex vehicles-progress-labels mb-3">
-          <div class="vehicles-progress-label on-the-way-text" style="width: 39.7%;">On the way</div>
-          <div class="vehicles-progress-label unloading-text" style="width: 28.3%;">Unloading</div>
-          <div class="vehicles-progress-label loading-text" style="width: 17.4%;">Loading</div>
-          <div class="vehicles-progress-label waiting-text" style="width: 14.6%;">Waiting</div>
+          <div class="vehicles-progress-label on-the-way-text" style="width: 39.7%;">Con Paciente</div>
+          <div class="vehicles-progress-label unloading-text" style="width: 28.3%;">Transito (VUELTA)</div>
+          <div class="vehicles-progress-label loading-text" style="width: 17.4%;">Transito (IDA)</div>
+          <div class="vehicles-progress-label waiting-text" style="width: 14.6%;">En Base</div>
         </div>
         <div class="vehicles-overview-progress progress rounded-2 mb-3" style="height: 46px;">
           <div class="progress-bar fs-big fw-medium text-start bg-lighter text-body px-1 px-lg-3 rounded-start shadow-none" role="progressbar" style="width: 39.7%" aria-valuenow="39.7" aria-valuemin="0" aria-valuemax="100">39.7%</div>
@@ -130,7 +131,7 @@
                     <div class="me-2">
                       <i class="bx bxs-truck"></i>
                     </div>
-                    <h6 class="mb-0 fw-normal">On the way</h6>
+                    <h6 class="mb-0 fw-normal">Con Paciente</h6>
                   </div>
                 </td>
                 <td class="text-end pe-0 text-nowrap">
@@ -146,7 +147,7 @@
                     <div class="me-2">
                       <i class='bx bx-down-arrow-circle'></i>
                     </div>
-                    <h6 class="mb-0 fw-normal">Unloading</h6>
+                    <h6 class="mb-0 fw-normal">Transito (VUELTA)</h6>
                   </div>
                 </td>
                 <td class="text-end pe-0 text-nowrap">
@@ -162,7 +163,7 @@
                     <div class="me-2">
                       <i class='bx bx-up-arrow-circle'></i>
                     </div>
-                    <h6 class="mb-0 fw-normal">Loading</h6>
+                    <h6 class="mb-0 fw-normal">Transito (IDA)</h6>
                   </div>
                 </td>
                 <td class="text-end pe-0 text-nowrap">
@@ -178,7 +179,7 @@
                     <div class="me-2">
                       <i class="bx bx-time-five"></i>
                     </div>
-                    <h6 class="mb-0 fw-normal">Waiting</h6>
+                    <h6 class="mb-0 fw-normal">En Base</h6>
                   </div>
                 </td>
                 <td class="text-end pe-0 text-nowrap">
@@ -200,24 +201,24 @@
     <div class="card h-100">
       <div class="card-header d-flex align-items-center justify-content-between">
         <div class="card-title mb-0">
-          <h5 class="m-0 me-2">Shipment statistics</h5>
-          <small class="text-muted">Total number of deliveries 23.8k</small>
+          <h5 class="m-0 me-2">Estadistica de Despachos</h5>
+          <small class="text-muted">Total Despachos 1114</small>
         </div>
         <div class="dropdown">
           <button type="button" class="btn btn-label-primary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">January</button>
           <ul class="dropdown-menu">
-            <li><a class="dropdown-item" href="javascript:void(0);">January</a></li>
-            <li><a class="dropdown-item" href="javascript:void(0);">February</a></li>
-            <li><a class="dropdown-item" href="javascript:void(0);">March</a></li>
-            <li><a class="dropdown-item" href="javascript:void(0);">April</a></li>
-            <li><a class="dropdown-item" href="javascript:void(0);">May</a></li>
-            <li><a class="dropdown-item" href="javascript:void(0);">June</a></li>
-            <li><a class="dropdown-item" href="javascript:void(0);">July</a></li>
-            <li><a class="dropdown-item" href="javascript:void(0);">August</a></li>
-            <li><a class="dropdown-item" href="javascript:void(0);">September</a></li>
-            <li><a class="dropdown-item" href="javascript:void(0);">October</a></li>
-            <li><a class="dropdown-item" href="javascript:void(0);">November</a></li>
-            <li><a class="dropdown-item" href="javascript:void(0);">December</a></li>
+            <li><a class="dropdown-item" href="javascript:void(0);">Enero</a></li>
+            <li><a class="dropdown-item" href="javascript:void(0);">Febrero</a></li>
+            <li><a class="dropdown-item" href="javascript:void(0);">Marzo</a></li>
+            <li><a class="dropdown-item" href="javascript:void(0);">Abril</a></li>
+            <li><a class="dropdown-item" href="javascript:void(0);">Mayo</a></li>
+            <li><a class="dropdown-item" href="javascript:void(0);">Junio</a></li>
+            <li><a class="dropdown-item" href="javascript:void(0);">Julio</a></li>
+            <li><a class="dropdown-item" href="javascript:void(0);">Agosto</a></li>
+            <li><a class="dropdown-item" href="javascript:void(0);">Septiembre</a></li>
+            <li><a class="dropdown-item" href="javascript:void(0);">Octubre</a></li>
+            <li><a class="dropdown-item" href="javascript:void(0);">Noviembre</a></li>
+            <li><a class="dropdown-item" href="javascript:void(0);">Diciembre</a></li>
           </ul>
         </div>
       </div>
@@ -232,17 +233,17 @@
     <div class="card h-100">
       <div class="card-header d-flex align-items-center justify-content-between">
         <div class="card-title mb-0">
-          <h5 class="m-0 me-2">Delivery Performance</h5>
-          <small class="text-muted">12% increase in this month</small>
+          <h5 class="m-0 me-2">Performance</h5>
+          <small class="text-muted">12% aumento esta semana</small>
         </div>
         <div class="dropdown">
           <button class="btn p-0" type="button" id="deliveryPerformance" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <i class="bx bx-dots-vertical-rounded"></i>
           </button>
           <div class="dropdown-menu dropdown-menu-end" aria-labelledby="deliveryPerformance">
-            <a class="dropdown-item" href="javascript:void(0);">Select All</a>
-            <a class="dropdown-item" href="javascript:void(0);">Refresh</a>
-            <a class="dropdown-item" href="javascript:void(0);">Share</a>
+            <a class="dropdown-item" href="javascript:void(0);">Seleccionar todo</a>
+            <a class="dropdown-item" href="javascript:void(0);">Actualizar</a>
+            <a class="dropdown-item" href="javascript:void(0);">Compartir</a>
           </div>
         </div>
       </div>
@@ -254,7 +255,7 @@
             </div>
             <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
               <div class="me-2">
-                <h6 class="mb-1 fw-normal">Packages in transit</h6>
+                <h6 class="mb-1 fw-normal">Pacientes (Referencia)</h6>
                 <small class="text-success fw-normal d-block">
                   <i class="bx bx-chevron-up"></i>
                   25.8%
@@ -271,7 +272,7 @@
             </div>
             <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
               <div class="me-2">
-                <h6 class="mb-1 fw-normal">Packages out for delivery</h6>
+                <h6 class="mb-1 fw-normal">Pacientes (Contrareferencia)</h6>
                 <small class="text-success fw-normal d-block">
                   <i class="bx bx-chevron-up"></i>
                   4.3%
@@ -288,14 +289,14 @@
             </div>
             <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
               <div class="me-2">
-                <h6 class="mb-1 fw-normal">Packages delivered</h6>
+                <h6 class="mb-1 fw-normal">Traslados Exitosos</h6>
                 <small class="text-danger fw-normal d-block">
                   <i class="bx bx-chevron-down"></i>
-                  12.5
+                  1117
                 </small>
               </div>
               <div class="user-progress">
-                <h6 class="mb-0">15k</h6>
+                <h6 class="mb-0">1121</h6>
               </div>
             </div>
           </li>
@@ -305,14 +306,14 @@
             </div>
             <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
               <div class="me-2">
-                <h6 class="mb-1 fw-normal">Delivery success rate</h6>
+                <h6 class="mb-1 fw-normal">Porcentaje Exito</h6>
                 <small class="text-success fw-normal d-block">
                   <i class="bx bx-chevron-up"></i>
-                  35.6%
+                  1.6%
                 </small>
               </div>
               <div class="user-progress">
-                <h6 class="mb-0">95%</h6>
+                <h6 class="mb-0">97,5%</h6>
               </div>
             </div>
           </li>
@@ -322,14 +323,14 @@
             </div>
             <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
               <div class="me-2">
-                <h6 class="mb-1 fw-normal">Average delivery time</h6>
+                <h6 class="mb-1 fw-normal">Tiempo promedio</h6>
                 <small class="text-danger fw-normal d-block">
                   <i class="bx bx-chevron-down"></i>
-                  2.15
+                  2.15%
                 </small>
               </div>
               <div class="user-progress">
-                <h6 class="mb-0">2.5 Days</h6>
+                <h6 class="mb-0">44 minutos</h6>
               </div>
             </div>
           </li>
@@ -339,14 +340,14 @@
             </div>
             <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
               <div class="me-2">
-                <h6 class="mb-1 fw-normal">Customer satisfaction</h6>
+                <h6 class="mb-1 fw-normal">Despachos Cancelados</h6>
                 <small class="text-success fw-normal d-block">
                   <i class="bx bx-chevron-up"></i>
                   5.7%
                 </small>
               </div>
               <div class="user-progress">
-                <h6 class="mb-0">4.5/5</h6>
+                <h6 class="mb-0">49</h6>
               </div>
             </div>
           </li>
@@ -360,16 +361,16 @@
     <div class="card h-100">
       <div class="card-header d-flex align-items-center justify-content-between">
         <div class="card-title mb-0">
-          <h5 class="m-0 me-2">Reasons for delivery exceptions</h5>
+          <h5 class="m-0 me-2">Razones de Cancelación</h5>
         </div>
         <div class="dropdown">
           <button class="btn p-0" type="button" id="deliveryExceptions" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <i class="bx bx-dots-vertical-rounded"></i>
           </button>
           <div class="dropdown-menu dropdown-menu-end" aria-labelledby="deliveryExceptions">
-            <a class="dropdown-item" href="javascript:void(0);">Select All</a>
-            <a class="dropdown-item" href="javascript:void(0);">Refresh</a>
-            <a class="dropdown-item" href="javascript:void(0);">Share</a>
+            <a class="dropdown-item" href="javascript:void(0);">Seleccionar todo</a>
+            <a class="dropdown-item" href="javascript:void(0);">Actualizar</a>
+            <a class="dropdown-item" href="javascript:void(0);">Compartir</a>
           </div>
         </div>
       </div>
@@ -384,17 +385,17 @@
     <div class="card h-100">
       <div class="card-header d-flex align-items-center justify-content-between">
         <div class="card-title mb-0">
-          <h5 class="m-0 me-2">Orders by Countries</h5>
-          <small class="text-muted">62 deliveries in progress</small>
+          <h5 class="m-0 me-2">Pedidos por Establecimiento</h5>
+          <small class="text-muted">02 en proceso</small>
         </div>
         <div class="dropdown">
           <button class="btn p-0" type="button" id="ordersCountries" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <i class="bx bx-dots-vertical-rounded"></i>
           </button>
           <div class="dropdown-menu dropdown-menu-end" aria-labelledby="ordersCountries">
-            <a class="dropdown-item" href="javascript:void(0);">Select All</a>
-            <a class="dropdown-item" href="javascript:void(0);">Refresh</a>
-            <a class="dropdown-item" href="javascript:void(0);">Share</a>
+            <a class="dropdown-item" href="javascript:void(0);">Seleccionar todo</a>
+            <a class="dropdown-item" href="javascript:void(0);">Actualizar</a>
+            <a class="dropdown-item" href="javascript:void(0);">Compartir</a>
           </div>
         </div>
       </div>
@@ -402,13 +403,13 @@
         <div class="nav-align-top">
           <ul class="nav nav-tabs nav-fill tabs-line" role="tablist">
             <li class="nav-item">
-              <button type="button" class="nav-link active" role="tab" data-bs-toggle="tab" data-bs-target="#navs-justified-new" aria-controls="navs-justified-new" aria-selected="true">New</button>
+              <button type="button" class="nav-link active" role="tab" data-bs-toggle="tab" data-bs-target="#navs-justified-new" aria-controls="navs-justified-new" aria-selected="true">Nuevos</button>
             </li>
             <li class="nav-item">
-              <button type="button" class="nav-link" role="tab" data-bs-toggle="tab" data-bs-target="#navs-justified-link-preparing" aria-controls="navs-justified-link-preparing" aria-selected="false">Preparing</button>
+              <button type="button" class="nav-link" role="tab" data-bs-toggle="tab" data-bs-target="#navs-justified-link-preparing" aria-controls="navs-justified-link-preparing" aria-selected="false">Despachados</button>
             </li>
             <li class="nav-item">
-              <button type="button" class="nav-link" role="tab" data-bs-toggle="tab" data-bs-target="#navs-justified-link-shipping" aria-controls="navs-justified-link-shipping" aria-selected="false">Shipping</button>
+              <button type="button" class="nav-link" role="tab" data-bs-toggle="tab" data-bs-target="#navs-justified-link-shipping" aria-controls="navs-justified-link-shipping" aria-selected="false">En ejecución</button>
             </li>
           </ul>
           <div class="tab-content shadow-none border-0 border-top pb-0">
@@ -420,10 +421,10 @@
                   </span>
                   <div class="timeline-event ps-0 pb-0">
                     <div class="timeline-header">
-                      <small class="text-success text-uppercase fw-medium">sender</small>
+                      <small class="text-success text-uppercase fw-medium">origen</small>
                     </div>
-                    <h6 class="mb-2">Myrtle Ullrich</h6>
-                    <p class="text-muted mb-0">101 Boulder, California(CA), 95959</p>
+                    <h6 class="mb-2">DRA. MONICA ZARACHO</h6>
+                    <p class="text-muted mb-0">HX3 SM03</p>
                   </div>
                 </li>
                 <li class="timeline-item ps-4 border-transparent">
@@ -432,10 +433,10 @@
                   </span>
                   <div class="timeline-event ps-0 pb-0">
                     <div class="timeline-header">
-                      <small class="text-primary text-uppercase fw-medium">Receiver</small>
+                      <small class="text-primary text-uppercase fw-medium">Destino</small>
                     </div>
-                    <h6 class="mb-2">Barry Schowalter</h6>
-                    <p class="text-muted mb-0">939 Orange, California(CA), 92118</p>
+                    <h6 class="mb-2">DRA. LIZA MOREL</h6>
+                    <p class="text-muted mb-0">HX01 SM02</p>
                   </div>
                 </li>
               </ul>
@@ -447,10 +448,10 @@
                   </span>
                   <div class="timeline-event ps-0 pb-0">
                     <div class="timeline-header">
-                      <small class="text-success text-uppercase fw-medium">sender</small>
+                      <small class="text-success text-uppercase fw-medium">ORIGEN</small>
                     </div>
-                    <h6 class="mb-2">Veronica Herman</h6>
-                    <p class="text-muted mb-0">162 Windsor, California(CA), 95492</p>
+                    <h6 class="mb-2">DR. LUIS DUARTE</h6>
+                    <p class="text-muted mb-0">HX03 SM02</p>
                   </div>
                 </li>
                 <li class="timeline-item ps-4 border-transparent">
@@ -459,10 +460,10 @@
                   </span>
                   <div class="timeline-event ps-0 pb-0">
                     <div class="timeline-header">
-                      <small class="text-primary text-uppercase fw-medium">Receiver</small>
+                      <small class="text-primary text-uppercase fw-medium">DESTINO</small>
                     </div>
-                    <h6 class="mb-2">Helen Jacobs</h6>
-                    <p class="text-muted mb-0">487 Sunset, California(CA), 94043</p>
+                    <h6 class="mb-2">DR. JESUS TELLEZ</h6>
+                    <p class="text-muted mb-0">HX03 SM02</p>
                   </div>
                 </li>
               </ul>
@@ -588,16 +589,16 @@
     <div class="card">
       <div class="card-header d-flex align-items-center justify-content-between">
         <div class="card-title mb-0">
-          <h5 class="m-0 me-2">On route vehicles</h5>
+          <h5 class="m-0 me-2">Móviles en ruta</h5>
         </div>
         <div class="dropdown">
           <button class="btn p-0" type="button" id="routeVehicles" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <i class="bx bx-dots-vertical-rounded"></i>
           </button>
           <div class="dropdown-menu dropdown-menu-end" aria-labelledby="routeVehicles">
-            <a class="dropdown-item" href="javascript:void(0);">Select All</a>
-            <a class="dropdown-item" href="javascript:void(0);">Refresh</a>
-            <a class="dropdown-item" href="javascript:void(0);">Share</a>
+            <a class="dropdown-item" href="javascript:void(0);">Seleccionar todo</a>
+            <a class="dropdown-item" href="javascript:void(0);">Actualizar</a>
+            <a class="dropdown-item" href="javascript:void(0);">Compartir</a>
           </div>
         </div>
       </div>
@@ -607,11 +608,11 @@
             <tr>
               <th></th>
               <th></th>
-              <th>location</th>
-              <th>starting route</th>
-              <th>ending route</th>
-              <th>warnings</th>
-              <th class="w-20">progress</th>
+              <th>ubicacion</th>
+              <th>inicio de ruta</th>
+              <th>fin de ruta</th>
+              <th>status paciente</th>
+              <th class="w-20">progreso</th>
             </tr>
           </thead>
         </table>

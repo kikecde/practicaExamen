@@ -1,6 +1,6 @@
 @extends('layouts/layoutMaster')
 
-@section('title', 'Academy Logistics Fleet - Apps')
+@section('title', 'Flota Ambulancias - SEME XRS')
 
 @section('vendor-style')
 <link rel="stylesheet" href="{{asset('assets/vendor/libs/mapbox-gl/mapbox-gl.css')}}" />
@@ -21,14 +21,6 @@
 
 @section('content')
 
-@if(env('APP_ENV') !== 'production')
-<div class="alert alert-outline-primary alert-dismissible" role="alert">
-  Fleet page is using Mapbox to display maps. The maps on the fleet page may not load on your localhost or domain because you need to add your own access token for Mapbox. <br />For more details refer to the <a href="https://docs.mapbox.com/mapbox-gl-js/guides/" target="_blank">Mapbox</a> section in the <a href="{{config('variables.documentation')}}/faq.html#mapbox-not-loading" class="alert-link" target="_blank">documentation</a>.
-
-  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
-  </button>
-</div>
-@endif
 
 <div class="card overflow-hidden">
 
@@ -43,7 +35,7 @@
     <!-- Map Menu -->
     <div class="app-logistics-fleet-sidebar col h-100" id="app-logistics-fleet-sidebar">
       <div class="card-header border-0 pt-4 pb-2 d-flex justify-content-between">
-        <h5 class="mb-0 card-title">Fleet</h5>
+        <h5 class="mb-0 card-title">AMBULANCIAS</h5>
         <!-- Sidebar close button -->
         <i class="bx bx-x bx-sm cursor-pointer close-sidebar d-md-none" data-bs-toggle="sidebar" data-overlay data-target="#app-logistics-fleet-sidebar"></i>
       </div>
@@ -58,12 +50,12 @@
                 <div class="d-flex align-items-center">
                   <div class="avatar-wrapper">
                     <div class="avatar me-3">
-                      <span class="avatar-initial rounded-circle bg-label-secondary"><i class="bx bxs-truck"></i></span>
+                      <span class="avatar-initial rounded-circle bg-label-secondary"><i class="bx bxs-ambulance"></i></span>
                     </div>
                   </div>
                   <span class="d-flex flex-column">
-                    <span class="h6 mb-0">VOL-342808</span>
-                    <span class="text-muted">Chelsea, NY, USA</span>
+                    <span class="h6 mb-0">XRSB20</span>
+                    <span class="text-muted">Avda. Comuneros, Ciudad del Este, Paraguay</span>
                   </span>
                 </div>
               </div>
@@ -71,7 +63,7 @@
             <div id="fleet1" class="accordion-collapse collapse show" data-bs-parent="#fleet">
               <div class="accordion-body pt-3 pb-0">
                 <div class="d-flex align-items-center justify-content-between">
-                  <h6 class="mb-1">Delivery Process</h6>
+                  <h6 class="mb-1">Progreso Estimado</h6>
                   <p class="text-body mb-1">88%</p>
                 </div>
                 <div class="progress" style="height: 5px;">
@@ -84,10 +76,10 @@
                     </span>
                     <div class="timeline-event ps-0 pb-0">
                       <div class="timeline-header">
-                        <small class="text-success text-uppercase fw-medium">tracking number created</small>
+                        <small class="text-success text-uppercase fw-medium">orden de despacho generada</small>
                       </div>
-                      <h6 class="mb-1">Veronica Herman</h6>
-                      <p class="text-muted mb-0">Sep 01, 7:53 AM</p>
+                      <h6 class="mb-1">Despacho</h6>
+                      <p class="text-muted mb-0">Sep 14, 7:53 AM</p>
                     </div>
                   </li>
                   <li class="timeline-item ps-4 border-left-dashed">
@@ -96,7 +88,7 @@
                     </span>
                     <div class="timeline-event ps-0 pb-0">
                       <div class="timeline-header">
-                        <small class="text-success text-uppercase fw-medium">out for delivery</small>
+                        <small class="text-success text-uppercase fw-medium">en transito</small>
                       </div>
                       <h6 class="mb-1">Veronica Herman</h6>
                       <p class="text-muted mb-0">Sep 03, 8:02 AM</p>
@@ -108,7 +100,7 @@
                     </span>
                     <div class="timeline-event ps-0 pb-0">
                       <div class="timeline-header">
-                        <small class="text-primary text-uppercase fw-medium">arriving</small>
+                        <small class="text-primary text-uppercase fw-medium">llegada</small>
                       </div>
                       <h6 class="mb-1">Veronica Herman</h6>
                       <p class="text-muted mb-0">Sep 04, 8:18 AM</p>
@@ -126,12 +118,12 @@
                 <div class="d-flex align-items-center">
                   <div class="avatar-wrapper">
                     <div class="avatar me-3">
-                      <span class="avatar-initial rounded-circle bg-label-secondary"><i class="bx bxs-truck"></i></span>
+                      <span class="avatar-initial rounded-circle bg-label-secondary"><i class="bx bxs-ambulance"></i></span>
                     </div>
                   </div>
                   <span class="d-flex flex-column">
-                    <span class="h6 mb-0">VOL-954784</span>
-                    <span class="text-muted">Lincoln Harbor, NY, USA</span>
+                    <span class="h6 mb-0">XRSB11</span>
+                    <span class="text-muted">Hospital Regional Ciudad del Este, Paraguay</span>
                   </span>
                 </div>
               </div>
@@ -139,7 +131,7 @@
             <div id="fleet2" class="accordion-collapse collapse" data-bs-parent="#fleet">
               <div class="accordion-body pt-3 pb-0">
                 <div class="d-flex align-items-center justify-content-between">
-                  <h6 class="mb-1">Delivery Process</h6>
+                  <h6 class="mb-1">Progreso Estimado</h6>
                   <p class="text-body mb-1">100%</p>
                 </div>
                 <div class="progress" style="height: 5px;">
@@ -152,7 +144,7 @@
                     </span>
                     <div class="timeline-event ps-0 pb-0">
                       <div class="timeline-header">
-                        <small class="text-success text-uppercase fw-medium">tracking number created</small>
+                        <small class="text-success text-uppercase fw-medium">orden de despacho generada</small>
                       </div>
                       <h6 class="mb-1">Myrtle Ullrich</h6>
                       <p class="text-muted mb-0">Sep 01, 7:53 AM</p>
@@ -164,7 +156,7 @@
                     </span>
                     <div class="timeline-event ps-0 pb-0">
                       <div class="timeline-header">
-                        <small class="text-success text-uppercase fw-medium">out for delivery</small>
+                        <small class="text-success text-uppercase fw-medium">en transito</small>
                       </div>
                       <h6 class="mb-1">Myrtle Ullrich</h6>
                       <p class="text-muted mb-0">Sep 03, 8:02 AM</p>
@@ -194,12 +186,12 @@
                 <div class="d-flex align-items-center">
                   <div class="avatar-wrapper">
                     <div class="avatar me-3">
-                      <span class="avatar-initial rounded-circle bg-label-secondary"><i class="bx bxs-truck"></i></span>
+                      <span class="avatar-initial rounded-circle bg-label-secondary"><i class="bx bxs-ambulance"></i></span>
                     </div>
                   </div>
                   <span class="d-flex flex-column">
-                    <span class="h6 mb-0">VOL-342808</span>
-                    <span class="text-muted">Midtown East, NY, USA</span>
+                    <span class="h6 mb-0">XRSB10</span>
+                    <span class="text-muted">Hospital Distrital Hernandarias, Paraguay</span>
                   </span>
                 </div>
               </div>
@@ -207,7 +199,7 @@
             <div id="fleet3" class="accordion-collapse collapse" data-bs-parent="#fleet">
               <div class="accordion-body pt-3 pb-0">
                 <div class="d-flex align-items-center justify-content-between">
-                  <h6 class="mb-1">Delivery Process</h6>
+                  <h6 class="mb-1">Progreso Estimado</h6>
                   <p class="text-body mb-1">60%</p>
                 </div>
                 <div class="progress" style="height: 5px;">
@@ -220,9 +212,9 @@
                     </span>
                     <div class="timeline-event ps-0 pb-0">
                       <div class="timeline-header">
-                        <small class="text-success text-uppercase fw-medium">tracking number created</small>
+                        <small class="text-success text-uppercase fw-medium">orden de despacho generada</small>
                       </div>
-                      <h6 class="mb-1">Barry Schowalter</h6>
+                      <h6 class="mb-1">Progreso Estimado</h6>
                       <p class="text-muted mb-0">Sep 01, 7:53 AM</p>
                     </div>
                   </li>
@@ -232,7 +224,7 @@
                     </span>
                     <div class="timeline-event ps-0 pb-0">
                       <div class="timeline-header">
-                        <small class="text-success text-uppercase fw-medium">out for delivery</small>
+                        <small class="text-success text-uppercase fw-medium">en transito</small>
                       </div>
                       <h6 class="mb-1">Barry Schowalter</h6>
                       <p class="text-muted mb-0">Sep 03, 8:02 AM</p>
@@ -244,7 +236,7 @@
                     </span>
                     <div class="timeline-event ps-0 pb-0">
                       <div class="timeline-header">
-                        <small class="text-secondary text-uppercase fw-medium">arriving</small>
+                        <small class="text-secondary text-uppercase fw-medium">llegada</small>
                       </div>
                       <h6 class="mb-1">Barry Schowalter</h6>
                       <p class="text-muted mb-0">Sep 04, 8:18 AM</p>
@@ -262,11 +254,11 @@
                 <div class="d-flex align-items-center">
                   <div class="avatar-wrapper">
                     <div class="avatar me-3">
-                      <span class="avatar-initial rounded-circle bg-label-secondary"><i class="bx bxs-truck"></i></span>
+                      <span class="avatar-initial rounded-circle bg-label-secondary"><i class="bx bxs-ambulance"></i></span>
                     </div>
                   </div>
                   <span class="d-flex flex-column">
-                    <span class="h6 mb-0">VOL-343908</span>
+                    <span class="h6 mb-0">XRSB12</span>
                     <span class="text-muted">Hoboken, NY, USA</span>
                   </span>
                 </div>
@@ -275,7 +267,7 @@
             <div id="fleet4" class="accordion-collapse collapse" data-bs-parent="#fleet">
               <div class="accordion-body pt-3 pb-0">
                 <div class="d-flex align-items-center justify-content-between">
-                  <h6 class="mb-1">Delivery Process</h6>
+                  <h6 class="mb-1">Progreso Estimado</h6>
                   <p class="text-body mb-1">28%</p>
                 </div>
                 <div class="progress" style="height: 5px;">
@@ -288,7 +280,7 @@
                     </span>
                     <div class="timeline-event ps-0 pb-0">
                       <div class="timeline-header">
-                        <small class="text-success text-uppercase fw-medium">tracking number created</small>
+                        <small class="text-success text-uppercase fw-medium">orden despacho generada</small>
                       </div>
                       <h6 class="mb-1">Helen Jacobs</h6>
                       <p class="text-muted mb-0">Sep 01, 7:53 AM</p>
@@ -300,7 +292,7 @@
                     </span>
                     <div class="timeline-event ps-0 pb-0">
                       <div class="timeline-header">
-                        <small class="text-secondary text-uppercase fw-medium">out for delivery</small>
+                        <small class="text-secondary text-uppercase fw-medium">en transito</small>
                       </div>
                       <h6 class="mb-1">Helen Jacobs</h6>
                       <p class="text-muted mb-0">Sep 03, 8:02 AM</p>
@@ -312,7 +304,75 @@
                     </span>
                     <div class="timeline-event ps-0 pb-0">
                       <div class="timeline-header">
-                        <small class="text-secondary text-uppercase fw-medium">arriving</small>
+                        <small class="text-secondary text-uppercase fw-medium">llegada</small>
+                      </div>
+                      <h6 class="mb-1">Helen Jacobs</h6>
+                      <p class="text-muted mb-0">Sep 04, 8:18 AM</p>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <!-- Fleet 5 -->
+          <div class="accordion-item shadow-none border-0 mb-0" id="fl-5">
+            <div class="accordion-header" id="fleetFive">
+              <div role="button" class="accordion-button collapsed shadow-none" data-bs-toggle="collapse" data-bs-target="#fleet5" aria-expanded="true" aria-controls="fleet5">
+
+                <div class="d-flex align-items-center">
+                  <div class="avatar-wrapper">
+                    <div class="avatar me-3">
+                      <span class="avatar-initial rounded-circle bg-label-secondary"><i class="bx bxs-ambulance"></i></span>
+                    </div>
+                  </div>
+                  <span class="d-flex flex-column">
+                    <span class="h6 mb-0">XRSB12</span>
+                    <span class="text-muted">Hoboken, NY, USA</span>
+                  </span>
+                </div>
+              </div>
+            </div>
+            <div id="fleet5" class="accordion-collapse collapse" data-bs-parent="#fleet">
+              <div class="accordion-body pt-3 pb-0">
+                <div class="d-flex align-items-center justify-content-between">
+                  <h6 class="mb-1">Progreso Estimado</h6>
+                  <p class="text-body mb-1">28%</p>
+                </div>
+                <div class="progress" style="height: 5px;">
+                  <div class="progress-bar" role="progressbar" style="width: 28%;" aria-valuenow="28" aria-valuemin="0" aria-valuemax="100"></div>
+                </div>
+                <ul class="timeline ps-3 mt-4">
+                  <li class="timeline-item ps-4 border-left-dashed">
+                    <span class="timeline-indicator-advanced timeline-indicator-success border-0 shadow-none">
+                      <i class='bx bx-check-circle'></i>
+                    </span>
+                    <div class="timeline-event ps-0 pb-0">
+                      <div class="timeline-header">
+                        <small class="text-success text-uppercase fw-medium">orden despacho generada</small>
+                      </div>
+                      <h6 class="mb-1">Helen Jacobs</h6>
+                      <p class="text-muted mb-0">Sep 01, 7:53 AM</p>
+                    </div>
+                  </li>
+                  <li class="timeline-item ps-4 border-left-dashed">
+                    <span class="timeline-indicator-advanced timeline-indicator-secondary border-0 shadow-none">
+                      <i class='bx bx-check-circle'></i>
+                    </span>
+                    <div class="timeline-event ps-0 pb-0">
+                      <div class="timeline-header">
+                        <small class="text-secondary text-uppercase fw-medium">en transito</small>
+                      </div>
+                      <h6 class="mb-1">Helen Jacobs</h6>
+                      <p class="text-muted mb-0">Sep 03, 8:02 AM</p>
+                    </div>
+                  </li>
+                  <li class="timeline-item ps-4 border-transparent">
+                    <span class="timeline-indicator-advanced timeline-indicator-secondary border-0 shadow-none">
+                      <i class='bx bx-map mt-1'></i>
+                    </span>
+                    <div class="timeline-event ps-0 pb-0">
+                      <div class="timeline-header">
+                        <small class="text-secondary text-uppercase fw-medium">llegada</small>
                       </div>
                       <h6 class="mb-1">Helen Jacobs</h6>
                       <p class="text-muted mb-0">Sep 04, 8:18 AM</p>

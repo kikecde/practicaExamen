@@ -6,6 +6,7 @@
 <link rel="stylesheet" href="{{asset('assets/vendor/libs/nouislider/nouislider.css')}}" />
 @endsection
 
+
 @section('vendor-script')
 <script src="{{asset('assets/vendor/libs/nouislider/nouislider.js')}}"></script>
 @endsection

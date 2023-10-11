@@ -8,7 +8,8 @@
 <link rel="stylesheet" href="{{asset('assets/vendor/libs/datatables-buttons-bs5/buttons.bootstrap5.css')}}">
 <link rel="stylesheet" href="{{asset('assets/vendor/libs/select2/select2.css')}}" />
 <link rel="stylesheet" href="{{asset('assets/vendor/libs/@form-validation/umd/styles/index.min.css')}}" />
-
+<link rel="stylesheet" href="{{asset('assets/vendor/libs/animate-css/animate.css')}}" />
+<link rel="stylesheet" href="{{asset('assets/vendor/libs/sweetalert2/sweetalert2.css')}}" />
 @endsection
 
 @section('vendor-script')
@@ -20,10 +21,11 @@
 <script src="{{asset('assets/vendor/libs/@form-validation/umd/plugin-auto-focus/index.min.js')}}"></script>
 <script src="{{asset('assets/vendor/libs/cleavejs/cleave.js')}}"></script>
 <script src="{{asset('assets/vendor/libs/cleavejs/cleave-phone.js')}}"></script>
+<script src="{{asset('assets/vendor/libs/sweetalert2/sweetalert2.js')}}"></script>
 @endsection
 
 @section('page-script')
-<script src="{{asset('assets/js/app-user-list.js')}}"></script>
+<script src="{{asset('assets/js/app-movil-list.js')}}"></script>
 @endsection
 
 @section('content')
@@ -34,18 +36,16 @@
       <div class="card-body">
         <div class="d-flex align-items-start justify-content-between">
           <div class="content-left">
-            <span>Session</span>
+            <span>Ambulancias</span>
             <div class="d-flex align-items-end mt-2">
-              <h4 class="mb-0 me-2">21,459</h4>
-              <small class="text-success">(+29%)</small>
+              <h3 class="mb-0 me-2">{{$totalMovil}}</h3>
+              <small class="text-success">(100%)</small>
             </div>
-            <p class="mb-0">Total Users</p>
+            <small>Total Monitoreadas</small>
           </div>
-          <div class="avatar">
-            <span class="avatar-initial rounded bg-label-primary">
-              <i class="bx bx-user bx-sm"></i>
-            </span>
-          </div>
+          <span class="badge bg-label-primary rounded p-2">
+            <i class="bx bxs-ambulance bx-sm"></i>
+          </span>
         </div>
       </div>
     </div>
@@ -55,18 +55,16 @@
       <div class="card-body">
         <div class="d-flex align-items-start justify-content-between">
           <div class="content-left">
-            <span>Paid Users</span>
+            <span>Operativas</span>
             <div class="d-flex align-items-end mt-2">
-              <h4 class="mb-0 me-2">4,567</h4>
-              <small class="text-success">(+18%)</small>
+              <h3 class="mb-0 me-2">{{$operativoTotal}}</h3>
+              <small class="text-success">{{$porcentajeOperativo}}%</small>
             </div>
-            <p class="mb-0">Last week analytics </p>
+            <small>Actualizado: {{$operativoLastUpdate}} </small>
           </div>
-          <div class="avatar">
-            <span class="avatar-initial rounded bg-label-danger">
-              <i class="bx bx-user-check bx-sm"></i>
-            </span>
-          </div>
+          <span class="badge bg-label-success rounded p-2">
+            <i class="bx bxs-ambulance bx-sm"></i>
+          </span>
         </div>
       </div>
     </div>
@@ -76,18 +74,16 @@
       <div class="card-body">
         <div class="d-flex align-items-start justify-content-between">
           <div class="content-left">
-            <span>Active Users</span>
+            <span>Inoperativas</span>
             <div class="d-flex align-items-end mt-2">
-              <h4 class="mb-0 me-2">19,860</h4>
-              <small class="text-danger">(-14%)</small>
+              <h3 class="mb-0 me-2">{{$inoperativo}}</h3>
+              <small class="text-danger">{{$porcentajeInoperativo}}%</small>
             </div>
-            <p class="mb-0">Last week analytics</p>
+            <small>Actualizado: {{$noOperativoLastUpdate}} </small>
           </div>
-          <div class="avatar">
-            <span class="avatar-initial rounded bg-label-success">
-              <i class="bx bx-group bx-sm"></i>
-            </span>
-          </div>
+          <span class="badge bg-label-danger rounded p-2">
+            <i class="bx bxs-ambulance bx-sm"></i>
+          </span>
         </div>
       </div>
     </div>
@@ -97,124 +93,163 @@
       <div class="card-body">
         <div class="d-flex align-items-start justify-content-between">
           <div class="content-left">
-            <span>Pending Users</span>
+            <span>Activas</span>
             <div class="d-flex align-items-end mt-2">
-              <h4 class="mb-0 me-2">237</h4>
-              <small class="text-success">(+42%)</small>
+              <h3 class="mb-0 me-2">{{$movilesActivos}}</h3>
+              <small class="text-danger">{{$porcentajeActivo}}%</small>
             </div>
-            <p class="mb-0">Last week analytics</p>
+            <small>Tiempo Real</small>
           </div>
-          <div class="avatar">
-            <span class="avatar-initial rounded bg-label-warning">
-              <i class="bx bx-user-voice bx-sm"></i>
-            </span>
+          <span class="badge bg-label-warning rounded p-2">
+            <i class="bx bx-trip bx-sm"></i>
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-sm-6 col-xl-3">
+    <div class="card">
+      <div class="card-body">
+        <div class="d-flex align-items-start justify-content-between">
+          <div class="content-left">
+            <span>Standby</span>
+            <div class="d-flex align-items-end mt-2">
+              <h3 class="mb-0 me-2">{{$movilesStandBy}}</h3>
+              <small class="text-success">{{$porcentajeStandby}}%</small>
+            </div>
+            <small>Tiempo Real</small>
           </div>
+          <span class="badge bg-label-warning rounded p-2">
+            <i class="bx bx-coffee bx-sm"></i>
+          </span>
         </div>
       </div>
     </div>
   </div>
 </div>
-<!-- Users List Table -->
+<!-- Moviles List Table -->
 <div class="card">
   <div class="card-header border-bottom">
-    <h5 class="card-title">Search Filter</h5>
+    <h5 class="card-title">Filtros de Búsqueda</h5>
     <div class="d-flex justify-content-between align-items-center row py-3 gap-3 gap-md-0">
-      <div class="col-md-4 user_role"></div>
-      <div class="col-md-4 user_plan"></div>
-      <div class="col-md-4 user_status"></div>
+      <div class="col-md-4 tipoAmbu"></div>
+      <div class="col-md-4 baseOp"></div>
+      <div class="col-md-4 statusAmbu"></div>
     </div>
   </div>
   <div class="card-datatable table-responsive">
-    <table class="datatables-users table border-top">
+    <table class="datatables-moviles table border-top">
       <thead>
         <tr>
           <th></th>
-          <th>User</th>
-          <th>Role</th>
-          <th>Plan</th>
-          <th>Billing</th>
+          <th>Movil</th>
+          <th>Tipo</th>
+          <th>Base</th>
+          <th>Chapa</th>
           <th>Status</th>
-          <th>Actions</th>
+          <th>Acciones</th>
         </tr>
       </thead>
     </table>
   </div>
-  <!-- Offcanvas to add new user -->
-  <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasAddUser" aria-labelledby="offcanvasAddUserLabel">
+  <!-- Offcanvas to add new movil -->
+  <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasAddMovil" aria-labelledby="offcanvasAddMovilLabel">
     <div class="offcanvas-header">
-      <h5 id="offcanvasAddUserLabel" class="offcanvas-title">Add User</h5>
-      <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+      <h5 id="offcanvasAddMovilLabel" class="offcanvas-title">Agregar Movil</h5>
+      <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Cerrar"></button>
     </div>
     <div class="offcanvas-body mx-0 flex-grow-0">
-      <form class="add-new-user pt-0" id="addNewUserForm" onsubmit="return false">
-        <div class="mb-3">
-          <label class="form-label" for="add-user-fullname">Full Name</label>
-          <input type="text" class="form-control" id="add-user-fullname" placeholder="John Doe" name="userFullname" aria-label="John Doe" />
+      <form class="add-new-movil pt-0" id="addNewMovilForm">
+
+            <input type="hidden" name="id" id="movil_id">
+            <div class="col-12 col-md-6">
+              <label class="form-label" for="identidadMovil">Identidad Movil</label>
+              <div class="input-group input-group-merge">
+                  <span class="input-group-text">XRS</span>
+                  <input type="text" id="identidadMovil" name="identidadMovil" class="form-control" placeholder="XRSB70" />
+              </div>
+            </div>
+            <div class="col-12 col-md-6">
+              <label class="form-label" for="chapaMovil">Chapa</label>
+              <input type="text" id="chapaMovil" name="chapaMovil" class="form-control" placeholder="Registrar Chapa" />
+            </div>
+            <div class="col-12 col-md-6">
+              <label class="form-label" for="chasisMovil">Chasis</label>
+              <input type="text" id="chasisMovil" name="chasisMovil" class="form-control" placeholder="XXXXXXXXXXXXXXX" />
+            </div>
+            <div class="col-12 col-md-6">
+                <label class="form-label" for="marcaMovil">Marca</label>
+                <input type="text" id="marcaMovil" name="marcaMovil" class="form-control" placeholder="Toyota" />
+            </div>
+            <div class="col-12 col-md-6">
+                <label class="form-label" for="modeloMovil">Modelo</label>
+                <input type="text" id="modeloMovil" name="modeloMovil" class="form-control" placeholder="Land Cruiser" />
+            </div>
+            <div class="col-12 col-md-6">
+                <label class="form-label" for="yearMovil">Año</label>
+                <input type="text" id="yearMovil" name="yearMovil" class="form-control" placeholder="2019" />
+            </div>
+            <div class="col-12 col-md-6">
+                <label class="form-label" for="tipoMovil">Tipo Movil</label>
+                <input type="text" id="tipoMovil" name="tipoMovil" class="form-control" placeholder="Ambulancia" />
+            </div>
+            <div class="col-12 col-md-6">
+                <label class="form-label" for="tipoAmbulancia">Tipo Ambulancia</label>
+                <select id="tipoAmbulancia" name="tipoAmbulancia" class="form-select" aria-label="Default select example">
+                    <option selected>Tipo</option>
+                    <option value="1">SVR</option>
+                    <option value="2">SVB - SIMPLE</option>
+                    <option value="3">SVB - PLUS</option>
+                    <option value="4">SVA</option>
+                </select>
+            </div>
+            <div class="col-12 col-md-6">
+                <label class="form-label" for="tarjetaPETROPAR">Petropar Flota</label>
+                <input type="text" id="tarjetaPETROPAR" name="tarjetaPETROPAR" class="form-control" placeholder="123 456 7890" />
+            </div>
+            <div class="col-12 col-md-6">
+                <label class="form-label" for="motorMovil">Motor (cc)</label>
+                <input type="number" id="motorMovil" name="motorMovil" class="form-control" placeholder="2000" />
+            </div>
+            <div class="col-12 col-md-6">
+                <label class="form-label" for="capacidadTanque">Capacidad Tanque (litros)</label>
+                <input type="number" id="capacidadTanque" name="capacidadTanque" class="form-control" placeholder="70" />
+            </div>
+            <div class="col-12 col-md-6">
+                <label class="form-label" for="raspMovil">RASP</label>
+                <div class="input-group input-group-merge">
+                    <span class="input-group-text">C-</span>
+                    <input type="text" id="raspMovil" name="raspMovil" class="form-control" placeholder="C-0004234" />
+                </div>
+            </div>
+            <div class="col-12 col-md-6">
+              <label class="form-label" for="baseMovil">Base Operativa</label>
+                <select id="baseMovil" name="baseMovil" class="select2 form-select" data-allow-clear="true">
+                  @foreach($establecimientos as $establecimiento)
+                      <option value="{{ $establecimiento->idEst }}">{{ $establecimiento->NombreEstablecimiento }}</option>
+                  @endforeach
+              </select>
+            </div>
+            <div class="col-12">
+                <label class="switch">
+                    <input type="checkbox" class="switch-input" id="switchInoperativo">
+                    <span class="switch-toggle-slider">
+                        <span class="switch-on"></span>
+                        <span class="switch-off"></span>
+                    </span>
+                    <span class="switch-label">Vehículo en uso?</span>
+                </label>
+            </div>
+            <div class="col-12 col-md-6" id="ubicacionMovilDiv" style="display: none;">
+                <label class="form-label" for="movilUbicacion">Ubicación actual del Móvil</label>
+                <input type="text" id="movilUbicacion" name="movilUbicacion" class="form-control" placeholder="Ubicación" />
+            </div>
+
+            <button type="submit" class="btn btn-primary me-sm-3 me-1 data-submit">Guardar</button>
+            <button type="reset" class="btn btn-label-secondary" data-bs-dismiss="offcanvas">Cancelar</button>
+          </form>
         </div>
-        <div class="mb-3">
-          <label class="form-label" for="add-user-email">Email</label>
-          <input type="text" id="add-user-email" class="form-control" placeholder="john.doe@example.com" aria-label="john.doe@example.com" name="userEmail" />
-        </div>
-        <div class="mb-3">
-          <label class="form-label" for="add-user-contact">Contact</label>
-          <input type="text" id="add-user-contact" class="form-control phone-mask" placeholder="+1 (609) 988-44-11" aria-label="john.doe@example.com" name="userContact" />
-        </div>
-        <div class="mb-3">
-          <label class="form-label" for="add-user-company">Company</label>
-          <input type="text" id="add-user-company" class="form-control" placeholder="Web Developer" aria-label="jdoe1" name="companyName" />
-        </div>
-        <div class="mb-3">
-          <label class="form-label" for="country">Country</label>
-          <select id="country" class="select2 form-select">
-            <option value="">Select</option>
-            <option value="Australia">Australia</option>
-            <option value="Bangladesh">Bangladesh</option>
-            <option value="Belarus">Belarus</option>
-            <option value="Brazil">Brazil</option>
-            <option value="Canada">Canada</option>
-            <option value="China">China</option>
-            <option value="France">France</option>
-            <option value="Germany">Germany</option>
-            <option value="India">India</option>
-            <option value="Indonesia">Indonesia</option>
-            <option value="Israel">Israel</option>
-            <option value="Italy">Italy</option>
-            <option value="Japan">Japan</option>
-            <option value="Korea">Korea, Republic of</option>
-            <option value="Mexico">Mexico</option>
-            <option value="Philippines">Philippines</option>
-            <option value="Russia">Russian Federation</option>
-            <option value="South Africa">South Africa</option>
-            <option value="Thailand">Thailand</option>
-            <option value="Turkey">Turkey</option>
-            <option value="Ukraine">Ukraine</option>
-            <option value="United Arab Emirates">United Arab Emirates</option>
-            <option value="United Kingdom">United Kingdom</option>
-            <option value="United States">United States</option>
-          </select>
-        </div>
-        <div class="mb-3">
-          <label class="form-label" for="user-role">User Role</label>
-          <select id="user-role" class="form-select">
-            <option value="subscriber">Subscriber</option>
-            <option value="editor">Editor</option>
-            <option value="maintainer">Maintainer</option>
-            <option value="author">Author</option>
-            <option value="admin">Admin</option>
-          </select>
-        </div>
-        <div class="mb-4">
-          <label class="form-label" for="user-plan">Select Plan</label>
-          <select id="user-plan" class="form-select">
-            <option value="basic">Basic</option>
-            <option value="enterprise">Enterprise</option>
-            <option value="company">Company</option>
-            <option value="team">Team</option>
-          </select>
-        </div>
-        <button type="submit" class="btn btn-primary me-sm-3 me-1 data-submit">Submit</button>
-        <button type="reset" class="btn btn-label-secondary" data-bs-dismiss="offcanvas">Cancel</button>
-      </form>
+      </div>
     </div>
   </div>
 </div>

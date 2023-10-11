@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Movil;
 
 class StatusMovil extends Model
 {
@@ -30,6 +31,8 @@ class StatusMovil extends Model
       'statusOil',
       'statusMecanico',
       'statusSaldo',
+      'saldoAcumulado',
+      'updateSaldo',
       'statusCubiertas',
       'statusMantenimiento',
       'statusConductorOperativo',
@@ -69,29 +72,10 @@ class StatusMovil extends Model
         });
     }
 
-    /**
-     * Define the relationship between sectors and establishments.
-     */
-    // public function establecimientos()
-    // {
-    //     return $this->belongsToMany(Establecimiento::class, 'establecimiento_sector', 'idSector', 'idEst')
-    //         ->withPivot('idDepto', 'idSubDepto', 'date_created', 'date_updated')
-    //         ->withTimestamps();
-    // }
-
-
-
     public function movil()
     {
         return $this->belongsTo(Movil::class, 'movilID', 'idMovil');
     }
-
-
-    // public function subdepartamentos()
-    // {
-    //     return $this->belongsToMany(SubDepartamento::class, 'establecimiento_sector', 'idSector', 'idSubDepto');
-    // }
-
 
 
 }

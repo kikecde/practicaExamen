@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Area;
-use App\Models\Departamento;
+use App\Models\Establecimiento;
 
 class Servicio extends Model
 {
@@ -19,7 +19,7 @@ class Servicio extends Model
     protected $fillable = [
         'NombreServ',
         'areasID',
-        
+
     ];
 
     /**
@@ -49,9 +49,9 @@ class Servicio extends Model
         return $this->belongsToMany(Area::class, 'area_servicio', 'idServ', 'idArea');
     }
 
-    public function departamentos()
+    public function establecimientos()
     {
-        return $this->belongsToMany(Departamento::class, 'servicio_departamento', 'idServ', 'idDepto');
+        return $this->belongsToMany(Establecimiento::class, 'establecimiento_servicio', 'idServ', 'servicioID');
     }
 
 }

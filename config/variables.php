@@ -2,7 +2,7 @@
   // Variables
   return [
     "creatorName" => "DRKM",
-    "creatorUrl" => "https://themeselection.com",
+    "creatorUrl" => "https://sicx.com.py",
     "templateName" => "SICX",
     "templateSuffix" => "Sistema de Información y Comunicación - XRS",
     "templateVersion" => "1.0.0",

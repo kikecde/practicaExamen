@@ -1,6 +1,6 @@
 @extends('layouts/layoutMaster')
 
-@section('title', 'User Profile - Profile')
+@section('title', 'Perfil de Usuario - Plataforma')
 
 @section('vendor-style')
 <link rel="stylesheet" href="{{asset('assets/vendor/libs/datatables-bs5/datatables.bootstrap5.css')}}">
@@ -24,7 +24,7 @@
 
 @section('content')
 <h4 class="py-3 mb-4">
-  <span class="text-muted fw-light">User Profile /</span> Profile
+  <span class="text-muted fw-light">Usuario /</span> Perfil
 </h4>
 
 <!-- Header -->
@@ -41,21 +41,21 @@
         <div class="flex-grow-1 mt-3 mt-sm-5">
           <div class="d-flex align-items-md-end align-items-sm-start align-items-center justify-content-md-between justify-content-start mx-4 flex-md-row flex-column gap-4">
             <div class="user-profile-info">
-              <h4>John Doe</h4>
+              <h4>Enrique Maldonado</h4>
               <ul class="list-inline mb-0 d-flex align-items-center flex-wrap justify-content-sm-start justify-content-center gap-2">
                 <li class="list-inline-item fw-medium">
-                  <i class='bx bx-pen'></i> UX Designer
+                  <i class='bx bx-pen'></i> Médico Cirujano
                 </li>
                 <li class="list-inline-item fw-medium">
-                  <i class='bx bx-map'></i> Vatican City
+                  <i class='bx bx-map'></i> Ciudad del Este
                 </li>
                 <li class="list-inline-item fw-medium">
-                  <i class='bx bx-calendar-alt'></i> Joined April 2021
+                  <i class='bx bx-calendar-alt'></i> Desde Agosto 2023
                 </li>
               </ul>
             </div>
             <a href="javascript:void(0)" class="btn btn-primary text-nowrap">
-              <i class='bx bx-user-check me-1'></i>Connected
+              <i class='bx bx-user-check me-1'></i>Conectado
             </a>
           </div>
         </div>
@@ -69,10 +69,10 @@
 <div class="row">
   <div class="col-md-12">
     <ul class="nav nav-pills flex-column flex-sm-row mb-4">
-      <li class="nav-item"><a class="nav-link active" href="javascript:void(0);"><i class='bx bx-user me-1'></i> Profile</a></li>
-      <li class="nav-item"><a class="nav-link" href="{{url('pages/profile-teams')}}"><i class='bx bx-group me-1'></i> Teams</a></li>
-      <li class="nav-item"><a class="nav-link" href="{{url('pages/profile-projects')}}"><i class='bx bx-grid-alt me-1'></i> Projects</a></li>
-      <li class="nav-item"><a class="nav-link" href="{{url('pages/profile-connections')}}"><i class='bx bx-link-alt me-1'></i> Connections</a></li>
+      <li class="nav-item"><a class="nav-link active" href="javascript:void(0);"><i class='bx bx-user me-1'></i> Perfil</a></li>
+      <li class="nav-item"><a class="nav-link" href="{{url('pages/profile-teams')}}"><i class='bx bx-group me-1'></i> Equipos</a></li>
+      <li class="nav-item"><a class="nav-link" href="{{url('pages/profile-projects')}}"><i class='bx bx-grid-alt me-1'></i> Proyectos</a></li>
+      <li class="nav-item"><a class="nav-link" href="{{url('pages/profile-connections')}}"><i class='bx bx-link-alt me-1'></i> Conecciones</a></li>
     </ul>
   </div>
 </div>
@@ -84,13 +84,13 @@
     <!-- About User -->
     <div class="card mb-4">
       <div class="card-body">
-        <small class="text-muted text-uppercase">About</small>
+        <small class="text-muted text-uppercase">Sobre</small>
         <ul class="list-unstyled mb-4 mt-3">
-          <li class="d-flex align-items-center mb-3"><i class="bx bx-user"></i><span class="fw-medium mx-2">Full Name:</span> <span>John Doe</span></li>
-          <li class="d-flex align-items-center mb-3"><i class="bx bx-check"></i><span class="fw-medium mx-2">Status:</span> <span>Active</span></li>
-          <li class="d-flex align-items-center mb-3"><i class="bx bx-star"></i><span class="fw-medium mx-2">Role:</span> <span>Developer</span></li>
-          <li class="d-flex align-items-center mb-3"><i class="bx bx-flag"></i><span class="fw-medium mx-2">Country:</span> <span>USA</span></li>
-          <li class="d-flex align-items-center mb-3"><i class="bx bx-detail"></i><span class="fw-medium mx-2">Languages:</span> <span>English</span></li>
+          <li class="d-flex align-items-center mb-3"><i class="bx bx-user"></i><span class="fw-medium mx-2">Nombre y Apellido:</span> <span>Enrique Maldonado</span></li>
+          <li class="d-flex align-items-center mb-3"><i class="bx bx-check"></i><span class="fw-medium mx-2">Status:</span> <span>Activo</span></li>
+          <li class="d-flex align-items-center mb-3"><i class="bx bx-star"></i><span class="fw-medium mx-2">Rol:</span> <span>Médico</span></li>
+          <li class="d-flex align-items-center mb-3"><i class="bx bx-flag"></i><span class="fw-medium mx-2">Establecimiento:</span> <span>SEME XRS</span></li>
+          <li class="d-flex align-items-center mb-3"><i class="bx bx-detail"></i><span class="fw-medium mx-2">Funciones:</span> <span>Coordinador Ejecutivo</span></li>
         </ul>
         <small class="text-muted text-uppercase">Contacts</small>
         <ul class="list-unstyled mb-4 mt-3">

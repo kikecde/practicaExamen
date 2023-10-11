@@ -1,0 +1,102 @@
+{
+  "data": [
+    {
+      "idIndicacion": 1,
+      "indicacionTipo": "5",
+      "indicacionDroga": "ADRENALINA. Ampolla",
+      "indicacionConcentracion": "1mg/mL",
+      "indicacionDosisCantidad": "1",
+      "indicacionDosisMedida": "ampolla/s",
+      "indicacionVia": "1",
+      "indicacionDilucion": "10",
+      "indicacionDiluyente": "ml SF 0,9%",
+      "indicacionMetodo": "1",
+      "indicacionTiempo": "",
+      "indicacionObservacion": "Alguna Observacion Extra"
+    },
+    {
+      "idIndicacion": 2,
+      "indicacionTipo": "3",
+      "indicacionDroga": "PROPOFOL. Vial",
+      "indicacionConcentracion": "10mg/mL",
+      "indicacionDosisCantidad": "1",
+      "indicacionDosisMedida": "vial",
+      "indicacionVia": "1",
+      "indicacionDilucion": "200",
+      "indicacionDiluyente": "ml SF 0,9%",
+      "indicacionMetodo": "4",
+      "indicacionTiempo": "6 horas",
+      "indicacionObservacion": ""
+    },
+    {
+      "idIndicacion": 3,
+      "indicacionTipo": "6",
+      "indicacionDroga": "ONDANSETRON. Ampolla",
+      "indicacionConcentracion": "8mg",
+      "indicacionDosisCantidad": "1",
+      "indicacionDosisMedida": "ampolla/s",
+      "indicacionVia": "1",
+      "indicacionDilucion": "",
+      "indicacionDiluyente": "",
+      "indicacionMetodo": "1",
+      "indicacionTiempo": "8 horas",
+      "indicacionObservacion": ""
+    },
+    {
+      "idIndicacion": 4,
+      "indicacionTipo": "4",
+      "indicacionDroga": "PARACETAMOL. Frasco Ampolla",
+      "indicacionConcentracion": "1g/100mL",
+      "indicacionDosisCantidad": "1",
+      "indicacionDosisMedida": "Frasco Ampolla",
+      "indicacionVia": "1",
+      "indicacionDilucion": "",
+      "indicacionDiluyente": "",
+      "indicacionMetodo": "3",
+      "indicacionTiempo": "",
+      "indicacionObservacion": "Otra Observacion"
+    },
+    {
+      "idIndicacion": 5,
+      "indicacionTipo": "2",
+      "indicacionDroga": "HEPARINA. Ampolla",
+      "indicacionConcentracion": "50mg/mL",
+      "indicacionDosisCantidad": "1",
+      "indicacionDosisMedida": "ampolla/s",
+      "indicacionVia": "3",
+      "indicacionDilucion": "",
+      "indicacionDiluyente": "",
+      "indicacionMetodo": "1",
+      "indicacionTiempo": "24 horas",
+      "indicacionObservacion": ""
+    },
+    {
+      "idIndicacion": 6,
+      "indicacionTipo": "4",
+      "indicacionDroga": "INSULINA REGULAR. Vial",
+      "indicacionConcentracion": "5,000UI/mL",
+      "indicacionDosisCantidad": "10",
+      "indicacionDosisMedida": "UI",
+      "indicacionVia": "3",
+      "indicacionDilucion": "",
+      "indicacionDiluyente": "",
+      "indicacionMetodo": "1",
+      "indicacionTiempo": "",
+      "indicacionObservacion": ""
+    },
+    {
+      "idIndicacion": 7,
+      "indicacionTipo": "6",
+      "indicacionDroga": "DIPIRONA. Ampolla",
+      "indicacionConcentracion": "1g/2mL",
+      "indicacionDosisCantidad": "2",
+      "indicacionDosisMedida": "ampolla/s",
+      "indicacionVia": "1",
+      "indicacionDilucion": "",
+      "indicacionDiluyente": "",
+      "indicacionMetodo": "1",
+      "indicacionTiempo": "6 horas",
+      "indicacionObservacion": ""
+    }
+  ]
+}

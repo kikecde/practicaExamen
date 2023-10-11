@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Region;
 
 class Distrito extends Model
 {
@@ -16,10 +17,13 @@ class Distrito extends Model
      * @var array<int, string>
      */
     protected $fillable = [
-        
+
         'NombreDistrito',
         'AbrevDistrito',
-        'distrUbicacion'
+        'distrUbicacionLatitud',
+        'distrUbicacionLongitud',
+        'regionID',
+        'codDistrito',
     ];
-    
+
 }

@@ -1,6 +1,6 @@
 @extends('layouts/layoutMaster')
 
-@section('title', 'Preview - Invoice')
+@section('title', 'Previsualizar - Orden de Trabajo')
 
 @section('vendor-style')
 <link rel="stylesheet" href="{{asset('assets/vendor/libs/flatpickr/flatpickr.css')}}" />
@@ -25,150 +25,202 @@
 @section('content')
 
 <div class="row invoice-preview">
-  <!-- Invoice -->
-  <div class="col-xl-9 col-md-8 col-12 mb-md-0 mb-4">
+  <!-- Resumen Pedido -->
+  <div class="col-xl-12 col-md-8 col-12 mb-md-0 mb-4">
     <div class="card invoice-preview-card">
       <div class="card-body">
         <div class="d-flex justify-content-between flex-xl-row flex-md-column flex-sm-row flex-column p-sm-3 p-0">
           <div class="mb-xl-0 mb-4">
             <div class="d-flex svg-illustration mb-3 gap-2">
-              <span class="app-brand-logo demo">@include('_partials.macros',["width"=>25,"withbg"=>'var(--bs-primary)'])</span>
+              <span class="app-brand-logo demo">@include('_partials.macros',["width"=>40,"withbg"=>'var(--bs-primary)'])</span>
               <span class="app-brand-text demo text-body fw-bold">{{ config('variables.templateName') }}</span>
             </div>
-            <p class="mb-1">Office 149, 450 South Brand Brooklyn</p>
-            <p class="mb-1">San Diego County, CA 91905, USA</p>
-            <p class="mb-0">+1 (123) 456 7891, +44 (876) 543 2198</p>
+            <h6 class="pb-2">Detalles Origen Paciente: </h6>
+            <p class="mb-1">Profesional Solicitante: <span id="resumenProfesional">N/A</span></p>
+            <p class="mb-1">Telefono: <span id="resumenProfesionalTelefono">N/A</span></p>
+            <p class="mb-1">Establecimiento: <span id="resumenEstablecimiento">N/A</span></p>
+            <p class="mb-1">Servicio: <span id="resumenServicio">N/A</span></p>
+            <p class="mb-1">Sector: <span id="resumenSector">N/A</span></p>
+            <p class="mb-0">Acompañantes: <span id="resumenAcompanantes">N/A</span></p>
           </div>
           <div>
-            <h4>Invoice #3492</h4>
+            <h4>PEDIDO #3492</h4>
             <div class="mb-2">
-              <span class="me-1">Date Issues:</span>
-              <span class="fw-medium">25/08/2020</span>
+              <span class="me-1">Fecha/Hora Pedido: </span>
+              <span class="fw-medium" id="resumenFechaPedido">N/A</span>
+          </div>
+          <div class="mb-2">
+              <span class="me-1">Fecha/Hora Programada: </span>
+              <span class="fw-medium" id="resumenFechaProgramada">N/A</span>
+          </div>
+            <div class="mb-2">
+              <span class="me-1">Tipo de Traslado: </span>
+              <span class="fw-medium" id="resumenTipoTraslado">N/A</span>
             </div>
-            <div>
-              <span class="me-1">Date Due:</span>
-              <span class="fw-medium">29/08/2020</span>
+            <div class="mb-2">
+              <span class="me-1">Tiempo de Traslado: </span>
+              <span class="fw-medium" id="resumenTiempoTraslado">N/A</span>
             </div>
           </div>
         </div>
       </div>
       <hr class="my-0" />
+      <!-- Detalles Paciente -->
       <div class="card-body">
         <div class="row p-sm-3 p-0">
           <div class="col-xl-6 col-md-12 col-sm-5 col-12 mb-xl-0 mb-md-4 mb-sm-0 mb-4">
-            <h6 class="pb-2">Invoice To:</h6>
-            <p class="mb-1">Thomas shelby</p>
-            <p class="mb-1">Shelby Company Limited</p>
-            <p class="mb-1">Small Heath, B10 0HF, UK</p>
-            <p class="mb-1">718-986-6062</p>
-            <p class="mb-0">peakyFBlinders@gmail.com</p>
+            <h6 class="pb-2">DETALLES DEL PACIENTE:</h6>
+            <p class="mb-1">Nombres y Apellidos: <span id="resumenPacienteNombre">N/A</span></p>
+            <p class="mb-1">CI: <span id="resumenPacienteCI">N/A</span></p>
+            <p class="mb-1">Sexo: <span id="resumenPacienteSexo">N/A</span></p>
+            <p class="mb-1">Edad: <span id="resumenPacienteEdad">N/A</span></p>
+            <p class="mb-0">Telefono de Contacto: <span id="resumenPacienteTelefono">N/A</span></p>
+            <p class="mb-0">GRAVEDAD: <span id="resumenPacienteGravedad">N/A</span></p>
+            <p class="mb-0">APP: <span id="resumenPacienteAPP">N/A</span></p>
           </div>
           <div class="col-xl-6 col-md-12 col-sm-7 col-12">
-            <h6 class="pb-2">Bill To:</h6>
+            <h6 class="pb-2">SIGNOS VITALES:</h6>
             <table>
               <tbody>
                 <tr>
-                  <td class="pe-3">Total Due:</td>
-                  <td>$12,110.55</td>
+                  <td class="pe-3">Presión Arterial:</td>
+                  <td id="resumenPresionArterial">N/A</td>
                 </tr>
                 <tr>
-                  <td class="pe-3">Bank name:</td>
-                  <td>American Bank</td>
+                  <td class="pe-3">Frecuencia Cardiaca:</td>
+                  <td id="resumenFrecuenciaCardiaca">N/A</td>
                 </tr>
                 <tr>
-                  <td class="pe-3">Country:</td>
-                  <td>United States</td>
+                  <td class="pe-3">Frecuencia Respiratoria:</td>
+                  <td id="resumenFrecuenciaRespiratoria">N/A</td>
                 </tr>
                 <tr>
-                  <td class="pe-3">IBAN:</td>
-                  <td>ETD95476213874685</td>
+                  <td class="pe-3">Saturación O2:</td>
+                  <td id="resumenSaturacionO2">N/A</td>
                 </tr>
                 <tr>
-                  <td class="pe-3">SWIFT code:</td>
-                  <td>BR91905</td>
+                  <td class="pe-3">Glasgow:</td>
+                  <td id="resumenGlasgow">N/A</td>
+                </tr>
+                <tr>
+                  <td class="pe-3">Temperatura:</td>
+                  <td id="resumenTemperatura">N/A</td>
+                </tr>
+                <tr>
+                  <td class="pe-3">Glicemia:</td>
+                  <td id="resumenGlicemia">N/A</td>
                 </tr>
               </tbody>
             </table>
           </div>
         </div>
       </div>
+      <!-- Indicaciones -->
       <div class="table-responsive">
         <table class="table border-top m-0">
           <thead>
             <tr>
-              <th>Item</th>
-              <th>Description</th>
-              <th>Cost</th>
-              <th>Qty</th>
-              <th>Price</th>
+              <th>Farmaco / Otros</th>
+              <th>Dosis</th>
+              <th>Via</th>
+              <th>Administración</th>
+              <th>Observación</th>
             </tr>
           </thead>
           <tbody>
             <tr>
-              <td class="text-nowrap">Vuexy Admin Template</td>
-              <td class="text-nowrap">HTML Admin Template</td>
-              <td>$32</td>
-              <td>1</td>
-              <td>$32.00</td>
+              <td class="text-nowrap">DIPIRONA</td>
+              <td class="text-nowrap">02 ampolla/s</td>
+              <td>ET</td>
+              <td>En bolo, S/N y cada 6 horas</td>
+              <td>Una observacion</td>
             </tr>
             <tr>
-              <td class="text-nowrap">Frest Admin Template</td>
-              <td class="text-nowrap">Angular Admin Template</td>
-              <td>$22</td>
-              <td>1</td>
-              <td>$22.00</td>
+              <td class="text-nowrap">ADRENALINA. Ampolla</td>
+              <td class="text-nowrap">01 ampolla/s</td>
+              <td>ET</td>
+              <td>En bolo, S/N.</td>
+              <td>En caso de PCR</td>
             </tr>
-            <tr>
-              <td class="text-nowrap">Apex Admin Template</td>
-              <td class="text-nowrap">HTML Admin Template</td>
-              <td>$17</td>
-              <td>2</td>
-              <td>$34.00</td>
-            </tr>
-            <tr>
-              <td class="text-nowrap">Robust Admin Template</td>
-              <td class="text-nowrap">React Admin Template</td>
-              <td>$66</td>
-              <td>1</td>
-              <td>$66.00</td>
-            </tr>
+
             <tr>
               <td colspan="3" class="align-top px-4 py-5">
                 <p class="mb-2">
-                  <span class="me-1 fw-medium">Salesperson:</span>
-                  <span>Alfie Solomons</span>
+                  <span class="me-1 fw-medium">Complejizaciones:</span>
+                  <span id="resumenComplejizaciones">N/A</span></p>
                 </p>
-                <span>Thanks for your business</span>
-              </td>
-              <td class="text-end px-4 py-5">
-                <p class="mb-2">Subtotal:</p>
-                <p class="mb-2">Discount:</p>
-                <p class="mb-2">Tax:</p>
-                <p class="mb-0">Total:</p>
-              </td>
-              <td class="px-4 py-5">
-                <p class="fw-medium mb-2">$154.25</p>
-                <p class="fw-medium mb-2">$00.00</p>
-                <p class="fw-medium mb-2">$50.00</p>
-                <p class="fw-medium mb-0">$204.25</p>
+                <p class="mb-2">
+                  <span class="me-1 fw-medium">Hidratación Parenteral:</span>
+                  <span id="resumenHidratacion">N/A</span></p>
+                </p>
+                <p class="mb-2">
+                  <span class="me-1 fw-medium">Soporte O2:</span>
+                  <span id="resumenSoporteO2">N/A</span></p>
+                </p>
               </td>
             </tr>
           </tbody>
         </table>
       </div>
 
+      <!-- Para Estudios -->
+      <hr class="my-0" />
+      <div class="card-body">
+        <div class="row p-sm-3 p-0">
+
+          <div class="col-xl-6 col-md-12 col-sm-7 col-12">
+            <h6 class="pb-2">Estudios/Procedimientos:</h6>
+            <table>
+              <tbody>
+                <tr>
+                  <td class="pe-3">Establecimiento:</td>
+                  <td>N/A</td>
+                </tr>
+                <tr>
+                  <td class="pe-3">Profesional:</td>
+                  <td>N/A</td>
+                </tr>
+                <tr>
+                  <td class="pe-3">MC / Imp. DX / DX:</td>
+                  <td>N/A</td>
+                </tr>
+                <tr>
+                  <td class="pe-3">Info Adicional:</td>
+                  <td>N/A</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      <!-- /Para Estudios -->
+
+      <!-- Para Destino -->
+      <div class="card-body">
+        <div class="row p-sm-3 p-0">
+          <div class="col-xl-6 col-md-12 col-sm-5 col-12 mb-xl-0 mb-md-4 mb-sm-0 mb-4">
+            <h6 class="pb-2">Detalles Destino Paciente: </h6>
+            <p class="mb-1" span id="resumenProfesionalDestino">N/A</span></p>
+            <p class="mb-1" span id="resumenProfesionalTelefonoDestino">N/A</span></p>
+            <p class="mb-1" span id="resumenEstablecimientoDestino">N/A</span></p>
+            <p class="mb-1" span id="resumenServicioDestino">N/A</span></p>
+            <p class="mb-0" span id="resumenSectorDestino">N/A</span></p>
+          </div>
+        </div>
+      </div>
+      <!-- /Para Destino -->
+
       <div class="card-body">
         <div class="row">
           <div class="col-12">
             <span class="fw-medium">Note:</span>
-            <span>It was a pleasure working with you and your team. We hope you will keep us in mind for future freelance
-              projects. Thank You!</span>
+            <span>Usted recibirá un correo de confirmación con el resumen de su pedido. No genere pedidos adicionales para este paciente. Muchas gracias!</span>
           </div>
         </div>
       </div>
     </div>
   </div>
-  <!-- /Invoice -->
+  <!-- /Resumen Pedido -->
 
   <!-- Invoice Actions -->
   <div class="col-xl-3 col-md-4 col-12 invoice-actions">

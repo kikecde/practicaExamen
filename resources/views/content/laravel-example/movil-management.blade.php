@@ -1,6 +1,6 @@
 @extends('layouts/layoutMaster')
 
-@section('title', 'Ambulancias - Gestion')
+@section('title', 'Gestión de Moviles - APP')
 
 @section('vendor-style')
 <link rel="stylesheet" href="{{asset('assets/vendor/libs/datatables-bs5/datatables.bootstrap5.css')}}">
@@ -130,17 +130,18 @@
 <!-- Moviles List Table -->
 <div class="card">
   <div class="card-header">
-    <h5 class="card-title mb-0">Filtro de Búsqueda</h5>
+    <h5 class="card-title mb-0">Filtros de Búsqueda</h5>
   </div>
   <div class="card-datatable table-responsive">
     <table class="datatables-moviles table border-top">
       <thead>
         <tr>
           <th></th>
-          <th>Id</th>
-          <th>Móvil</th>
-          <th>Base Operativa</th>
-          <th>Tipo Movil / Status</th>
+          <th>Nro</th>
+          <th>Movil</th>
+          <th>Tipo</th>
+          <th>Base</th>
+          <th>Saldo</th>
           <th>Acciones</th>
         </tr>
       </thead>
@@ -156,79 +157,89 @@
       <form class="add-new-movil pt-0" id="addNewMovilForm">
         <input type="hidden" name="id" id="movil_id">
         <div class="mb-3">
-          <label class="form-label" for="add-movil-identidadMovil">Identidad Movil</label>
-          <input type="text" class="form-control" id="add-movil-IdentidadMovil" placeholder="XRSB10" name="identidadMovil" aria-label="XRSB10" />
+          <label class="form-label" for="identidadMovil">Identidad Movil</label>
+          <div class="input-group input-group-merge">
+              <span class="input-group-text">XRS</span>
+              <input type="text" id="identidadMovil" name="identidadMovil" class="form-control" placeholder="XRSB70" />
+          </div>
         </div>
         <div class="mb-3">
-          <label class="form-label" for="add-movil-chapaMovil">Chapa</label>
-          <input type="text" id="add-movil-chapaMovil" class="form-control" placeholder="Ingrese chapa del movil" aria-label="XXX000" name="chapaMovil" />
+          <label class="form-label" for="chapaMovil">Chapa</label>
+          <input type="text" id="chapaMovil" name="chapaMovil" class="form-control" placeholder="Registrar Chapa" />
         </div>
         <div class="mb-3">
-          <label class="form-label" for="add-movil-chasisMovil">Chasis</label>
-          <input type="text" id="add-movil-chasisMovil" class="form-control" placeholder="Ingrese Nro de Chasis" aria-label="XXXXXXXXXXXXXXXXX" name="chasisMovil" />
+          <label class="form-label" for="chasisMovil">Chasis</label>
+          <input type="text" id="chasisMovil" name="chasisMovil" class="form-control" placeholder="XXXXXXXXXXXXXXX" />
         </div>
         <div class="mb-3">
-          <label class="form-label" for="add-movil-marcaMovil">Marca del Vehiculo</label>
-          <select id="add-movil-marcaMovil" class="select2 form-select">
-            <option value="">Select</option>
-            <option value="1">Mercedes Benz</option>
-            <option value="2">Isuzu</option>
-            <option value="3">Hyundai</option>
-            <option value="4">Renault</option>
-            <option value="5">Chevrolet</option>
-            <option value="6">Toyota</option>
-            <option value="7">Ford</option>
+            <label class="form-label" for="marcaMovil">Marca</label>
+            <input type="text" id="marcaMovil" name="marcaMovil" class="form-control" placeholder="Toyota" />
+        </div>
+        <div class="mb-3">
+            <label class="form-label" for="modeloMovil">Modelo</label>
+            <input type="text" id="modeloMovil" name="modeloMovil" class="form-control" placeholder="Land Cruiser" />
+        </div>
+        <div class="mb-3">
+            <label class="form-label" for="yearMovil">Año</label>
+            <input type="text" id="yearMovil" name="yearMovil" class="form-control" placeholder="2019" />
+        </div>
+        <div class="mb-3">
+            <label class="form-label" for="tipoMovil">Tipo Movil</label>
+            <input type="text" id="tipoMovil" name="tipoMovil" class="form-control" placeholder="Ambulancia" />
+        </div>
+        <div class="mb-3">
+            <label class="form-label" for="tipoAmbulancia">Tipo Ambulancia</label>
+            <select id="tipoAmbulancia" name="tipoAmbulancia" class="form-select" aria-label="Default select example">
+                <option selected>Tipo</option>
+                <option value="1">SVR</option>
+                <option value="2">SVB - SIMPLE</option>
+                <option value="3">SVB - PLUS</option>
+                <option value="4">SVA</option>
+            </select>
+        </div>
+        <div class="mb-3">
+            <label class="form-label" for="tarjetaPETROPAR">Petropar Flota</label>
+            <input type="text" id="tarjetaPETROPAR" name="tarjetaPETROPAR" class="form-control" placeholder="123 456 7890" />
+        </div>
+        <div class="mb-3">
+            <label class="form-label" for="motorMovil">Motor (cc)</label>
+            <input type="number" id="motorMovil" name="motorMovil" class="form-control" placeholder="2000" />
+        </div>
+        <div class="mb-3">
+            <label class="form-label" for="capacidadTanque">Capacidad Tanque (litros)</label>
+            <input type="number" id="capacidadTanque" name="capacidadTanque" class="form-control" placeholder="70" />
+        </div>
+        <div class="mb-3">
+            <label class="form-label" for="raspMovil">RASP</label>
+            <div class="input-group input-group-merge">
+                <span class="input-group-text">C-</span>
+                <input type="text" id="raspMovil" name="raspMovil" class="form-control" placeholder="C-0004234" />
+            </div>
+        </div>
+        <div class="mb-3">
+          <label class="form-label" for="baseMovil">Base Operativa</label>
+            <select id="baseMovil" name="baseMovil" class="select2 form-select" data-allow-clear="true">
+              @foreach($establecimientos as $establecimiento)
+                  <option value="{{ $establecimiento->idEst }}">{{ $establecimiento->NombreEstablecimiento }}</option>
+              @endforeach
           </select>
         </div>
         <div class="mb-3">
-          <label class="form-label" for="add-movil-modeloMovil">Modelo del Vehiculo</label>
-          <input type="text" id="add-movil-modeloMovil" class="form-control" placeholder="Sprinter" aria-label="Modelo de Movil" name="modeloMovil" />
+            <label class="switch">
+                <input type="checkbox" class="switch-input" id="switchInoperativo">
+                <span class="switch-toggle-slider">
+                    <span class="switch-on"></span>
+                    <span class="switch-off"></span>
+                </span>
+                <span class="switch-label">Vehículo no operativo?</span>
+            </label>
         </div>
-        <div class="mb-3">
-          <label class="form-label" for="add-movil-tipoMovil">Tipo de Vehículo</label>
-          <select id="add-movil-tipoMovil" class="select2 form-select">
-            <option value="">Select</option>
-            <option value="300">Ambulancia</option>
-            <option value="4">Automovil</option>
-            <option value="5">Camioneta</option>
-            <option value="6">Camión</option>
-            <option value="7">Motocicleta</option>
-            <option value="8">Camion Pequeño</option>
-          </select>
+        <div class="mb-3" id="ubicacionMovilDiv" style="display: none;">
+            <label class="form-label" for="movilUbicacion">Ubicación actual del Móvil</label>
+            <input type="text" id="movilUbicacion" name="movilUbicacion" class="form-control" placeholder="Ubicación" />
         </div>
-        <div class="mb-3">
-          <label class="form-label" for="add-movil-tipoAmbulancia">Tipo de Ambulancia</label>
-          <input type="number" id="add-movil-tipoAmbulancia" class="form-control" placeholder="SVB - SIMPLE" aria-label="Tipo de Ambulancia" name="tipoAmbulancia" />
-        </div>
-        <div class="mb-3">
-          <label class="form-label" for="add-movil-añoMovil">Año del Vehiculo</label>
-          <input type="number" id="add-movil-añoMovil" class="form-control" placeholder="2020" aria-label="Año de Movil" name="añoMovil" />
-        </div>
-        <div class="mb-3">
-          <label class="form-label" for="add-movil-motorMovil">CC del motor</label>
-          <input type="number" id="add-movil-motorMovil" class="form-control" placeholder="2000" aria-label="Motor de Movil" name="motorMovil" />
-        </div>
-        <div class="mb-3">
-          <label class="form-label" for="add-movil-capacidadTanque">Capacidad Tanque Combustible</label>
-          <input type="number" id="add-movil-capacidadTanque" class="form-control" placeholder="70" aria-label="Capacidad de tanque en litros" name="capacidadTanque" />
-        </div>
-        <div class="mb-3">
-          <label class="form-label" for="add-movil-raspMovil">Codigo de RASP</label>
-          <input type="number" id="add-movil-raspMovil" class="form-control" placeholder="C-XXXXXXX" aria-label="Codigo de RASP" name="raspMovil" />
-        </div>
-        <div class="mb-3">
-          <label class="form-label" for="add-movil-baseMovil">Base Operativa</label>
-          <select id="add-movil-baseMovil" class="select2 form-select">
-            <option value="">Select</option>
-            <option value="300">SEME XRS</option>
-            <option value="4">HRCDE</option>
-            <option value="5">HDH</option>
-            <option value="6">HDPF</option>
-            <option value="7">HDMG</option>
-            <option value="8">HDSR</option>
-          </select>
-        </div>
-        <button type="submit" class="btn btn-primary me-sm-3 me-1 data-submit">Guardad</button>
+
+        <button type="submit" class="btn btn-primary me-sm-3 me-1 data-submit">Guardar</button>
         <button type="reset" class="btn btn-label-secondary" data-bs-dismiss="offcanvas">Cancelar</button>
       </form>
     </div>

@@ -7,9 +7,11 @@ use Illuminate\Database\Eloquent\Model;
 use App\Models\Establecimiento;
 use App\Models\Area;
 use App\Models\Servicio;
-
-
+use App\Models\Distrito;
+use App\Models\Region;
+use App\Models\Movil;
 use App\Models\Sector;
+use App\Models\Estudio;
 
 
 class Establecimiento extends Model
@@ -28,7 +30,9 @@ class Establecimiento extends Model
         'estMail',
         'estTelefono',
         'estDistritoID',
-        'estUbicacion',
+        'estRegionID',
+        'estUbicacionLatitud',
+        'estUbicacionLongitud',
         'estAbrev',
         'estLogoPath',
         'created_at',
@@ -58,11 +62,36 @@ class Establecimiento extends Model
     }
 
     /**
+     * Define la relación entre los establecimientos y las regiones.
+     */
+    public function region()
+    {
+        return $this->belongsTo(Region::class, 'estRegionID', 'idRegion');
+    }
+
+    /**
      * Define la relación entre los establecimientos y areas.
      */
-    public function areas()
+    public function sectores()
     {
-    return $this->belongsToMany(Area::class, 'establecimiento_area', 'idEst', 'idArea');
+    return $this->belongsToMany(Sector::class, 'establecimiento_sector', 'idEst', 'estID');
     }
+
+    /**
+     * Define la relación entre los establecimientos y servicios.
+     */
+    public function servicios()
+    {
+    return $this->belongsToMany(Servicio::class, 'establecimiento_servicio', 'idEst', 'estID');
+    }
+
+    /**
+     * Define la relación entre los establecimientos y estudios.
+     */
+    public function estudios()
+    {
+    return $this->belongsToMany(Estudio::class, 'establecimiento_estudio', 'idEst', 'estID');
+    }
+
 
 }

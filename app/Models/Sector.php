@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Establecimiento;
 
 class Sector extends Model
 {
@@ -46,44 +47,14 @@ class Sector extends Model
      */
     protected $primaryKey = 'idSector';
 
-    /**
-     * Boot the model.
-     */
-    protected static function boot()
-    {
-        parent::boot();
-
-        static::creating(function ($model) {
-            $model->date_created = now();
-        });
-
-        static::updating(function ($model) {
-            $model->date_updated = now();
-        });
-    }
 
     /**
      * Define the relationship between sectors and establishments.
      */
     public function establecimientos()
     {
-        return $this->belongsToMany(Establecimiento::class, 'establecimiento_sector', 'idSector', 'idEst')
-            ->withPivot('idDepto', 'idSubDepto', 'date_created', 'date_updated')
-            ->withTimestamps();
+        return $this->belongsToMany(Establecimiento::class, 'establecimiento_sector', 'sectorID', 'estID');
     }
 
 
-
-    public function departamentos()
-    {
-        return $this->belongsToMany(Departamento::class, 'establecimiento_sector', 'idSector', 'idDepto');
-    }
-
-    public function subdepartamentos()
-    {
-        return $this->belongsToMany(SubDepartamento::class, 'establecimiento_sector', 'idSector', 'idSubDepto');
-    }
-
-
-   
 }

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\laravel_example;
 
 use App\Http\Controllers\Controller;
+use App\Models\Establecimiento;
 use Illuminate\Http\Request;
 use App\Models\Movil;
 use Illuminate\Support\Str;
@@ -10,10 +11,7 @@ use Carbon\Carbon;
 
 class MovilManagement extends Controller
 {
-  /**
-   * Redirect to movil-management view.
-   *
-   */
+
   public function MovilManagement()
   {
     $moviles = Movil::with('statusMovil')->get(); // Precarga la relación para optimizar las consultas
@@ -60,6 +58,7 @@ class MovilManagement extends Controller
     $porcentajeActivo = ($movilesCount > 0) ? ($movilesActivos / $movilesCount) * 100 : 0;
     $porcentajeStandby = ($movilesCount > 0) ? ($movilesStandBy / $movilesCount) * 100 : 0;
 
+    $establecimientos = Establecimiento::all();
 
 
 
@@ -78,9 +77,12 @@ class MovilManagement extends Controller
       'porcentajeActivo' => $porcentajeActivo,
       'porcentajeStandby' => $porcentajeStandby,
       'operativoLastUpdate' => $operativoLastUpdate,
-      'noOperativoLastUpdate' => $noOperativoLastUpdate
+      'noOperativoLastUpdate' => $noOperativoLastUpdate,
+      'establecimientos' => $establecimientos
     ]);
   }
+
+
 
   /**
    * Display a listing of the resource.
@@ -97,6 +99,7 @@ class MovilManagement extends Controller
       5 => 'marcaMovil',
       6 => 'tipoAmbulancia',
     ];
+
 
     $search = [];
 
@@ -122,8 +125,8 @@ class MovilManagement extends Controller
         ->orWhere('identidadMovil', 'LIKE', "%{$search}%")
         ->orWhere('chapaMovil', 'LIKE', "%{$search}%")
         ->orWhere('baseMovil', 'LIKE', "%{$search}%")
-        ->orWhere('marcaMovil', 'LIKE', "%{$search}%")
-        ->orWhere('tipoAmbulancia', 'LIKE', "%{$search}%")
+       // ->orWhere('marcaMovil', 'LIKE', "%{$search}%")
+       // ->orWhere('tipoAmbulancia', 'LIKE', "%{$search}%")
         ->offset($start)
         ->limit($limit)
         ->orderBy($order, $dir)
@@ -133,8 +136,8 @@ class MovilManagement extends Controller
         ->orWhere('identidadMovil', 'LIKE', "%{$search}%")
         ->orWhere('chapaMovil', 'LIKE', "%{$search}%")
         ->orWhere('baseMovil', 'LIKE', "%{$search}%")
-        ->orWhere('marcaMovil', 'LIKE', "%{$search}%")
-        ->orWhere('tipoAmbulancia', 'LIKE', "%{$search}%")
+        // ->orWhere('marcaMovil', 'LIKE', "%{$search}%")
+        // ->orWhere('tipoAmbulancia', 'LIKE', "%{$search}%")
         ->count();
     }
 
@@ -145,15 +148,18 @@ class MovilManagement extends Controller
       $ids = $start;
 
       foreach ($moviles as $movil) {
-        $nestedData['id'] = $movil->id;
+        $nestedData['idMovil'] = $movil->idMovil;
         $nestedData['fake_id'] = ++$ids;
         $nestedData['identidadMovil'] = $movil->identidadMovil;
-        $nestedData['baseMovil'] = $movil->chapaMovil;
+        $nestedData['chapaMovil'] = $movil->chapaMovil;
+        $nestedData['baseMovil'] = $movil->baseMovil;
         $nestedData['tipoAmbulancia'] = $movil->tipoAmbulancia;
         $nestedData['statusOperativo'] = $movil->statusMovil ? $movil->statusMovil->statusOperativo : null;
         $nestedData['statusActivo'] = $movil->statusMovil ? $movil->statusMovil->statusActivo : null;
         $nestedData['marcaLogo'] = $movil->marcaMovil ? $movil->marcaMovil->marcaLogoPath : null;
         $nestedData['tipoAmbuIcon'] = $movil->tipoAmbulancia ? $movil->tipoAmbulancia->tipoAmbuIcon : null;
+        $nestedData['statusSaldo'] = $movil->statusMovil ? $movil->statusMovil->statusSaldo : null;
+        $nestedData['lastUpdate'] = $movil->statusMovil ? $movil->statusMovil->LAST_UPDATE : null;
 
 
         $data[] = $nestedData;
@@ -207,7 +213,7 @@ class MovilManagement extends Controller
         'marcaMovil' => $request->marcaMovil,
         'modeloMovil' => $request->modeloMovil,
         'tipoMovil' => $request->tipoMovil,
-        'añoMovil' => $request->añoMovil,
+        'yearMovil' => $request->yearMovil,
         'motorMovil' => $request->motorMovil,
         'capacidadTanque' => $request->capacidadTanque,
         'tipoAmbulancia' => $request->tipoAmbulancia,
@@ -237,7 +243,7 @@ class MovilManagement extends Controller
             'marcaMovil' => $request->marcaMovil,
             'modeloMovil' => $request->modeloMovil,
             'tipoMovil' => $request->tipoMovil,
-            'añoMovil' => $request->añoMovil,
+            'yearMovil' => $request->añoMovil,
             'motorMovil' => $request->motorMovil,
             'capacidadTanque' => $request->capacidadTanque,
             'tipoAmbulancia' => $request->tipoAmbulancia,
@@ -254,7 +260,7 @@ class MovilManagement extends Controller
 
 
         // movil created
-        return response()->json('Created');
+        return response()->json('Movil nuevo creado');
       } else {
         // movil already exist
         return response()->json(['message' => "already exits"], 422);
@@ -310,3 +316,5 @@ class MovilManagement extends Controller
     $moviles = Movil::where('idMovil', $id)->delete();
   }
 }
+
+

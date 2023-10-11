@@ -1,27 +1,12 @@
-(function webpackUniversalModuleDefinition(root, factory) {
-	if(typeof exports === 'object' && typeof module === 'object')
-		module.exports = factory();
-	else if(typeof define === 'function' && define.amd)
-		define([], factory);
-	else {
-		var a = factory();
-		for(var i in a) (typeof exports === 'object' ? exports : root)[i] = a[i];
-	}
-})(self, function() {
-return /******/ (function() { // webpackBootstrap
-/******/ 	"use strict";
-var __webpack_exports__ = {};
-/*!*************************************************!*\
-  !*** ./resources/js/laravel-movil-management.js ***!
-  \*************************************************/
 /**
- * Page Movil List
+ * Page User List
  */
 
-
+'use strict';
 
 // Datatable (jquery)
 $(function () {
+  console.log('hello');
   // Variable declaration for table
   var dt_movil_table = $('.datatables-moviles'),
     select2 = $('.select2'),
@@ -30,7 +15,7 @@ $(function () {
   if (select2.length) {
     var $this = select2;
     $this.wrap('<div class="position-relative"></div>').select2({
-      placeholder: 'Seleccionar Base Operativa',
+      placeholder: '',
       dropdownParent: $this.parent()
     });
   }
@@ -41,34 +26,45 @@ $(function () {
       'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
     }
   });
-
+console.log('hello1');
   // Moviles datatable
   if (dt_movil_table.length) {
     var dt_movil = dt_movil_table.DataTable({
       processing: true,
       serverSide: true,
       ajax: {
-        url: baseUrl + 'movil-list'
+        url: baseUrl + 'movil-list',
+        success: function() {
+          console.log("Solicitud AJAX exitosa");
       },
+      error: function(error) {
+        console.log("Error en la solicitud AJAX", error);
+      },
+    },
       columns: [
       // columns according to JSON
       {
         data: ''
       }, {
-        data: 'id'
+        data: 'idMovil'
       }, {
         data: 'identidadMovil'
       }, {
+        data: 'chapaMovil'
+      }, {
         data: 'baseMovil'
-      }, {
-        data: 'tipoAmbuIcon'
-      }, {
-        data: 'statusOperativo'
-      }, {
-        data: 'statusActivo'
-      }, {
-        data: 'marcaLogo'
-      }, {
+       },// {
+      //   data: 'tipoAmbuIcon'
+      // }, {
+      //   data: 'statusOperativo'
+      // }, {
+      //   data: 'statusActivo'
+      // }, {
+      //   data: 'marcaLogo'
+      // }, {
+      //   data: 'tipoAmbuIcon'
+      // },
+      {
         data: 'action'
       }],
       columnDefs: [{
@@ -89,71 +85,40 @@ $(function () {
           return "<span>".concat(full.fake_id, "</span>");
         }
       }, {
-        // Movil identidad
+        // User full name
         targets: 2,
         responsivePriority: 4,
         render: function render(data, type, full, meta) {
-          var $identidadMovil = full['identidadMovil'];
+          var $name = full['identidadMovil'];
 
           // For Avatar badge
-          var stateNum = statusOperativo;// Math.floor(Math.random() * 6);
-          var states = ['gray','dark','danger','orange', 'warning','success'];
+          var stateNum = Math.floor(Math.random() * 6);
+          var states = ['success', 'danger', 'warning', 'info', 'dark', 'primary', 'secondary'];
           var $state = states[stateNum],
-              $identidadMovil = full['identidadMovil'],
-              $marcaLogo = full['marcaLogo'],
-              $output;
-
-          var match = $identidadMovil.match(/([A-Za-z])(\d+)$/);
-          if (match && match.length > 2) {
-              $initials = match[1] + match[2];
-          } else {
-              $initials = $identidadMovil; // Fallback en caso de que no haya coincidencia
-          }
-
-          if ($marcaLogo) {
-              $output = '<img src="' + $marcaLogo + '" alt="' + $identidadMovil + '" class="avatar-img rounded-circle bg-label-' + $state + '">';
-          } else {
-              $output = '<span class="avatar-initial rounded-circle bg-label-' + $state + '">' + $initials + '</span>';
-          }
+            $name = full['name'],
+            $initials = $name.match(/\b\w/g) || [],
+            $output;
+          $initials = (($initials.shift() || '') + ($initials.pop() || '')).toUpperCase();
+          $output = '<span class="avatar-initial rounded-circle bg-label-' + $state + '">' + $initials + '</span>';
 
           // Creates full output for row
-          var $row_output = '<div class="d-flex justify-content-start align-items-center movil-name">' +
-              '<div class="avatar-wrapper">' +
-              '<div class="avatar avatar-sm me-3">' + $output + '</div>' +
-              '</div>' +
-              '<div class="d-flex flex-column">' +
-              '<a href="' + movilView + '" class="text-body text-truncate"><span class="fw-medium">' + $identidadMovil + '</span></a>' +
-              '</div>' +
-              '</div>';
+          var $row_output = '<div class="d-flex justify-content-start align-items-center user-name">' + '<div class="avatar-wrapper">' + '<div class="avatar avatar-sm me-3">' + $output + '</div>' + '</div>' + '<div class="d-flex flex-column">' + '<a href="' + movilView  +'?idMovil='+ full['idMovil']  + '" class="text-body text-truncate"><span class="fw-medium">' + $name + '</span></a>' + '</div>' + '</div>';
           return $row_output;
         }
       }, {
-        // movil BaseOp
+        // User email
         targets: 3,
         render: function render(data, type, full, meta) {
-          var $baseMovil = full['baseMovil'];
-          return '<span class="movil-baseOp">' + $baseMovil + '</span>';
+          var $chapaMovil = full['chapaMovil'];
+          return '<span class="user-email">' + $chapaMovil + '</span>';
         }
       }, {
-        // tipo Ambulancia
+        // email verify
         targets: 4,
         className: 'text-center',
         render: function render(data, type, full, meta) {
-            var $tipoAmbuIcon = full['tipoAmbuIcon'];
-            var $statusActivo = full['statusActivo'];
-            var $icon;
-
-            // Definimos el icono según el valor de statusActivo
-            if ($statusActivo > 1) {
-                $icon = "<i class='bx bx-wind text-danger'></i>";
-            } else if ($statusActivo === 1) {
-                $icon = "<i class='bx bx-coffee text-success'></i>";
-            } else {
-                $icon = "<i class='bx bxs-traffic-barrier text-gray'></i>";
-            }
-
-            // Construimos la salida combinando el tipoAmbuIcon y el icono
-            return "<img src='" + baseUrl + $tipoAmbuIcon + "' alt='Tipo Ambulancia' class='mr-2'>" + $icon;
+          var $verified = full['baseMovil'];
+          return "".concat($verified ? '<i class="bx fs-4 bx-check-shield text-success"></i>' : '<i class="bx fs-4 bx-shield-x text-danger" ></i>');
         }
       }, {
         // Actions
@@ -162,15 +127,30 @@ $(function () {
         searchable: false,
         orderable: false,
         render: function render(data, type, full, meta) {
-          return '<div class="d-inline-block text-nowrap">' + "<button class=\"btn btn-sm btn-icon edit-record\" data-id=\"".concat(full['id'], "\" data-bs-toggle=\"offcanvas\" data-bs-target=\"#offcanvasAddMovil\"><i class=\"bx bx-edit\"></i></button>") + "<button class=\"btn btn-sm btn-icon delete-record\" data-id=\"".concat(full['id'], "\"><i class=\"bx bx-trash\"></i></button>") + '<button class="btn btn-sm btn-icon dropdown-toggle hide-arrow" data-bs-toggle="dropdown"><i class="bx bx-dots-vertical-rounded"></i></button>' + '<div class="dropdown-menu dropdown-menu-end m-0">' + '<a href="' + movilView + '" class="dropdown-item">Ver</a>' + '<a href="javascript:;" class="dropdown-item">Suspender</a>' + '</div>' + '</div>';
+          return '<div class="d-inline-block text-nowrap">' + "<button class=\"btn btn-sm btn-icon edit-record\" data-idMovil=\"".concat(full['idMovil'], "\" data-bs-toggle=\"offcanvas\" data-bs-target=\"#offcanvasAddMovil\"><i class=\"bx bx-edit\"></i></button>") + "<button class=\"btn btn-sm btn-icon delete-record\" data-idMovil=\"".concat(full['idMovil'], "\"><i class=\"bx bx-trash\"></i></button>") + '<button class="btn btn-sm btn-icon dropdown-toggle hide-arrow" data-bs-toggle="dropdown"><i class="bx bx-dots-vertical-rounded"></i></button>' + '<div class="dropdown-menu dropdown-menu-end m-0">' + '<a href="' + movilView + '" class="dropdown-item">Ver</a>' + '<a href="javascript:;" class="dropdown-item">Suspender</a>' + '</div>' + '</div>';
         }
       }],
       order: [[2, 'desc']],
       dom: '<"row mx-2"' + '<"col-md-2"<"me-3"l>>' + '<"col-md-10"<"dt-action-buttons text-xl-end text-lg-start text-md-end text-start d-flex align-items-center justify-content-end flex-md-row flex-column mb-3 mb-md-0"fB>>' + '>t' + '<"row mx-2"' + '<"col-sm-12 col-md-6"i>' + '<"col-sm-12 col-md-6"p>' + '>',
-      language: {
-        sLengthMenu: '_MENU_',
-        search: '',
-        searchPlaceholder: 'Buscar..'
+        language: {
+          sLengthMenu: '_MENU_',
+          info: "Mostrando del _START_ al _END_ de un total de _TOTAL_ registros",
+          infoFiltered: "(filtrado de un total de _MAX_ registros)",
+          loadingRecords: "Cargando...",
+          processing: "Procesando...",
+          zeroRecords: "No se han encontrado registros",
+          search: '',
+          searchPlaceholder: 'Buscar..',
+          paginate: {
+            "first":        "Primer",
+            "previous":     "Anterior",
+            "next":         "Siguiente",
+            "last":         "Último"
+          },
+          aria: {
+            "sortAscending":    ": activar para ordenar columna ascendente",
+            "sortDescending":   ": activar para ordenar columna descendente"
+          },
       },
       // Buttons with Dropdown
       buttons: [{
@@ -322,10 +302,11 @@ $(function () {
       }
     });
   }
+  console.log("Después de la solicitud AJAX");
 
   // Delete Record
   $(document).on('click', '.delete-record', function () {
-    var movil_id = $(this).data('id'),
+    var movil_id = $(this).data('idMovil'),
       dtrModal = $('.dtr-bs-modal.show');
 
     // hide responsive modal in small screen
@@ -383,7 +364,7 @@ $(function () {
 
   // edit record
   $(document).on('click', '.edit-record', function () {
-    var movil_id = $(this).data('id'),
+    var movil_id = $(this).data('idMovil'),
       dtrModal = $('.dtr-bs-modal.show');
 
     // hide responsive modal in small screen
@@ -396,7 +377,7 @@ $(function () {
 
     // get data
     $.get("".concat(baseUrl, "movil-list/").concat(movil_id, "/edit"), function (data) {
-      $('#movil_id').val(data.id);
+      $('#movil_id').val(data.idMovil);
       $('#add-movil-identidadMovil').val(data.identidadMovil);
       $('#add-movil-chapaMovil').val(data.chapaMovil);
       $('#add-movil-chasisMovil').val(data.chasisMovil);
@@ -449,20 +430,6 @@ $(function () {
           }
         }
       },
-    //   userContact: {
-    //     validators: {
-    //       notEmpty: {
-    //         message: 'Please enter your contact'
-    //       }
-    //     }
-    //   },
-    //   company: {
-    //     validators: {
-    //       notEmpty: {
-    //         message: 'Please enter your company'
-    //       }
-    //     }
-    //   }
      },
     plugins: {
       trigger: new FormValidation.plugins.Trigger(),
@@ -517,19 +484,16 @@ $(function () {
   offCanvasForm.on('hidden.bs.offcanvas', function () {
     fv.resetForm(true);
   });
-  var phoneMaskList = document.querySelectorAll('.phone-mask');
+
+  const phoneMaskList = document.querySelectorAll('.phone-mask');
 
   // Phone Number
   if (phoneMaskList) {
     phoneMaskList.forEach(function (phoneMask) {
       new Cleave(phoneMask, {
         phone: true,
-        phoneRegionCode: 'PY'
+        phoneRegionCode: 'US'
       });
     });
   }
-});
-/******/ 	return __webpack_exports__;
-/******/ })()
-;
 });

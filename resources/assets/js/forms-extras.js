@@ -16,10 +16,15 @@
     customDelimiter = document.querySelector('.custom-delimiter-mask'),
     prefixMask = document.querySelector('.prefix-mask');
 
+    var observacion = document.querySelector('input[aria-label="Adicional"]');
+
   // Autosize
   // --------------------------------------------------------------------
   if (textarea) {
     autosize(textarea);
+  }
+  if (observacion) {
+    autosize(observacion);
   }
 
   // Cleave JS Input Mask
@@ -157,7 +162,7 @@ $(function () {
         $(this).slideDown();
       },
       hide: function (e) {
-        confirm('Are you sure you want to delete this element?') && $(this).slideUp(e);
+        confirm('Esta seguro que desea eliminar esta indicación?') && $(this).slideUp(e);
       }
     });
   }

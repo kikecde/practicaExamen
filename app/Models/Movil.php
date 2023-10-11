@@ -35,7 +35,7 @@ class Movil extends Model
         'marcaMovil',
         'modeloMovil',
         'tipoMovil',
-        'añoMovil',
+        'yearMovil',
         'motorMovil',
         'capacidadTanque',
         'tipoAmbulancia',
@@ -100,6 +100,11 @@ class Movil extends Model
     {
         return $this->hasOne(TipoAmbulancia::class, 'nombreTipoAmbulancia', 'tipoAmbulancia');
     }
+
+    public function establecimiento() {
+      return $this->belongsTo(Establecimiento::class, 'baseMovil', 'idEst');
+  }
+
     // public function subdepartamentos()
     // {
     //     return $this->belongsToMany(SubDepartamento::class, 'establecimiento_sector', 'idSector', 'idSubDepto');

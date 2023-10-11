@@ -4,6 +4,9 @@
 
 @section('vendor-style')
 <link rel="stylesheet" href="{{asset('assets/vendor/libs/flatpickr/flatpickr.css')}}" />
+<link rel="stylesheet" href="{{asset('assets/vendor/libs/tagify/tagify.css')}}" />
+<link rel="stylesheet" href="{{asset('assets/vendor/libs/bootstrap-datepicker/bootstrap-datepicker.css')}}" />
+<link rel="stylesheet" href="{{asset('assets/vendor/libs/bootstrap-daterangepicker/bootstrap-daterangepicker.css')}}" />
 @endsection
 
 @section('page-style')
@@ -11,6 +14,10 @@
 @endsection
 
 @section('vendor-script')
+<script src="{{asset('assets/vendor/libs/moment/moment.js')}}"></script>
+<script src="{{asset('assets/vendor/libs/tagify/tagify.js')}}"></script>
+<script src="{{asset('assets/vendor/libs/bootstrap-datepicker/bootstrap-datepicker.js')}}"></script>
+<script src="{{asset('assets/vendor/libs/bootstrap-daterangepicker/bootstrap-daterangepicker.js')}}"></script>
 <script src="{{asset('assets/vendor/libs/flatpickr/flatpickr.js')}}"></script>
 <script src="{{asset('assets/vendor/libs/cleavejs/cleave.js')}}"></script>
 <script src="{{asset('assets/vendor/libs/cleavejs/cleave-phone.js')}}"></script>
@@ -19,7 +26,7 @@
 
 @section('page-script')
 <script src="{{asset('assets/js/offcanvas-send-invoice.js')}}"></script>
-<script src="{{asset('assets/js/app-invoice-add.js')}}"></script>
+<script src="{{asset('assets/js/app-invoice-add2.js')}}"></script>
 @endsection
 
 @section('content')
@@ -41,7 +48,7 @@
           <div class="col-md-6">
             <dl class="row mb-2">
               <dt class="col-sm-6 mb-2 mb-sm-0 text-md-end">
-                <span class="h4 text-capitalize mb-0 text-nowrap">Invoice #</span>
+                <span class="h4 text-capitalize mb-0 text-nowrap">OT #</span>
               </dt>
               <dd class="col-sm-6 d-flex justify-content-md-end">
                 <div class="w-px-150">
@@ -49,7 +56,7 @@
                 </div>
               </dd>
               <dt class="col-sm-6 mb-2 mb-sm-0 text-md-end">
-                <span class="fw-normal">Fecha:</span>
+                <span class="fw-normal">Desde Fecha/Hora:</span>
               </dt>
               <dd class="col-sm-6 d-flex justify-content-md-end">
                 <div class="w-px-150">
@@ -57,7 +64,7 @@
                 </div>
               </dd>
               <dt class="col-sm-6 mb-2 mb-sm-0 text-md-end">
-                <span class="fw-normal">Due Date:</span>
+                <span class="fw-normal">Hasta Fecha/Hora:</span>
               </dt>
               <dd class="col-sm-6 d-flex justify-content-md-end">
                 <div class="w-px-150">
@@ -111,39 +118,76 @@
         <hr class="mx-n4" />
 
         <form class="source-item py-sm-3">
+          <select class="form-select item-details mb-2">
+            <option selected disabled>Seleccionar Tipo</option>
+            <option value="App Design">Genérico/Unico</option>
+            <option value="App Customization">Genérico/Múltiple</option>
+            <option value="ABC Template">ABC Template</option>
+            <option value="App Development">App Development</option>
+          </select>
+
+
+
+          <div>
+
+            <div class="d-flex justify-content-between mb-2">
+              <div class="switches-stacked">
+                <label class="switch">
+                  <input type="radio" class="switch-input" name="switches-stacked-radio" checked />
+                  <span class="switch-toggle-slider">
+                    <span class="switch-on"></span>
+                    <span class="switch-off"></span>
+                  </span>
+                  <span class="switch-label">Ordinario</span>
+                </label>
+
+                <label class="switch">
+                  <input type="radio" class="switch-input" name="switches-stacked-radio" />
+                  <span class="switch-toggle-slider">
+                    <span class="switch-on"></span>
+                    <span class="switch-off"></span>
+                  </span>
+                  <span class="switch-label">Extraordinario</span>
+                </label>
+              </div>
+
+          </div>
+
+
           <div class="mb-3" data-repeater-list="group-a">
             <div class="repeater-wrapper pt-0 pt-md-4" data-repeater-item>
               <div class="d-flex border rounded position-relative pe-0">
                 <div class="row w-100 m-0 p-3">
-                  <div class="col-md-6 col-12 mb-md-0 mb-3 ps-md-0">
-                    <p class="mb-2 repeater-title">Orden de Trabajo</p>
-                    <select class="form-select item-details mb-2">
-                      <option selected disabled>Seleccionar Tipo</option>
-                      <option value="App Design">Genérico/Unico</option>
-                      <option value="App Customization">Genérico/Múltiple</option>
-                      <option value="ABC Template">ABC Template</option>
-                      <option value="App Development">App Development</option>
-                    </select>
-                    <textarea class="form-control" rows="2" placeholder="Seleccione Conductor/es"></textarea>
+
+                  <div class="col-md-2 col-12 mb-md-0 mb-3">
+                    <p class="mb-2 repeater-title">OT #</p>
+                    <input type="number" class="form-control" placeholder="00" />
                   </div>
-                  <div class="col-md-3 col-12 mb-md-0 mb-3">
-                    <p class="mb-2 repeater-title">Monto</p>
-                    <input type="number" class="form-control invoice-item-price mb-2" placeholder="00" min="12" />
-                    <div>
-                      <span>Discount:</span>
-                      <span class="discount me-2">0%</span>
-                      <span class="tax-1 me-2" data-bs-toggle="tooltip" data-bs-placement="top" title="Tax 1">0%</span>
-                      <span class="tax-2" data-bs-toggle="tooltip" data-bs-placement="top" title="Tax 2">0%</span>
+                  <div class="col-md-3 col-12 mb-md-0 mb-3 ps-md-0">
+
+                    <p class="mb-2 repeater-title">Seleccionar Movil</p>
+                    <select class="form-select mb-4">
+                      <option value="1">XRSB10</option>
+                      <option value="2">XRSB11</option>
+                      <option value="3">XRSB12</option>
+                      <option value="4">XRSB20</option>
+                      <option value="5">XRSB21</option>
+                    </select>
+
+
+
+                    <div class="col-md-6 mb-4">
+                      <label for="TagifyCustomListSuggestion" class="form-label">Conductor/es</label>
+                      <input id="TagifyCustomListSuggestion" name="TagifyCustomListSuggestion" class="form-control" placeholder="Seleccionar Conductor/es">
                     </div>
                   </div>
-                  <div class="col-md-2 col-12 mb-md-0 mb-3">
-                    <p class="mb-2 repeater-title">Litros</p>
-                    <input type="number" class="form-control invoice-item-qty" placeholder="1" min="1" max="50" />
+
+                  <div class="col-md-4 col-12 mb-md-0 mb-3">
+                    <p class="mb-2 repeater-title">Desde/Hasta</p>
+                    <input type="text"  id="bs-rangepicker-time" class="form-control" />
+
                   </div>
-                  <div class="col-md-1 col-12 pe-0">
-                    <p class="mb-2 repeater-title">Precio</p>
-                    <p class="mb-0">$24.00</p>
-                  </div>
+
                 </div>
                 <div class="d-flex flex-column align-items-center justify-content-between border-start p-2">
                   <i class="bx bx-x fs-4 text-muted cursor-pointer" data-repeater-delete></i>
@@ -153,10 +197,7 @@
                     <div class="dropdown-menu dropdown-menu-end w-px-300 p-3" aria-labelledby="dropdownMenuButton">
 
                       <div class="row g-3">
-                        <div class="col-12">
-                          <label for="discountInput" class="form-label">Discount(%)</label>
-                          <input type="number" class="form-control" id="discountInput" min="0" max="100" />
-                        </div>
+
                         <div class="col-md-6">
                           <label for="taxInput1" class="form-label">Tax 1</label>
                           <select name="tax-1-input" id="taxInput1" class="form-select tax-select">
@@ -188,7 +229,7 @@
           </div>
           <div class="row">
             <div class="col-12">
-              <button type="button" class="btn btn-primary" data-repeater-create>Add Item</button>
+              <button type="button" class="btn btn-primary" data-repeater-create>Agregar Orden de Trabajo</button>
             </div>
           </div>
         </form>
@@ -248,12 +289,12 @@
         <button class="btn btn-primary d-grid w-100 mb-3" data-bs-toggle="offcanvas" data-bs-target="#sendInvoiceOffcanvas">
           <span class="d-flex align-items-center justify-content-center text-nowrap"><i class="bx bx-paper-plane bx-xs me-1"></i>Send Invoice</span>
         </button>
-        <a href="{{url('app/invoice/preview')}}" class="btn btn-label-secondary d-grid w-100 mb-3">Preview</a>
+        <a href="{{url('app/invoice/preview')}}" class="btn btn-label-secondary d-grid w-100 mb-3">Previsualizar</a>
         <button type="button" class="btn btn-label-secondary d-grid w-100">Save</button>
       </div>
     </div>
     <div>
-      <p class="mb-2">Accept payments via</p>
+      <p class="mb-2">Seleccionar Movil</p>
       <select class="form-select mb-4">
         <option value="Bank Account">Bank Account</option>
         <option value="Paypal">Paypal</option>
@@ -261,9 +302,9 @@
         <option value="UPI Transfer">UPI Transfer</option>
       </select>
       <div class="d-flex justify-content-between mb-2">
-        <label for="payment-terms" class="mb-0">Payment Terms</label>
+        <label for="ordinario" class="mb-0">Ordinario</label>
         <label class="switch switch-primary me-0">
-          <input type="checkbox" class="switch-input" id="payment-terms" checked="">
+          <input type="checkbox" class="switch-input" id="ordinario" checked="">
           <span class="switch-toggle-slider">
             <span class="switch-on">
               <i class="bx bx-check"></i>
@@ -276,9 +317,9 @@
         </label>
       </div>
       <div class="d-flex justify-content-between mb-2">
-        <label for="client-notes" class="mb-0">Client Notes</label>
+        <label for="extraordinario" class="mb-0">Extraordinario</label>
         <label class="switch switch-primary me-0">
-          <input type="checkbox" class="switch-input" id="client-notes">
+          <input type="checkbox" class="switch-input" id="extraordinario">
           <span class="switch-toggle-slider">
             <span class="switch-on">
               <i class="bx bx-check"></i>
@@ -314,3 +355,5 @@
 @include('_partials/_offcanvas/offcanvas-send-invoice')
 <!-- /Offcanvas -->
 @endsection
+
+

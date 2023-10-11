@@ -31,14 +31,15 @@
     "prettier": "2.8.8",
     "resolve-url-loader": "5.0.0",
     "sass": "^1.63.6",
-    "sass-loader": "13.3.2"
+    "sass-loader": "13.3.2",
+    "webdriver-manager": "^12.1.9"
   },
   "overrides": {
     "autoprefixer": "10.4.14",
     "webpack": "5.88.1",
     "webpack-cli": "4.9.1",
     "prop-types": "15.8.1",
-    "sass": "1.63.6"
+    "sass": "$sass"
   },
   "resolutions": {
     "autoprefixer": "10.4.14",
@@ -136,7 +137,7 @@
     "leaflet": "~1.9.4",
     "mapbox-gl": "~2.15.0",
     "masonry-layout": "~4.2.2",
-    "moment": "~2.29.4",
+    "moment": "^2.29.4",
     "nouislider": "~15.7.1",
     "numeral": "~2.0.6",
     "pdfmake": "~0.2.7",

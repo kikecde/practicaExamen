@@ -172,5 +172,140 @@
     </div>
   </div>
   <!-- /Form Repeater -->
+  <!-- Form Repeater -->
+  <div class="col-12">
+    <div class="card">
+      <h5 class="card-header">Indicaciones durante Traslado</h5>
+      <div class="card-body">
+        <form class="form-repeater">
+          <div data-repeater-list="group-a">
+            <div data-repeater-item>
+              <div class="row">
+                <div class="mb-3 col-lg-6 col-xl-2 col-12 mb-0">
+                  <label class="form-label" for="form-repeater-1-1">Droga</label>
+                  <input type="text" id="form-repeater-1-1" class="form-control" placeholder="Seleccione" />
+                  <input type="text" id="form-repeater-1-2" class="form-control" placeholder="Concentración" />
+                </div>
+                <div class="mb-3 col-lg-6 col-xl-2 col-12 mb-0">
+                  <label class="form-label" for="form-repeater-1-3">Dosis</label>
+                  <input type="number" id="form-repeater-1-3" class="form-control" placeholder="Cantidad" />
+
+                  <select id="form-repeater-1-4" class="form-select" >
+                    <option value="">Medida</option>
+                    <option value=" ampolla/s">ampolla/s</option>
+                    <option value=" ml">ml</option>
+                    <option value=" gamma">gamma</option>
+                    <option value=" comprimido/s">comprimido/s</option>
+                    <option value=" gotas">gotas</option>
+                    <option value=" disparos">disparos</option>
+                  </select>
+                </div>
+                <div class="mb-3 col-lg-6 col-xl-1 col-12 mb-0">
+                  <label class="form-label" for="form-repeater-1-5">Via</label>
+                  <select id="form-repeater-1-5" class="form-select rounded-pill">
+                    <option value="">Seleccione</option>
+                    <option value="1">ET</option>
+                    <option value="2">IM</option>
+                    <option value="3">SC</option>
+                    <option value="4">VO</option>
+                    <option value="5">SL</option>
+                    <option value="6">NBZ</option>
+                    <option value="7">Nas</option>
+                    <option value="8">Rect</option>
+                    <option value="9">IV</option>
+                    <option value="10">Ocu</option>
+                  </select>
+                </div>
+                <div class="mb-3 col-lg-6 col-xl-2 col-12 mb-0">
+                  <label class="form-label" for="form-repeater-1-6">Dilución</label>
+                  <div class="input-group">
+                    <input type="number" id="form-repeater-1-6" class="form-control" placeholder="Diluido en" />
+                    <span class="input-group-text">ml</span>
+                  </div>
+                  <select id="form-repeater-1-7" class="form-select">
+                    <option value="">de (diluyente)</option>
+                    <option value="ml SF 0,9%">SF 0,9%</option>
+                    <option value="ml SGlc 0,5%">SGlc 0,5%</option>
+                    <option value="ml SGlc 50%">SGlc 50%</option>
+                    <option value="ml RL">RL</option>
+                    <option value="ml Agua Destilada">Agua Dest.</option>
+                  </select>
+                </div>
+                <div class="mb-3 col-lg-6 col-xl-2 col-12 mb-0">
+                  <label class="form-label" for="form-repeater-1-8">Administración</label>
+                  <select id="form-repeater-1-8" class="form-select">
+                    <option value="">Seleccione</option>
+                    <option value="1">En bolo</option>
+                    <option value="2">Infusión Rápida</option>
+                    <option value="3">Infusión Lenta</option>
+                    <option value="4">Infusión Continua</option>
+                  </select>
+                  <select id="form-repeater-1-9" class="form-select">
+                    <option value="">Durante</option>
+                    <option value="3 min">3 min</option>
+                    <option value="5 min">5 min</option>
+                    <option value="10 min">10 min</option>
+                    <option value="15 min">15 min</option>
+                    <option value="20 min">20 min</option>
+                    <option value="30 min">30 min</option>
+                    <option value="1 hora">1 hora</option>
+                    <option value="2 horas">2 horas</option>
+                    <option value="3 horas">3 horas</option>
+                    <option value="4 horas">4 horas</option>
+                    <option value="5 horas">5 horas</option>
+                    <option value="6 horas">6 horas</option>
+                    <option value="7 horas">7 horas</option>
+                    <option value="8 horas">8 horas</option>
+                    <option value="9 horas">9 horas</option>
+                    <option value="10 horas">10 horas</option>
+                    <option value="11 horas">11 horas</option>
+                    <option value="12 horas">12 horas</option>
+                    <option value="13 horas">13 horas</option>
+                    <option value="14 horas">14 horas</option>
+                    <option value="15 horas">15 horas</option>
+                    <option value="16 horas">16 horas</option>
+                    <option value="17 horas">17 horas</option>
+                    <option value="18 horas">18 horas</option>
+                    <option value="19 horas">19 horas</option>
+                    <option value="20 horas">20 horas</option>
+                    <option value="21 horas">21 horas</option>
+                    <option value="22 horas">22 horas</option>
+                    <option value="23 horas">23 horas</option>
+                    <option value="24 horas">24 horas</option>
+                  </select>
+                </div>
+                <div class="mb-3 col-lg-6 col-xl-2 col-12 mb-0">
+                  <label class="form-label" for="form-repeater-1-10">S/N?</label>
+                  <select id="form-repeater-1-10" class="form-select">
+                    <option value="">Seleccione</option>
+                    <option value="S/N.">S/N</option>
+                    <option value="a horario y S/N.">Hora+S/N</option>
+                    <option value="a horario.">Hora</option>
+                  </select>
+                  <div class="input-group">
+                    <span class="input-group-text">OBS:</span>
+                    <input type="text" id="form-repeater-1-11" class="form-control" placeholder="Adicional" aria-label="Adicional" />
+                  </div>
+                </div>
+                <div class="mb-3 col-lg-12 col-xl-1 col-12 d-flex align-items-center mb-0">
+                  <button class="btn btn-label-danger mt-4" aria-label="Eliminar" data-repeater-delete>
+                    <i class="bx bxs-x-square"></i>
+                  </button>
+                </div>
+              </div>
+              <hr>
+            </div>
+          </div>
+          <div class="mb-0">
+            <button class="btn btn-primary" data-repeater-create>
+              <i class="bx bx-plus me-1"></i>
+              <span class="align-middle">Agregar</span>
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  <!-- /Form Repeater -->
 </div>
 @endsection
