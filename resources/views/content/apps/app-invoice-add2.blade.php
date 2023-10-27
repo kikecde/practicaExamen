@@ -3,6 +3,7 @@
 @section('title', 'Agregar - Orden de Trabajo')
 
 @section('vendor-style')
+<link rel="stylesheet" href="{{asset('assets/vendor/libs/select2/select2.css')}}" />
 <link rel="stylesheet" href="{{asset('assets/vendor/libs/flatpickr/flatpickr.css')}}" />
 <link rel="stylesheet" href="{{asset('assets/vendor/libs/tagify/tagify.css')}}" />
 <link rel="stylesheet" href="{{asset('assets/vendor/libs/bootstrap-datepicker/bootstrap-datepicker.css')}}" />
@@ -14,6 +15,7 @@
 @endsection
 
 @section('vendor-script')
+<script src="{{asset('assets/vendor/libs/autosize/autosize.js')}}"></script>
 <script src="{{asset('assets/vendor/libs/moment/moment.js')}}"></script>
 <script src="{{asset('assets/vendor/libs/tagify/tagify.js')}}"></script>
 <script src="{{asset('assets/vendor/libs/bootstrap-datepicker/bootstrap-datepicker.js')}}"></script>
@@ -22,289 +24,341 @@
 <script src="{{asset('assets/vendor/libs/cleavejs/cleave.js')}}"></script>
 <script src="{{asset('assets/vendor/libs/cleavejs/cleave-phone.js')}}"></script>
 <script src="{{asset('assets/vendor/libs/jquery-repeater/jquery-repeater.js')}}"></script>
+<script src="{{asset('assets/vendor/libs/select2/select2.js')}}"></script>
+
 @endsection
 
 @section('page-script')
+<script src="{{asset('assets/js/offcanvas-add-ot.js')}}"></script>
 <script src="{{asset('assets/js/offcanvas-send-invoice.js')}}"></script>
 <script src="{{asset('assets/js/app-invoice-add2.js')}}"></script>
 @endsection
 
 @section('content')
+<meta name="csrf-token" content="{{ csrf_token() }}">
+
 <div class="row invoice-add">
   <!-- Invoice Add-->
   <div class="col-lg-9 col-12 mb-lg-0 mb-4">
     <div class="card invoice-preview-card">
       <div class="card-body">
         <div class="row p-sm-3 p-0">
-          <div class="col-md-6 mb-md-0 mb-4">
-            <div class="d-flex svg-illustration mb-4 gap-2">
-              <span class="app-brand-logo demo">@include('_partials.macros',["width"=>25,"withbg"=>'var(--bs-primary)'])</span>
-              <span class="app-brand-text demo text-body fw-bold">{{ config('variables.templateName') }}</span>
-            </div>
-            <p class="mb-1">Office 149, 450 South Brand Brooklyn</p>
-            <p class="mb-1">San Diego County, CA 91905, USA</p>
-            <p class="mb-0">+1 (123) 456 7891, +44 (876) 543 2198</p>
+          <div class="col-md-12 mb-md-0 mb-4">
+            <div class="header-image">
+              <img src="{{asset('assets/img/branding/DECIMA_ADM.png')}}" alt="Encabezado" class="img-fluid"/>
           </div>
-          <div class="col-md-6">
-            <dl class="row mb-2">
-              <dt class="col-sm-6 mb-2 mb-sm-0 text-md-end">
-                <span class="h4 text-capitalize mb-0 text-nowrap">OT #</span>
-              </dt>
-              <dd class="col-sm-6 d-flex justify-content-md-end">
-                <div class="w-px-150">
-                  <input type="text" class="form-control" disabled placeholder="3905" value="3905" id="invoiceId" />
-                </div>
-              </dd>
-              <dt class="col-sm-6 mb-2 mb-sm-0 text-md-end">
-                <span class="fw-normal">Desde Fecha/Hora:</span>
-              </dt>
-              <dd class="col-sm-6 d-flex justify-content-md-end">
-                <div class="w-px-150">
-                  <input type="text" class="form-control date-picker" placeholder="DD/MM/AAAA" />
-                </div>
-              </dd>
-              <dt class="col-sm-6 mb-2 mb-sm-0 text-md-end">
-                <span class="fw-normal">Hasta Fecha/Hora:</span>
-              </dt>
-              <dd class="col-sm-6 d-flex justify-content-md-end">
-                <div class="w-px-150">
-                  <input type="text" class="form-control date-picker" placeholder="DD/MM/AAAA" />
-                </div>
-              </dd>
-            </dl>
+            <p class="mb-0 text-center">DGAF / DA / UMCSTC FORM Nº 001</p>
           </div>
         </div>
 
-        <hr class="my-4 mx-n4" />
-
-        <div class="row p-sm-3 p-0">
-          <div class="col-md-6 col-sm-5 col-12 mb-sm-0 mb-4">
-            <h6 class="pb-2">Invoice To:</h6>
-            <p class="mb-1">Thomas shelby</p>
-            <p class="mb-1">Shelby Company Limited</p>
-            <p class="mb-1">Small Heath, B10 0HF, UK</p>
-            <p class="mb-1">718-986-6062</p>
-            <p class="mb-0">peakyFBlinders@gmail.com</p>
-          </div>
-          <div class="col-md-6 col-sm-7">
-            <h6 class="pb-2">Bill To:</h6>
-            <table>
-              <tbody>
-                <tr>
-                  <td class="pe-3">Total Due:</td>
-                  <td>$12,110.55</td>
-                </tr>
-                <tr>
-                  <td class="pe-3">Bank name:</td>
-                  <td>American Bank</td>
-                </tr>
-                <tr>
-                  <td class="pe-3">Country:</td>
-                  <td>United States</td>
-                </tr>
-                <tr>
-                  <td class="pe-3">IBAN:</td>
-                  <td>ETD95476213874685</td>
-                </tr>
-                <tr>
-                  <td class="pe-3">SWIFT code:</td>
-                  <td>BR91905</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
+        <div class="bg-secondary d-flex align-items-center justify-content-center py-2">
+          <h4 class="d-inline-block mb-0 text-dark"><strong> ORDEN DE TRABAJO N°: </strong></h4>
+          <input type="text" class="d-inline-block mx-2 bg-secondary" name="orden_trabajo_num" id="orden_trabajo_num" value="" style="width: 10%; border: none; outline: none;">
+          <h4 class="d-inline-block mb-0 text-dark"> (VEHICULOS)</h4>
         </div>
-
-        <hr class="mx-n4" />
-
-        <form class="source-item py-sm-3">
-          <select class="form-select item-details mb-2">
-            <option selected disabled>Seleccionar Tipo</option>
-            <option value="App Design">Genérico/Unico</option>
-            <option value="App Customization">Genérico/Múltiple</option>
-            <option value="ABC Template">ABC Template</option>
-            <option value="App Development">App Development</option>
-          </select>
-
-
-
-          <div>
-
-            <div class="d-flex justify-content-between mb-2">
-              <div class="switches-stacked">
-                <label class="switch">
-                  <input type="radio" class="switch-input" name="switches-stacked-radio" checked />
-                  <span class="switch-toggle-slider">
-                    <span class="switch-on"></span>
-                    <span class="switch-off"></span>
-                  </span>
-                  <span class="switch-label">Ordinario</span>
-                </label>
-
-                <label class="switch">
-                  <input type="radio" class="switch-input" name="switches-stacked-radio" />
-                  <span class="switch-toggle-slider">
-                    <span class="switch-on"></span>
-                    <span class="switch-off"></span>
-                  </span>
-                  <span class="switch-label">Extraordinario</span>
-                </label>
-              </div>
-
-          </div>
-
-
-          <div class="mb-3" data-repeater-list="group-a">
-            <div class="repeater-wrapper pt-0 pt-md-4" data-repeater-item>
-              <div class="d-flex border rounded position-relative pe-0">
-                <div class="row w-100 m-0 p-3">
-
-                  <div class="col-md-2 col-12 mb-md-0 mb-3">
-                    <p class="mb-2 repeater-title">OT #</p>
-                    <input type="number" class="form-control" placeholder="00" />
-                  </div>
-                  <div class="col-md-3 col-12 mb-md-0 mb-3 ps-md-0">
-
-                    <p class="mb-2 repeater-title">Seleccionar Movil</p>
-                    <select class="form-select mb-4">
-                      <option value="1">XRSB10</option>
-                      <option value="2">XRSB11</option>
-                      <option value="3">XRSB12</option>
-                      <option value="4">XRSB20</option>
-                      <option value="5">XRSB21</option>
-                    </select>
-
-
-
-                    <div class="col-md-6 mb-4">
-                      <label for="TagifyCustomListSuggestion" class="form-label">Conductor/es</label>
-                      <input id="TagifyCustomListSuggestion" name="TagifyCustomListSuggestion" class="form-control" placeholder="Seleccionar Conductor/es">
-                    </div>
-                  </div>
-
-                  <div class="col-md-4 col-12 mb-md-0 mb-3">
-                    <p class="mb-2 repeater-title">Desde/Hasta</p>
-                    <input type="text"  id="bs-rangepicker-time" class="form-control" />
-
-                  </div>
-
-                </div>
-                <div class="d-flex flex-column align-items-center justify-content-between border-start p-2">
-                  <i class="bx bx-x fs-4 text-muted cursor-pointer" data-repeater-delete></i>
-                  <div class="dropdown">
-                    <i class="bx bx-cog bx-xs text-muted cursor-pointer more-options-dropdown" role="button" id="dropdownMenuButton" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
-                    </i>
-                    <div class="dropdown-menu dropdown-menu-end w-px-300 p-3" aria-labelledby="dropdownMenuButton">
-
-                      <div class="row g-3">
-
-                        <div class="col-md-6">
-                          <label for="taxInput1" class="form-label">Tax 1</label>
-                          <select name="tax-1-input" id="taxInput1" class="form-select tax-select">
-                            <option value="0%" selected>0%</option>
-                            <option value="1%">1%</option>
-                            <option value="10%">10%</option>
-                            <option value="18%">18%</option>
-                            <option value="40%">40%</option>
-                          </select>
-                        </div>
-                        <div class="col-md-6">
-                          <label for="taxInput2" class="form-label">Tax 2</label>
-                          <select name="tax-2-input" id="taxInput2" class="form-select tax-select">
-                            <option value="0%" selected>0%</option>
-                            <option value="1%">1%</option>
-                            <option value="10%">10%</option>
-                            <option value="18%">18%</option>
-                            <option value="40%">40%</option>
-                          </select>
-                        </div>
-                      </div>
-                      <div class="dropdown-divider my-3"></div>
-                      <button type="button" class="btn btn-label-primary btn-apply-changes">Apply</button>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-12">
-              <button type="button" class="btn btn-primary" data-repeater-create>Agregar Orden de Trabajo</button>
-            </div>
-          </div>
-        </form>
-
-        <hr class="my-4 mx-n4" />
-
-        <div class="row py-sm-3">
-          <div class="col-md-6 mb-md-0 mb-3">
-            <div class="d-flex align-items-center mb-3">
-              <label for="salesperson" class="form-label me-5 fw-medium">Salesperson:</label>
-              <input type="text" class="form-control" id="salesperson" placeholder="Edward Crowley" />
-            </div>
-            <input type="text" class="form-control" id="invoiceMsg" placeholder="Thanks for your business" />
-          </div>
-          <div class="col-md-6 d-flex justify-content-end">
-            <div class="invoice-calculations">
-              <div class="d-flex justify-content-between mb-2">
-                <span class="w-px-100">Subtotal:</span>
-                <span class="fw-medium">$00.00</span>
-              </div>
-              <div class="d-flex justify-content-between mb-2">
-                <span class="w-px-100">Discount:</span>
-                <span class="fw-medium">$00.00</span>
-              </div>
-              <div class="d-flex justify-content-between mb-2">
-                <span class="w-px-100">Tax:</span>
-                <span class="fw-medium">$00.00</span>
-              </div>
-              <hr />
-              <div class="d-flex justify-content-between">
-                <span class="w-px-100">Total:</span>
-                <span class="fw-medium">$00.00</span>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <hr class="my-4" />
 
         <div class="row">
-          <div class="col-12">
-            <div class="mb-3">
-              <label for="note" class="form-label fw-medium">Note:</label>
-              <textarea class="form-control" rows="2" id="note" placeholder="Invoice note"></textarea>
+          <div class="col-md text-end">
+            <div class="form-check form-check-inline form-check-lg form-check-secondary  mt-3 mb-3">
+              <label class="form-check-label" for="ot_Ordinarios">ORDINARIO</label>
+              <input class="form-check-input" type="checkbox" name="ot_type" id="ot_Ordinario" value="ORDINARIO" />
+            </div>
+            <div class="form-check form-check-secondary form-check-inline mt-3 mb-3">
+              <label class="form-check-label" for="ot_Extraordinarios">EXTRAORDINARIO</label>
+              <input class="form-check-input" type="checkbox" name="ot_type" id="ot_Extraordinario" value="EXTRAORDINARIO" />
+            </div>
+          </div>
+          <input type="hidden" name="ordinarioExtraordinario" id="ordinarioExtraordinario" value="">
+
+          <div class="row d-flex align-items-center">
+            <div class="col-md-6  mt-3 mb-2">
+              <div class="mb-3 row align-items-center">
+                <label for="vehiculo_tipo" class="col-md-4 col-form-label">VEHICULO TIPO:</label>
+                <div class="col-md-8">
+                  <input class="form-control" type="text" name="vehiculo_tipo" id="vehiculo_tipo" />
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6  mt-3 mb-2">
+              <div class="mb-3 row align-items-center">
+                <label for="vehiculo_chapa" class="col-md-4 col-form-label text-end">CHAPA N°:</label>
+                <div class="col-md-8">
+                  <input class="form-control" type="text" name="vehiculo_chapa" id="vehiculo_chapa" />
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row d-flex align-items-center">
+            <div class="col-md-4 mb-2">
+              <div class="mb-3 row align-items-center">
+                <label for="vehiculo_ordenum" class="col-md-6 col-form-label">N° DE ORDEN ASIGNADO:</label>
+                <div class="col-md-6">
+                  <input class="form-control" type="text" name="vehiculo_ordenum" id="vehiculo_ordenum" />
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4 mb-2">
+              <div class="mb-3 row align-items-center">
+                <label for="vehiculo_marca" class="col-md-4 col-form-label text-end">MARCA:</label>
+                <div class="col-md-8">
+                  <input class="form-control" type="text" name="vehiculo_marca" id="vehiculo_marca" />
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4 mb-2">
+              <div class="mb-3 row align-items-center">
+                <label for="vehiculo_modelo" class="col-md-4 col-form-label text-end">MODELO:</label>
+                <div class="col-md-8">
+                  <input class="form-control" type="text" name="vehiculo_modelo" id="vehiculo_modelo" />
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row d-flex align-items-center">
+            <div class="col-md-4 mb-2">
+              <div class="mb-3 row align-items-center">
+                <label for="vehiculo_rasp" class="col-md-6 col-form-label">R.A.S.P. N°:</label>
+                <div class="col-md-6">
+                  <input class="form-control" type="text" name="vehiculo_rasp" id="vehiculo_rasp" />
+                </div>
+              </div>
+            </div>
+            <div class="col-md-8 mb-2">
+              <div class="mb-3 row align-items-center">
+                <label for="ot_area" class="col-md-3 col-form-label text-end">AREA ASIGNADA:</label>
+                <div class="col-md-9">
+                  <input class="form-control" type="text" name="ot_area" id="ot_area" />
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row d-flex align-items-center">
+            <div class="col-md-8 mb-2">
+              <div class="mb-3 row align-items-center">
+                <label for="ot_conductores" class="col-md-3 col-form-label">CONDUCTOR/ES ASIGNADO/S:</label>
+                <div class="col-md-9">
+                  <textarea id="ot_conductores" rows="1" class="form-control" ></textarea>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4 mb-2">
+              <div class="mb-3 row align-items-center">
+                <label for="ot_conductoresCI" class="col-md-3 col-form-label text-end ">C.I. N°:</label>
+                <div class="col-md-9">
+                  <textarea id="ot_conductoresCI" rows="1" class="form-control"></textarea>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row d-flex align-items-center">
+            <div class="col-md-4 mb-2">
+              <div class="mb-3 row align-items-center">
+                <label for="vehiculo_ordenum" class="col-md-12 col-form-label fw-bold">DIAS ESTIMADOS DE MISION:</label>
+              </div>
+            </div>
+            <div class="col-md-4 mb-2">
+              <div class="mb-3 row align-items-center">
+                <label for="ot_fechaDesde" class="col-md-4 col-form-label text-end">DESDE:</label>
+                <div class="col-md-8">
+                  <input class="form-control" type="text" name="ot_fechaDesde" id="ot_fechaDesde" />
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4 mb-2">
+              <div class="mb-3 row align-items-center">
+                <label for="ot_fechaHasta" class="col-md-4 col-form-label text-end">HASTA:</label>
+                <div class="col-md-8">
+                  <input class="form-control" type="text" name="ot_fechaHasta" id="ot_fechaHasta" />
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row d-flex align-items-center">
+            <div class="col-md-4 mb-2">
+              <div class="mb-3 row">
+                <label for="vehiculo_ordenum" class="col-md-12 col-form-label fw-bold">HORAS ESTIMADAS DE MISION:</label>
+              </div>
+            </div>
+            <div class="col-md-4 mb-2">
+              <div class="mb-3 row align-items-center">
+                <label for="ot_horaDesde" class="col-md-4 col-form-label text-end">DESDE:</label>
+                <div class="col-md-8">
+                  <input class="form-control" type="text" name="ot_horaDesde" id="ot_horaDesde" />
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4 mb-2">
+              <div class="mb-3 row align-items-center">
+                <label for="ot_horaHasta" class="col-md-4 col-form-label text-end">HASTA:</label>
+                <div class="col-md-8">
+                  <input class="form-control" type="text" name="ot_horaHasta" id="ot_horaHasta" />
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row d-flex align-items-center">
+            <div class="col-md-4 mb-2">
+              <div class="mb-3 row align-items-center">
+                <label for="vehiculo_kmInicial" class="col-md-6 col-form-label">KM. DE SALIDA:</label>
+                <div class="col-md-6">
+                  <input class="form-control" type="text" name="vehiculo_kmInicial" id="vehiculo_kmInicial" />
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4 mb-2">
+              <div class="mb-3 row align-items-center">
+                <label for="vehiculo_kmFinal" class="col-md-6 col-form-label text-end">KM. DE REGRESO</label>
+                <div class="col-md-6">
+                  <input class="form-control" type="text" name="vehiculo_kmFinal" id="vehiculo_kmFinal" />
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4 mb-2">
+              <div class="mb-3 row align-items-center">
+                <label for="vehiculo_kmTotal" class="col-md-6 col-form-label text-end">KM. TOTAL RECORRIDO:</label>
+                <div class="col-md-6">
+                  <input class="form-control" type="text" name="vehiculo_kmTotal" id="vehiculo_kmTotal" />
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row d-flex align-items-center">
+            <div class="col-md-6 mb-2">
+              <div class="mb-3 row align-items-center">
+                <label for="vehiculo_kmEstimado" class="col-md-6 col-form-label">KM. ESTIMADO A RECORRER:</label>
+                <div class="col-md-6">
+                  <input class="form-control" type="text" name="vehiculo_kmEstimado" id="vehiculo_kmEstimado" />
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6 mb-2">
+              <div class="mb-3 row align-items-center">
+                <label for="vehiculo_consumo" class="col-md-6 col-form-label text-end">CONSUMO ESTIMADO X 100 KM./LITROS:</label>
+                <div class="col-md-6">
+                  <input class="form-control" type="text" name="vehiculo_consumo" id="vehiculo_consumo" />
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-12 mb-2">
+              <div class="mb-3 row">
+                <label for="ot_trabajos" class="col-md-3 col-form-label">TRABAJOS A REALIZAR:</label>
+                <div class="col-md-9">
+                  <textarea class="form-control" rows="3" type="text" name="ot_trabajos" id="ot_trabajos"></textarea>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <hr class="my-1" />
+
+          <div class="row py-sm-3">
+            <div class="col-md-4 mb-md-0 mb-3">
+              <div class="d-flex align-items-center mb-1">
+                <textarea class="form-control text-center align-text-bottom"  rows="4" id="ot_fecha" placeholder=""></textarea>
+              </div>
+              <label for="ot_fecha" class="form-label fw-bold text-center" style="display: block; width: 100%; text-align: center;">FECHA</label>
+            </div>
+            <div class="col-md-4 mb-md-0 mb-3">
+              <div class="d-flex align-items-center mb-1">
+                <textarea class="form-control" rows="4" id="ot_firmasConductores" placeholder=""></textarea>
+              </div>
+              <label for="ot_firmasConductores"  class="form-label fw-bold text-center">FIRMA, ACLARACION Y SELLO DEL/LOS CONDUCTOR/ES</label>
+            </div>
+            <div class="col-md-4 mb-md-0 mb-3">
+              <div class="d-flex align-items-center mb-1">
+                <textarea class="form-control" rows="4" id="ot_firmaResponsable" placeholder=""></textarea>
+              </div>
+              <label for="ot_firmaResponsable" class="form-label fw-bold text-center">FIRMA, ACLARACION Y SELLO DE AUTORIZACION</label>
+            </div>
+          </div>
+
+          <hr class="my-1" />
+
+        </div>
+
+        <small class="form-text text-muted">FORMATO ELABORADO POR:ls/2022 /  Aprobado por Resolución S.G.N°239/2022</small>
+      </div>
+    </div>
+
+    <div class="col-lg-12 col-12 mb-lg-0  mt-4">
+      <div class="card invoice-preview-card">
+        <div class="card-body">
+          <div class="row">
+            <div class="col-md-12 ">
+              <div class="row">
+                <label for="ot_notaInterna" class="col-md-2 col-form-label">NOTAS INTERNAS:</label>
+                <div class="col-md-10">
+                  <textarea class="form-control" rows="3" type="text" name="ot_notaInterna" id="ot_notaInterna"></textarea>
+                  <small class="form-text text-muted">La información ingresada aquí es exclusivamente para uso interno y no será impresa.</small>
+                </div>
+              </div>
             </div>
           </div>
         </div>
       </div>
+        <input type="hidden" name="idMovil" id="idMovil" value="">
+        <input type="hidden" name="identidadMovil" id="identidadMovil" value="">
+        <input type="hidden" name="emisorOT" id="emisorOT" value="57">
+        <input type="hidden" name="condOT1" id="condOT1" value="">
+        <input type="hidden" name="condOT2" id="condOT2" value="">
+        <input type="hidden" name="condOT3" id="condOT3" value="">
+        <input type="hidden" name="condOT4" id="condOT4" value="">
+        <input type="hidden" name="condOT5" id="condOT5" value="">
+        <input type="hidden" name="trabajoOT1" id="trabajoOT1" value="">
+        <input type="hidden" name="trabajoOT2" id="trabajoOT2" value="">
+        <input type="hidden" name="trabajoOT3" id="trabajoOT3" value="">
+        <input type="hidden" name="trabajoOT4" id="trabajoOT4" value="">
+        <input type="hidden" name="trabajoOT5" id="trabajoOT5" value="">
+        <input type="hidden" name="trabajoOT6" id="trabajoOT6" value="">
+        <input type="hidden" name="trabajoOT7" id="trabajoOT7" value="">
+        <input type="hidden" name="trabajoOT8" id="trabajoOT8" value="">
+        <input type="hidden" name="trabajoOT9" id="trabajoOT9" value="">
+        <input type="hidden" name="trabajoOT10" id="trabajoOT10" value="">
+        <input type="hidden" name="fechaHoraDesdeOT" id="fechaHoraDesdeOT" value="">
+        <input type="hidden" name="fechaHoraHastaOT" id="fechaHoraHastaOT" value="">
     </div>
   </div>
   <!-- /Invoice Add-->
+
+
 
   <!-- Invoice Actions -->
   <div class="col-lg-3 col-12 invoice-actions">
     <div class="card mb-4">
       <div class="card-body">
-        <button class="btn btn-primary d-grid w-100 mb-3" data-bs-toggle="offcanvas" data-bs-target="#sendInvoiceOffcanvas">
-          <span class="d-flex align-items-center justify-content-center text-nowrap"><i class="bx bx-paper-plane bx-xs me-1"></i>Send Invoice</span>
+        <button class="btn btn-primary d-grid w-100 mb-3" data-bs-toggle="offcanvas" data-bs-target="#addOtOffcanvas">
+          <span class="d-flex align-items-center justify-content-center text-nowrap"><i class="bx bxs-file-plus bx-xs me-1"></i>Crear Orden de Trabajo</span>
         </button>
-        <a href="{{url('app/invoice/preview')}}" class="btn btn-label-secondary d-grid w-100 mb-3">Previsualizar</a>
-        <button type="button" class="btn btn-label-secondary d-grid w-100">Save</button>
+        <button class="btn btn-primary d-grid w-100 mb-3" data-bs-toggle="offcanvas" data-bs-target="#sendInvoiceOffcanvas">
+          <span class="d-flex align-items-center justify-content-center text-nowrap"><i class="bx bx-paper-plane bx-xs me-1"></i>Enviar Orden de Trabajo</span>
+        </button>
+        <button class="btn btn-primary d-grid w-100 mb-3" data-bs-target="#sendInvoiceOffcanvas">
+          <span class="d-flex align-items-center justify-content-center text-nowrap"><i class="bx bx-save bx-xs me-1"></i>Guardar Orden de Trabajo</span>
+        </button>
+        <button class="btn btn-secondary d-grid w-100 mb-3">
+          <span href="{{url('app/invoice/preview')}}" class="d-flex align-items-center justify-content-center text-nowrap"><i class="bx bx-desktop bx-xs me-1"></i>Previsualizar</span>
+        </button>
+        <button class="btn btn-secondary d-grid w-100 mb-3">
+          <span id="scrape-button" class="d-flex align-items-center justify-content-center text-nowrap"><i class="bx bx-gas-pump bx-xs me-1"></i>Actualizar Saldos</span>
+        </button>
+
       </div>
     </div>
     <div>
-      <p class="mb-2">Seleccionar Movil</p>
-      <select class="form-select mb-4">
-        <option value="Bank Account">Bank Account</option>
-        <option value="Paypal">Paypal</option>
-        <option value="Card">Credit/Debit Card</option>
-        <option value="UPI Transfer">UPI Transfer</option>
-      </select>
       <div class="d-flex justify-content-between mb-2">
-        <label for="ordinario" class="mb-0">Ordinario</label>
+        <label for="coberturaGenerica" class="mb-0">Cobertura Genérica</label>
         <label class="switch switch-primary me-0">
-          <input type="checkbox" class="switch-input" id="ordinario" checked="">
+          <input type="checkbox" class="switch-input" id="coberturaGenerica" >
           <span class="switch-toggle-slider">
             <span class="switch-on">
               <i class="bx bx-check"></i>
@@ -316,44 +370,134 @@
           <span class="switch-label"></span>
         </label>
       </div>
-      <div class="d-flex justify-content-between mb-2">
-        <label for="extraordinario" class="mb-0">Extraordinario</label>
-        <label class="switch switch-primary me-0">
-          <input type="checkbox" class="switch-input" id="extraordinario">
-          <span class="switch-toggle-slider">
-            <span class="switch-on">
-              <i class="bx bx-check"></i>
+
+      <div id="additional-options" style="display: none;">
+        <div class="d-flex justify-content-between mb-2">
+          <label for="movilesOperativos" class="mb-0">Solo Móviles operativos</label>
+          <label class="switch switch-success me-0">
+            <input type="checkbox" class="switch-input" id="movilesOperativos">
+            <span class="switch-toggle-slider">
+              <span class="switch-on">
+                <i class="bx bx-check"></i>
+              </span>
+              <span class="switch-off">
+                <i class="bx bx-x"></i>
+              </span>
             </span>
-            <span class="switch-off">
-              <i class="bx bx-x"></i>
+            <span class="switch-label"></span>
+          </label>
+        </div>
+
+
+        <div class="d-flex justify-content-between mb-2">
+          <label for="conductoresGuardia" class="mb-0">Solo Conductores de Guardia</label>
+          <label class="switch switch-primary me-0">
+            <input type="checkbox" class="switch-input" id="conductoresGuardia">
+            <span class="switch-toggle-slider">
+              <span class="switch-on">
+                <i class="bx bx-check"></i>
+              </span>
+              <span class="switch-off">
+                <i class="bx bx-x"></i>
+              </span>
             </span>
-          </span>
-          <span class="switch-label"></span>
-        </label>
-      </div>
-      <div class="d-flex justify-content-between">
-        <label for="payment-stub" class="mb-0">Payment Stub</label>
-        <label class="switch switch-primary me-0">
-          <input type="checkbox" class="switch-input" id="payment-stub">
-          <span class="switch-toggle-slider">
-            <span class="switch-on">
-              <i class="bx bx-check"></i>
+            <span class="switch-label"></span>
+          </label>
+        </div>
+        <div class="d-flex justify-content-between mb-2">
+          <label for="fechaMañana" class="mb-0">Fecha Mañana</label>
+          <label class="switch switch-primary me-0">
+            <input type="checkbox" class="switch-input" id="fechaMañana">
+            <span class="switch-toggle-slider">
+              <span class="switch-on">
+                <i class="bx bx-check"></i>
+              </span>
+              <span class="switch-off">
+                <i class="bx bx-x"></i>
+              </span>
             </span>
-            <span class="switch-off">
-              <i class="bx bx-x"></i>
+            <span class="switch-label"></span>
+          </label>
+        </div>
+        <div class="d-flex justify-content-between">
+          <label for="distritosGenericos" class="mb-0">Area de Cobertura Genérica</label>
+          <label class="switch switch-primary me-0">
+            <input type="checkbox" class="switch-input" id="distritosGenericos">
+            <span class="switch-toggle-slider">
+              <span class="switch-on">
+                <i class="bx bx-check"></i>
+              </span>
+              <span class="switch-off">
+                <i class="bx bx-x"></i>
+              </span>
             </span>
-          </span>
-          <span class="switch-label"></span>
-        </label>
+            <span class="switch-label"></span>
+          </label>
+        </div>
+
+        <div id="coberturaDistrito" style="display: none;">
+          <select  class="form-select mb-3" >
+            <option value="" selected >Seleccione Area de Cobertura</option>
+            <option value="2" >Interdistrital</option>
+            <option value="1">Local</option>
+            <option value="3">Regional</option>
+            <option value="4">Interdepartamental</option>
+            <option value="5">Nacional</option>
+          </select>
+        <div id="local-list" style="display:none;">
+          <ul>
+              <li>CIUDAD DEL ESTE</li>
+          </ul>
+        </div>
+        <div id="district-list" style="display:none;">
+          <ul>
+              <li>CIUDAD DEL ESTE</li>
+              <li>HERNANDARIAS</li>
+              <li>PRESIDENTE FRANCO</li>
+              <li>MINGA GUAZU</li>
+          </ul>
+        </div>
+        <div id="region-list" style="display:none;">
+          <ul>
+            <li>ALTO PARANÁ</li>
+
+          </ul>
+        </div>
+        <div id="departamento-list" style="display:none;">
+          <ul>
+            <li>ALTO PARANA</li>
+            <li>MISIONES</li>
+            <li>CANINDEYU</li>
+            <li>ITAPUA</li>
+            <li>CAAGUAZU</li>
+          </ul>
+        </div>
+        <div id="nacional-list" style="display:none;">
+          <ul>
+            <li>CORDILLERA</li>
+            <li>SAN PEDRO</li>
+            <li>PARAGUARI</li>
+            <li>CENTRAL</li>
+            <li>ASUNCION</li>
+          </ul>
+        </div>
+        </div>
       </div>
     </div>
   </div>
   <!-- /Invoice Actions -->
+
 </div>
 
 <!-- Offcanvas -->
 @include('_partials/_offcanvas/offcanvas-send-invoice')
+@include('_partials/_offcanvas/offcanvas-add-ot')
 <!-- /Offcanvas -->
 @endsection
 
 
+<style>
+  .sm-font-size {
+      font-size: 18px; /* Ajusta este valor según lo necesario */
+  }
+</style>

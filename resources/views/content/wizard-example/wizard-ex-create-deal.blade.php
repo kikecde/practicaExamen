@@ -28,7 +28,7 @@ $configData = Helper::appClasses();
 
 @section('content')
 <h4 class="py-3 mb-4">
-  <span class="text-muted fw-light">Wizard examples /</span> Create Deal
+  <span class="text-muted fw-light">Registro Estadigrafía /</span> Diario
 </h4>
 
 <!-- Create Deal Wizard -->
@@ -40,8 +40,8 @@ $configData = Helper::appClasses();
           <i class='bx bx-purchase-tag'></i>
         </span>
         <span class="bs-stepper-label">
-          <span class="bs-stepper-title">Deal Type</span>
-          <span class="bs-stepper-subtitle">Choose type of deal</span>
+          <span class="bs-stepper-title">Seguimiento</span>
+          <span class="bs-stepper-subtitle">Seleccionar Seguimiento</span>
         </span>
       </button>
     </div>
@@ -88,7 +88,25 @@ $configData = Helper::appClasses();
       <div id="deal-type" class="content">
         <div class="row g-3">
           <div class="col-12">
-            <img src="{{asset('assets/img/illustrations/shopping-girl-'.$configData['style'].'.png')}}" class="img-fluid w-100 border rounded-2" alt="shopping girl" data-app-dark-img="illustrations/shopping-girl-dark.png" data-app-light-img="illustrations/shopping-girl-light.png">
+            <img src="{{asset('assets/img/illustrations/DecimaHeaders_Estadisticas-'.$configData['style'].'.png')}}" class="img-fluid w-100 border rounded-2" alt="Estadisticas" data-app-dark-img="illustrations/DecimaHeaders_Estadisticas-dark.png" data-app-light-img="illustrations/DecimaHeaders_Estadisticas-light.png">
+          </div>
+          <div class="col-sm-6">
+            <label class="form-label" for="dealAmount">Establecimiento</label>
+            <input type="number" name="dealAmount" id="dealAmount" class="form-control" placeholder="25" min="0" max="100" aria-describedby="dealAmountHelp" />
+            <div id="dealAmountHelp" class="form-text">Seleccionar Establecimiento a actualizar</div>
+          </div>
+          <div class="col-sm-6">
+            <label class="form-label" for="dealRegion">Profesional</label>
+            <select id="dealRegion" name="dealRegion" class="select2 form-select" multiple aria-describedby="dealRegionHelp">
+              <option disabled value="">Seleccionar</option>
+              <option value="1">Asia</option>
+              <option value="2">Africa</option>
+              <option value="3">Europe</option>
+              <option value="4">North America</option>
+              <option value="5">South America</option>
+              <option value="6">Australia</option>
+            </select>
+            <div id="dealRegionHelp" class="form-text">Profesional que registra el reporte.</div>
           </div>
           <div class="col-12">
             <div class="row">
@@ -96,9 +114,9 @@ $configData = Helper::appClasses();
                 <div class="form-check custom-option custom-option-icon">
                   <label class="form-check-label custom-option-content" for="customRadioPercentage">
                     <span class="custom-option-body">
-                      <i class='bx bx-purchase-tag'></i>
-                      <span class="custom-option-title">Percentage</span>
-                      <small>Create a deal which offer uses some % off (i.e 5% OFF) on total.</small>
+                      <i class='bx bx-hotel'></i>
+                      <span class="custom-option-title">Ocupación de Camas</span>
+                      <small>Registrar ocupación de camas.</small>
                     </span>
                     <input name="customRadioIcon" class="form-check-input" type="radio" value="" id="customRadioPercentage" checked />
                   </label>
@@ -108,9 +126,9 @@ $configData = Helper::appClasses();
                 <div class="form-check custom-option custom-option-icon">
                   <label class="form-check-label custom-option-content" for="customRadioFlat">
                     <span class="custom-option-body">
-                      <i class='bx bx-dollar'></i>
-                      <span class="custom-option-title"> Flat Amount </span>
-                      <small>Create a deal which offer uses flat $ off (i.e $5 OFF) on the total.</small>
+                      <i class='bx bx-book-heart'></i>
+                      <span class="custom-option-title"> Estadísticas Vitales </span>
+                      <small>Información de datos vitales.</small>
                     </span>
                     <input name="customRadioIcon" class="form-check-input" type="radio" value="" id="customRadioFlat" />
                   </label>
@@ -120,40 +138,35 @@ $configData = Helper::appClasses();
                 <div class="form-check custom-option custom-option-icon">
                   <label class="form-check-label custom-option-content" for="customRadioPrime">
                     <span class="custom-option-body">
-                      <i class='bx bx-user'></i>
-                      <span class="custom-option-title"> Prime Member </span>
-                      <small>Create prime member only deal to encourage the prime members.</small>
+                      <i class='bx bxs-virus'></i>
+                      <span class="custom-option-title"> En demanda </span>
+                      <small>Seguimiento de datos segun demanda sanitaria.</small>
                     </span>
                     <input name="customRadioIcon" class="form-check-input" type="radio" value="" id="customRadioPrime" />
                   </label>
                 </div>
               </div>
+              <div class="col-md mb-md-0 mb-2" display="none">
+                <div class="form-check custom-option custom-option-icon">
+                  <label class="form-check-label custom-option-content" for="customRadioUltra">
+                    <span class="custom-option-body">
+                      <i class='bx bx-clinic'></i>
+                      <span class="custom-option-title"> Ajustes de Establecimiento </span>
+                      <small>Modificar componentes de establecimiento.</small>
+                    </span>
+                    <input name="customRadioIcon" class="form-check-input" type="radio" value="" id="customRadioUltra" />
+                  </label>
+                </div>
+              </div>
             </div>
           </div>
-          <div class="col-sm-6">
-            <label class="form-label" for="dealAmount">Discount</label>
-            <input type="number" name="dealAmount" id="dealAmount" class="form-control" placeholder="25" min="0" max="100" aria-describedby="dealAmountHelp" />
-            <div id="dealAmountHelp" class="form-text">Enter the discount percentage. 10 = 10%</div>
-          </div>
-          <div class="col-sm-6">
-            <label class="form-label" for="dealRegion">Region</label>
-            <select id="dealRegion" name="dealRegion" class="select2 form-select" multiple aria-describedby="dealRegionHelp">
-              <option disabled value="">Select targeted region</option>
-              <option value="asia">Asia</option>
-              <option value="africa">Africa</option>
-              <option value="europe">Europe</option>
-              <option value="north america">North America</option>
-              <option value="south america">South America</option>
-              <option value="australia">Australia</option>
-            </select>
-            <div id="dealRegionHelp" class="form-text">Select applicable regions for the deal.</div>
-          </div>
+
           <div class="col-12 d-flex justify-content-between">
             <button class="btn btn-label-secondary btn-prev" disabled> <i class="bx bx-chevron-left bx-sm ms-sm-n2"></i>
-              <span class="align-middle d-sm-inline-block d-none">Previous</span>
+              <span class="align-middle d-sm-inline-block d-none">Anterior</span>
             </button>
             <button class="btn btn-primary btn-next">
-              <span class="align-middle d-sm-inline-block d-none me-sm-1">Next</span>
+              <span class="align-middle d-sm-inline-block d-none me-sm-1">Siguiente</span>
               <i class="bx bx-chevron-right bx-sm me-sm-n2"></i>
             </button>
           </div>

@@ -13,7 +13,7 @@ class PSX extends Model
 {
     use HasFactory;
 
-    protected $table = 'PSX';
+    protected $table = 'rrhh_seme_xrs';
 
     protected $fillable = [
       'ciPSX',

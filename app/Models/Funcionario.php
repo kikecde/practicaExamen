@@ -12,16 +12,15 @@ use App\Models\ProfFuncion;
 class Funcionario extends Model
 {
     use HasFactory;
+    protected $table = 'Funcionarios';
 
     protected $fillable = [
         'funcNombres',
-        'funcApellidos',
         'funcCI',
         'funcFecha_nacimiento',
         'funcSexo',
         'funcEmail',
         'funcTelefono',
-        'funcDomicilioDistrito',
         'funcProfesion_funcion',
         'funcEspecialidad',
         'funcSub_Especialidad',
@@ -29,13 +28,13 @@ class Funcionario extends Model
         'profile_photo_path',
         'updated_at',
         'created_at',
-        'IdUser'
+        'idUser'
     ];
 
-    
-        protected $primaryKey =  'IdFunc' ;
 
-    
+        protected $primaryKey =  'idFunc' ;
+
+
 
     /**
      * Obtener el usuario al que pertenece este funcionario.
@@ -44,13 +43,9 @@ class Funcionario extends Model
      */
     public function user(): BelongsTo
     {
-        return $this->belongsTo(User::class, 'IdUser', 'id');
+        return $this->belongsTo(User::class, 'idUser', 'id');
     }
 
-    public function distritos()
-    {
-        return $this->belongsTo(Distrito::class, 'funcDomicilioDistrito', 'idDistrito');
-    }
 
     public function profesiones()
     {
@@ -63,9 +58,47 @@ class Funcionario extends Model
     }
 
     public function vinculos()
-{
-    return $this->hasMany(FuncionarioVinculo::class, 'FuncsID');
-}
+    {
+        return $this->hasMany(FuncionarioVinculo::class, 'FuncsID');
+    }
+
+    public function areas()
+    {
+        return $this->belongsToMany(Area::class, 'funcionario_establecimiento_area', 'funcID', 'areaID')
+            ->withPivot('estID');
+    }
+
+    public function servicios()
+    {
+        return $this->belongsToMany(Servicio::class, 'funcionario_servicio_area_establecimiento')->withPivot('establecimiento_id', 'area_id');
+    }
+
+    public function departamentos()
+    {
+        return $this->belongsToMany(Departamento::class, 'funcionario_departamento_servicio')->withPivot('servicio_id');
+    }
+
+    public function sectores()
+    {
+        return $this->belongsToMany(Sector::class, 'funcionario_sector_departamento')->withPivot('departamento_id');
+    }
+
+    public function departamentoNoMedico()
+    {
+        return $this->belongsTo(DepartamentoNoMed::class);
+    }
+
+
+    public function cargos()
+    {
+        return $this->belongsToMany(Cargo::class, 'Funcionarios_Cargos', 'funcID', 'funcCargosID')
+            ->withPivot('funcCargoEst');
+    }
+    public function establecimientos(): BelongsToMany
+    {
+        return $this->belongsToMany(Establecimiento::class, 'funcionario_establecimiento_area', 'funcID', 'estID');
+    }
+
 
 
 }

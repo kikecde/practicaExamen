@@ -362,14 +362,19 @@
           "slug": "app-invoice-add2"
         },
         {
-          "url": "app/invoice/list",
+          "url": "app/ot-management",
           "name": "Lista de OT",
-          "slug": "app-invoice-list"
+          "slug": "app-ot-management"
         },
         {
-          "url": "app/invoice/preview",
+          "url": "app/ot/preview",
           "name": "Previsualizar OT",
-          "slug": "app-invoice-preview"
+          "slug": "app-ot-preview"
+        },
+        {
+          "url": "app/ot/list",
+          "name": "Lista OT",
+          "slug": "app-ot-list"
         },
         {
           "url": "app/invoice/edit",
@@ -415,6 +420,11 @@
       "icon": "menu-icon tf-icons bx bx-user",
       "slug": "app-user",
       "submenu": [
+        {
+          "url": "app/funcionario-management",
+          "name": "Funcionarios Manager",
+          "slug": "app-funcionario-management"
+        },
         {
           "url": "app/user/list",
           "name": "List",

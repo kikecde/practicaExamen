@@ -11,6 +11,26 @@ use Carbon\Carbon;
 
 class MovilManagement extends Controller
 {
+  public function getMovilesJson(Request $request) {
+    $operativos = $request->input('operativos');
+    if ($operativos) {
+        $moviles = Movil::whereHas('statusMovil', function ($query) {
+            $query->where('statusOperativo', 4)->orWhere('statusOperativo', 5);
+        })->get();
+    } else {
+        $moviles = Movil::all();
+    }
+    return response()->json($moviles);
+}
+
+    public function getMovilData(Request $request) {
+      $movil_id = $request->input('movil_id');
+      $movil = Movil::with(['marcaMovilFinder', 'establecimiento.distrito'])->find($movil_id);
+      return response()->json($movil);
+    }
+
+
+
 
   public function MovilManagement()
   {
@@ -156,7 +176,8 @@ class MovilManagement extends Controller
         $nestedData['tipoAmbulancia'] = $movil->tipoAmbulancia;
         $nestedData['statusOperativo'] = $movil->statusMovil ? $movil->statusMovil->statusOperativo : null;
         $nestedData['statusActivo'] = $movil->statusMovil ? $movil->statusMovil->statusActivo : null;
-        $nestedData['marcaLogo'] = $movil->marcaMovil ? $movil->marcaMovil->marcaLogoPath : null;
+        $nestedData['marcaMovilNombre'] = $movil->marcaMovilFinder ? $movil->marcaMovilFinder->nombreMarcaMovil : null;
+        $nestedData['marcaLogo'] = $movil->marcaMovilFinder ? $movil->marcaMovilFinder->marcaLogoPath : null;
         $nestedData['tipoAmbuIcon'] = $movil->tipoAmbulancia ? $movil->tipoAmbulancia->tipoAmbuIcon : null;
         $nestedData['statusSaldo'] = $movil->statusMovil ? $movil->statusMovil->statusSaldo : null;
         $nestedData['lastUpdate'] = $movil->statusMovil ? $movil->statusMovil->LAST_UPDATE : null;
@@ -218,6 +239,7 @@ class MovilManagement extends Controller
         'capacidadTanque' => $request->capacidadTanque,
         'tipoAmbulancia' => $request->tipoAmbulancia,
         'raspMovil' => $request->raspMovil,
+        'nroOrdenMovil' => $request->nroOrdenMovil,
         'baseMovil' => $request->baseMovil,
         'aseguradoraMovil' => $request->aseguradoraMovil,
         'agenteSeguroMovil' => $request->agenteSeguroMovil,
@@ -248,6 +270,7 @@ class MovilManagement extends Controller
             'capacidadTanque' => $request->capacidadTanque,
             'tipoAmbulancia' => $request->tipoAmbulancia,
             'raspMovil' => $request->raspMovil,
+            'nroOrdenMovil' => $request->nroOrdenMovil,
             'baseMovil' => $request->baseMovil,
             'aseguradoraMovil' => $request->aseguradoraMovil,
             'agenteSeguroMovil' => $request->agenteSeguroMovil,

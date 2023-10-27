@@ -54,4 +54,14 @@ class Servicio extends Model
         return $this->belongsToMany(Establecimiento::class, 'establecimiento_servicio', 'idServ', 'servicioID');
     }
 
+    public function departamentos()
+    {
+        return $this->hasMany(Departamento::class, 'servicioID');
+    }
+
+    public function sectores()
+    {
+        return $this->hasMany(Sector::class, 'servicioID');
+    }
+
 }

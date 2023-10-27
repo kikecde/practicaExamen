@@ -56,6 +56,31 @@ if (bsRangePickerTime.length) {
   }
 })();
 
+$(document).ready(function(){
+  $('#scrape-button').on('click', function(e){
+      e.preventDefault();
+      console.log('click');
+      $.ajax({
+          url: `${baseUrl}store-scraped-data`,
+          // url: `${baseUrl}store-scraped-data/${user_id}`,
+          // url: '{{ url('/store-scraped-data') }}',
+          method: 'POST',
+          headers: {
+              'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+          },
+          success: function(response){
+              alert(response.message);
+          },
+          error: function(jqXHR, textStatus, errorThrown){
+              console.error(textStatus, errorThrown);
+              alert('Error al raspar los datos');
+          }
+      });
+  });
+});
+
+
+
 // repeater (jquery)
 $(function () {
   var applyChangesBtn = $('.btn-apply-changes'),

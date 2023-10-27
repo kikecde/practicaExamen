@@ -93,5 +93,10 @@ class Establecimiento extends Model
     return $this->belongsToMany(Estudio::class, 'establecimiento_estudio', 'idEst', 'estID');
     }
 
+    public function areas()
+    {
+        return $this->belongsToMany(Area::class, 'establecimiento_area', 'estID', 'areaID');
+    }
+
 
 }

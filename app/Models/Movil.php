@@ -4,6 +4,9 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\MarcaMovil;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+
 
 class Movil extends Model
 {
@@ -40,6 +43,7 @@ class Movil extends Model
         'capacidadTanque',
         'tipoAmbulancia',
         'raspMovil',
+        'nroOrdenMovil',
         'baseMovil',
         'aseguradoraMovil',
         'agenteSeguroMovil',
@@ -91,10 +95,12 @@ class Movil extends Model
         return $this->hasOne(StatusMovil::class, 'movilID', 'idMovil');
     }
 
-    public function marcaMovil()
-    {
-        return $this->hasOne(MarcaMovil::class, 'nombreMarcaMovil', 'marcaMovil');
-    }
+    public function marcaMovilFinder()
+{
+    return $this->belongsTo(MarcaMovil::class, 'marcaMovil', 'idMarcaMovil');
+}
+
+
 
     public function tipoAmbulancia()
     {
@@ -104,21 +110,6 @@ class Movil extends Model
     public function establecimiento() {
       return $this->belongsTo(Establecimiento::class, 'baseMovil', 'idEst');
   }
-
-    // public function subdepartamentos()
-    // {
-    //     return $this->belongsToMany(SubDepartamento::class, 'establecimiento_sector', 'idSector', 'idSubDepto');
-    // }
-
-     /**
-     * Define the relationship between sectors and establishments.
-     */
-    // public function establecimientos()
-    // {
-    //     return $this->belongsToMany(Establecimiento::class, 'establecimiento_sector', 'idSector', 'idEst')
-    //         ->withPivot('idDepto', 'idSubDepto', 'date_created', 'date_updated')
-    //         ->withTimestamps();
-    // }
 
 
 }

@@ -11,6 +11,15 @@ use App\Http\Controllers\apps\SectorController;
 use App\Http\Controllers\apps\ServicioController;
 use App\Http\Controllers\apps\EstudioController;
 use App\Http\Controllers\apps\DistritoController;
+use App\Http\Controllers\apps\OrdenTrabajoController;
+use App\Http\Controllers\apps\CoberturaController;
+use App\Http\Controllers\apps\OTPreview;
+use App\Http\Controllers\QrCodeController;
+use App\Http\Controllers\apps\CapacidadCamaController;
+use App\Http\Controllers\apps\AreaController;
+use App\Http\Controllers\apps\ProfFuncionController;
+use App\Http\Controllers\apps\FuncionarioController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -227,11 +236,14 @@ Route::get('/maps/leaflet', $controller_path . '\maps\Leaflet@index')->name('map
 
 // laravel example
 Route::get('/laravel/user-management', [UserManagement::class, 'UserManagement'])->name('laravel-example-user-management');
-Route::resource('/user-list', UserManagement::class);
+//Route::resource('/user-list', UserManagement::class);
+
 
 //Movil Management
 Route::get('/laravel/movil-management', [MovilManagement::class, 'MovilManagement'])->name('laravel-example-movil-management');
 Route::resource('/movil-list', MovilManagement::class);
+Route::get('/get-moviles-json', [MovilManagement::class, 'getMovilesJson'])->name('get-moviles-json');
+Route::post('/get-movil-data', [MovilManagement::class, 'getMovilData']);
 
 
 //Route::get('/laravel/movil-management', [MovilList::class, 'MovilManagement'])->name('laravel-example-movil-management');
@@ -250,20 +262,26 @@ Route::get('/app/invoice/list2', $controller_path . '\apps\InvoiceList2@index')-
 Route::get('/app/invoice/preview2', $controller_path . '\apps\InvoicePreview2@index')->name('app-invoice-preview2');
 Route::get('/app/invoice/print2', $controller_path . '\apps\InvoicePrint2@index')->name('app-invoice-print2');
 Route::get('/app/invoice/edit2', $controller_path . '\apps\InvoiceEdit2@index')->name('app-invoice-edit2');
+
 Route::get('/app/invoice/add2', $controller_path . '\apps\InvoiceAdd2@index')->name('app-invoice-add2');
 
 
-//Funcionarios
+//Funcionarios getProfesionesJson
 Route::resource('/rrhh', RRHHController::class);
 Route::get('/rrhh-list', $controller_path . '\apps\RRHHController@index')->name('rrhh-list');
+Route::get('/get-profesiones-json', [ProfFuncionController::class, 'getProfesionesJson']);
+Route::get('/get-conductores-json', [RRHHController::class, 'getConductoresJson']);
+Route::get('/get-conductor-info/{idConductor}', [RRHHController::class, 'getConductorInfoJson']);
+Route::get('/get-paramedicos-json', [RRHHController::class, 'getParamedicosJson']);
 
 //StatusMovil
 
-Route::get('/store-scraped-data', [StatusMovilController::class, 'storeScrapedData']);
+Route::post('/store-scraped-data', [StatusMovilController::class, 'storeScrapedData']);
 
 Route::get('/pedido-traslado', $controller_path . '\apps\PedidoTraslado@index')->name('pedido-traslado');
 
 
+Route::get('/get-areas/{idEst}', [AreaController::class, 'getAreas'])->name('get-areas');
 
 
 //Establecimiento>Servicio>Sector
@@ -272,10 +290,53 @@ Route::get('/get-establecimientos-json', [EstablecimientoController::class, 'get
 Route::get('/get-servicios/{idEst}', [ServicioController::class, 'getServicios'])->name('get-servicios');
 Route::get('/get-sectores/{idEst}', [SectorController::class, 'getSectores'])->name('get-sectores');
 
+//Moviles
+// Route::get('/moviles', [MovilController::class, 'index'])->name('moviles.index');
+// Route::get('/get-moviles-json', [MovilController::class, 'getMovilesJson']);
+// Route::get('/get-status-moviles/{idMovil}', [StatusMovilController::class, 'getStatusMoviles'])->name('get-status-moviles');
 
 //Establecimiento/Estudios
 Route::get('/get-estudios/{idEst}', [EstudioController::class, 'getEstudios'])->name('get-estudios');
 
 Route::get('/distritos', [DistritoController::class, 'index'])->name('distritos.index');
 Route::get('/get-distritos-json', [DistritoController::class, 'getDistritosJson']);
+
+
+Route::get('/app/ot-management', [OrdenTrabajoController::class, 'otManagement'])->name('app-ot-management');
+Route::resource('/ot-list', OrdenTrabajoController::class);
+//Route::get('/app/ot-preview/{idOT}', [OrdenTrabajoController::class, 'showOT'])->name('app-ot-preview');
+Route::resource('ordenTrabajos', OrdenTrabajoController::class);
+
+
+Route::get('/app/funcionario-management', [FuncionarioController::class, 'FuncionarioManagement'])->name('app-funcionario-management');
+
+Route::resource('/funcionario-list', FuncionarioController::class);
+
+
+
+
+
+Route::get('configuraciones-por-region/{idRegion}/{tipoCobertura}', [CoberturaController::class, 'getConfiguracionesPorRegion']);
+
+
+Route::get('/app/ot/preview/', $controller_path . '\apps\OTPreview@index')->name('app-ot-preview');
+Route::get('/get-ot-json/{idOT}', [OrdenTrabajoController::class, 'getOrdenesTrabajo']);
+
+Route::get('/app/ot/print', $controller_path . '\apps\OTPrint@index')->name('app-ot-print');
+
+
+Route::get('/qrcode', [QrCodeController::class, 'index']);
+
+
+
+Route::get('/capacidad', [CapacidadCamaController::class, 'index'])->name('capacidad.index');
+Route::get('/capacidad/create', [CapacidadCamaController::class, 'create'])->name('capacidad.create');
+Route::post('/capacidad/store', [CapacidadCamaController::class, 'store'])->name('capacidad.store');
+Route::get('/capacidad/{capacidadCama}', [CapacidadCamaController::class, 'show'])->name('capacidad.show');
+Route::get('/capacidad/{capacidadCama}/edit', [CapacidadCamaController::class, 'edit'])->name('capacidad.edit');
+Route::put('/capacidad/{capacidadCama}', [CapacidadCamaController::class, 'update'])->name('capacidad.update');
+Route::delete('/capacidad/{capacidadCama}', [CapacidadCamaController::class, 'destroy'])->name('capacidad.destroy');
+
+// Ruta para buscar capacidades por establecimiento y servicio
+Route::get('/capacidad/buscar/{establecimientoID}/{servicioID?}', [CapacidadCamaController::class, 'buscarCapacidadesPorEstablecimiento'])->name('capacidad.buscar');
 

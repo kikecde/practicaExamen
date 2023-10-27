@@ -4,12 +4,14 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use App\Models\Movil;
 
 class MarcaMovil extends Model
 {
     use HasFactory;
 
-    protected $table = 'MarcaMovil';
+    protected $table = 'Marca_Movil';
 
     /**
      * Indicates if the model should be timestamped.
@@ -45,16 +47,12 @@ class MarcaMovil extends Model
 
 
 
-    // public function movil()
-    // {
-    //     return $this->belongsTo(Movil::class, 'movilID', 'idMovil');
-    // }
+    public function moviles()
+{
+    return $this->hasMany(Movil::class, 'marcaMovil', 'idMarcaMovil');
+}
 
 
-    // public function subdepartamentos()
-    // {
-    //     return $this->belongsToMany(SubDepartamento::class, 'establecimiento_sector', 'idSector', 'idSubDepto');
-    // }
 
 
 

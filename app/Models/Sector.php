@@ -56,5 +56,10 @@ class Sector extends Model
         return $this->belongsToMany(Establecimiento::class, 'establecimiento_sector', 'sectorID', 'estID');
     }
 
+    public function departamento()
+    {
+        return $this->belongsTo(Departamento::class, 'departamentoID');
+    }
+
 
 }

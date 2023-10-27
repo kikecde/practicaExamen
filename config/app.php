@@ -195,7 +195,7 @@ return [
     App\Providers\EventServiceProvider::class,
     App\Providers\RouteServiceProvider::class,
     App\Providers\MenuServiceProvider::class,
-
+    SimpleSoftwareIO\QrCode\QrCodeServiceProvider::class,
   ],
 
   /*
@@ -213,5 +213,6 @@ return [
     // 'ExampleClass' => App\Example\ExampleClass::class,
     'Helper' => App\Helpers\Helpers::class
   ])->toArray(),
+  'QrCode' => SimpleSoftwareIO\QrCode\Facades\QrCode::class,
 
 ];

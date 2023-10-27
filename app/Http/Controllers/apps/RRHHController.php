@@ -7,11 +7,39 @@ use App\Models\User;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Str;
 use App\Models\FuncionSEME;
+use App\Models\PSX;
 
 
 
 class RRHHController extends Controller
 {
+    public function getConductoresJson()
+    {
+      $conductores = PSX::where('idFuncionPSX', '2')->get();
+      return response()->json($conductores);
+    }
+
+    public function getConductorInfoJson($idConductor)
+    {
+      $conductor = PSX::find($idConductor);
+
+      if ($conductor) {
+          return response()->json([
+              'idPSX' => $conductor->idPSX,
+              'nYaPSX' => $conductor->nYaPSX,
+              'ciPSX' => $conductor->ciPSX,
+          ]);
+      } else {
+          return response()->json(['error' => 'Conductor no encontrado'], 404);
+      }
+    }
+
+
+  public function getParamedicosJson() {
+    $paramedicos = PSX::where('idFuncionPSX', '1')->get();
+    return response()->json($paramedicos);
+  }
+
     public function PSXManagement()
     {
       $funcionarios = PSX::all();
@@ -21,6 +49,11 @@ class RRHHController extends Controller
       $funcionariosUnique = $funcionarios->unique(['ciPSX']);
       $funcionarioDuplicates = $funcionarios->diff($funcionariosUnique)->count();
       $noMail = PSX::whereNull('mailPSX')->count();
+      $paramedicos = PSX::where('idFuncionPSX', '1')->count();
+      $conductores = PSX::where('idFuncionPSX', '2')->count();
+      $administrativos = PSX::where('idFuncionPSX', '3')->count();
+
+
     //calculos de porcentajes
       $verifiedPercentage = intval(($verified / $funcionarioCount) * 100);
 
@@ -31,6 +64,9 @@ class RRHHController extends Controller
         'notVerified' => $notVerified,
         'funcionarioDuplicates' => $funcionarioDuplicates,
         'noMail' => $noMail,
+        'paramedicos' => $paramedicos,
+        'conductores' => $conductores,
+        'administrativos' => $administrativos
       ]);
     }
 
@@ -65,7 +101,7 @@ class RRHHController extends Controller
           19 => 'DATE_UPDATED',
           20 => 'idFuncionPSX',
           21 => 'foto_pathPSX',
-          22 => 'IdUser',
+          22 => 'IdUser'
         ];
 
         $search = [];
@@ -124,7 +160,7 @@ class RRHHController extends Controller
 
           foreach ($funcionarios as $funcionario) {
             $nestedData['nYaPSX'] = $funcionario->nYaPSX;
-            $nestedData['idPSX'] = $funcionario->IdFunc;
+            $nestedData['idPSX'] = $funcionario->idFunc;
             $nestedData['fake_id'] = ++$ids;
             $nestedData['ciPSX'] = $funcionario->ciPSX;
             $nestedData['telPSX'] = $funcionario->telPSX;
@@ -158,10 +194,10 @@ class RRHHController extends Controller
         }
       }
 
-    public function show($IdFunc)
+    public function show($idFunc)
 {
     $funcionario = PSX::with(['distritos', 'profesiones', 'especialidades'])
-    ->find($IdFunc);
+    ->find($idFunc);
 
 
     if (!$funcionario) {
@@ -201,7 +237,7 @@ class RRHHController extends Controller
             $foto->move(public_path('assets/img/estabsLogos'), $fotoName);
 
             // Guardar la ruta del logo en la columna "estLogoPath" de la tabla Establecimiento
-            $funcionario = PSX::findOrFail($request->IdFunc);
+            $funcionario = PSX::findOrFail($request->idFunc);
             $funcionario->profile_photo_path = $fotoName;
             $funcionario->save();
 
@@ -231,6 +267,7 @@ class RRHHController extends Controller
             'rutaFotoFunc' => $request->input('rutaFotoFunc'),
             'updated_at' => $request->input(now()),
             'created_at' => $request->input(now()),
+            'idFuncionPSX' => $request->input('idFuncionPSX'),
 
         ]);
 
@@ -242,7 +279,7 @@ class RRHHController extends Controller
     /**
    * Show the form for editing the specified resource.
    *
-   * @param  int  $IdFunc
+   * @param  int  $idFunc
    * @return \Illuminate\Http\Response
    */
     public function edit($id)
@@ -266,7 +303,7 @@ class RRHHController extends Controller
     /**
    * Remove the specified resource from storage.
    *
-   * @param  int  $IdFunc
+   * @param  int  $idFunc
    * @return \Illuminate\Http\Response
    */
     public function destroy($id)
