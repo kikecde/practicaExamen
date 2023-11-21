@@ -6,19 +6,23 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Establecimiento;
 use App\Models\Servicio;
+use App\Models\Departamento;
+use App\Models\MovimientoCama;
 
 class CapacidadCama extends Model
 {
     use HasFactory;
 
-    protected $table = 'establecimiento_servicio';
-    protected $primaryKey =  'idEst_serv';
+    protected $table = 'CapacidadCamasEstablecimientos';
+    protected $primaryKey =  'idCapacidadCamas';
     public $timestamps = true;
 
     protected $fillable = [
-        'estID',
-        'servicioID',
+        'capacidadIdEst',
+        'capacidadIdServ',
+        'capacidadEst_Area_Serv_DeptoID',
         'capacidadUnidades',
+        'capacidadInternacionTipo',
     ];
 
     protected $createdAt = 'date_created';
@@ -26,17 +30,22 @@ class CapacidadCama extends Model
 
     public function establecimiento()
     {
-        return $this->belongsTo(Establecimiento::class, 'estID', 'idEst');
+        return $this->belongsTo(Establecimiento::class, 'capacidadIdEst', 'idEst');
     }
 
     public function servicio()
     {
-        return $this->belongsTo(Servicio::class, 'servicioID', 'idServ');
+        return $this->belongsTo(Servicio::class, 'capacidadIdServ', 'idServ');
+    }
+
+    public function departamento()
+    {
+        return $this->belongsTo(Departamento::class, 'capacidadIdDepto', 'idServ');
     }
 
     public function movimientos()
     {
-        return $this->hasMany(MovimientoCama::class, 'establecimientoServicio', 'idEst_serv');
+        return $this->hasMany(MovimientoCama::class, 'establecimientoServicio', 'idCapacidadCamas');
     }
 
 

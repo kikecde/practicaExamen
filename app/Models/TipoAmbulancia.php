@@ -44,15 +44,4 @@ class TipoAmbulancia extends Model
 
 
 
-
-
-
-
-    // public function subdepartamentos()
-    // {
-    //     return $this->belongsToMany(SubDepartamento::class, 'establecimiento_sector', 'idSector', 'idSubDepto');
-    // }
-
-
-
 }

@@ -17,7 +17,7 @@ class AreaController extends Controller
 {
     public function index()
     {
-        $areas = Sector::all();
+        $areas = Area::all();
     return response()->json($areas);
     }
 
@@ -50,13 +50,32 @@ class AreaController extends Controller
             ->with('success', 'Area eliminada correctamente.');
     }
 
-    public function getAreas($idEst)
-{
-    $areas = Area::join('establecimiento_area', 'areas.idArea', '=', 'establecimiento_area.areaID')
-                      ->where('establecimiento_area.estID', $idEst)
-                      ->select('areas.*')
-                      ->get();
-    return response()->json($areas);
+    // public function getAreas($idEst = null)
+    // {
+    //     // Obtener todas las áreas
+    //     $allAreas = Area::all();
+
+    //     $estabAreas = [];
+
+    //     // Si $idEst está presente, obten las áreas específicas de ese establecimiento
+    //     if ($idEst) {
+    //         $estabAreas = Area::join('establecimiento_area', 'areas.idArea', '=', 'establecimiento_area.areaID')
+    //                           ->where('establecimiento_area.estID', $idEst)
+    //                           ->select('areas.*')
+    //                           ->get();
+    //     }
+
+    //     return response()->json(['allAreas' => $allAreas, 'estabAreas' => $estabAreas]);
+    // }
+
+      public function getAreas()
+  {
+      // Obtener todas las áreas
+      $allAreas = Area::all();
+
+      return response()->json(['allAreas' => $allAreas]);
+  }
+
 }
 
 
@@ -138,7 +157,7 @@ class AreaController extends Controller
 //     $resultados = $unidades->map(function ($unidad) {
 //         return [
 //             'idSector' => $unidad->idSector,
-//             'idDepto' => $unidad->idDepto,
+//             'idDepto' => $unidad->,
 //             'idSubDepto' => $unidad->idSubDepto ?: '',
 //             'nombreUnidad' => $unidad->nombreUnidad,
 //             'nombreSector' => $unidad->nombreSector
@@ -244,4 +263,4 @@ class AreaController extends Controller
 //     }
 
 
-}
+

@@ -9,12 +9,15 @@ use Illuminate\Support\Str;
 use App\Models\FuncionSEME;
 use App\Models\PSX;
 use App\Models\Funcionario;
+use App\Models\FuncionarioEstablecimiento;
+use App\Models\FuncionarioVinculo;
 use App\Models\Establecimiento;
 use App\Models\Area;
 use App\Models\Servicio;
 use App\Models\DepartamentoMedico;
 use App\Models\DepartamentoNoMed;
 use App\Models\Sector;
+use App\Models\ProfFuncion;
 use DB;
 
 
@@ -27,12 +30,14 @@ class FuncionarioController extends Controller
       return response()->json($funcionarios);
     }
 
-    public function getFuncionarioInfoJson($idFunc)
-    {
-      $funcionario = Funcionario::find($idFunc);
+      public function getFuncionarioInfoJson($idFunc)
+  {
+
+      $funcionario = Funcionario::with(['vinculos.establecimientos'])->find($idFunc);
 
       if ($funcionario) {
-          return response()->json([
+          // Información básica del funcionario
+          $response = [
             'funcNombres' => $funcionario->funcNombres,
             'funcCI' => $funcionario->funcCI,
             'funcFecha_nacimiento' => $funcionario->funcFecha_nacimiento,
@@ -44,9 +49,31 @@ class FuncionarioController extends Controller
             'funcSub_Especialidad' => $funcionario->funcSub_Especialidad,
             'funcRegProf' => $funcionario->funcRegProf,
             'profile_photo_path' => $funcionario->profile_photo_path,
+          ];
 
+          // Información sobre los vínculos
+          $vinculosData = [];
+          foreach ($funcionario->vinculos as $vinculo) {
+              $establecimientos = [];
+              foreach ($vinculo->establecimientos as $establecimiento) {
+                  $establecimientos[] = [
+                      'nombre' => $establecimiento->NombreEstablecimiento,
+                      // Aquí puedo agregar otros campos del establecimiento si es necesario
+                  ];
+              }
 
-          ]);
+              $vinculosData[] = [
+                  'institucion' => $vinculo->institucion->nombreInstitucion ?? null,
+                  'ordenVinculo' => $vinculo->ordenVinculo->nombreOrden ?? null,
+                  'tipoVinculo' => $vinculo->tipoVinculo->nombreTipo ?? null,
+                  'horas' => $vinculo->HorasVinc,
+                  'establecimientos' => $establecimientos,
+              ];
+          }
+
+          $response['vinculos'] = $vinculosData;
+
+          return response()->json($response);
       } else {
           return response()->json(['error' => 'Funcionario no encontrado'], 404);
       }
@@ -102,6 +129,24 @@ class FuncionarioController extends Controller
       ]);
     }
 
+    public function checkFuncionarioByCI($funcCI)
+    {
+        // Busca al funcionario por su número de identidad
+        $funcionario = Funcionario::where('funcCI', $funcCI)->first();
+
+        // Si el funcionario existe, devuelve sus detalles
+        if ($funcionario) {
+            return response()->json([
+                'exists' => true,
+                'funcionario' => $funcionario,
+            ]);
+        } else {
+            return response()->json([
+                'exists' => false,
+                'message' => 'No se encontró un funcionario con ese número de identidad.',
+            ]);
+        }
+    }
 
    /**
    * Display a listing of the resource.
@@ -117,7 +162,9 @@ class FuncionarioController extends Controller
           3 => 'funcCI',
           4 => 'funcEmail',
           5 => 'funcTelefono',
-          6 => 'funcProfesion_funcion',
+          //6 => 'funcProfesion_funcion',
+          //7 => 'funcSexo'
+
 
           // 4 => 'funcFecha_nacimiento',
           // 5 => 'funcSexo',
@@ -135,6 +182,7 @@ class FuncionarioController extends Controller
         ];
 
         $search = [];
+        $estab = [];
 
         $totalData = Funcionario::count();
 
@@ -143,43 +191,34 @@ class FuncionarioController extends Controller
         $limit = $request->input('length');
         $start = $request->input('start');
 
-        $column = $request->input('column', 'idFunc');
-
-
-        //$order = $request->input('column', 'idFunc');
-        //$funcionarios->orderBy($columns[$column]); // $columns[0]
-
-
-        //$column = $request->input('column'); // empty string
-
-        //$funcionarios->orderBy($columns[$column]);
-
-
-
         $order = $columns[$request->input('order.0.column')];
         $dir = $request->input('order.0.dir');
 
+
         if (empty($request->input('search.value'))) {
-          $funcionarios = Funcionario::with(['areas', 'cargos', 'establecimientos'])
+          $funcionarios = Funcionario::with(['areas', 'cargos', 'establecimientos', 'vinculos.establecimiento'])
               ->offset($start)
               ->limit($limit)
-              ->orderBy($column)
-
-             // ->orderBy($columns[$order])
-              //->orderBy($order, $dir)
+              ->orderBy($order, $dir)
               ->get();
-        } else {
+      } else {
 
           $search = $request->input('search.value');
+          $estab = $request->input('estab.value');
 
-          $funcProfesion_funcion = ProfesionFuncion::where('NombProfes', 'LIKE', "%{$search}%")->pluck('idProfFunc')->toArray();
+          $funcProfesion_funcion = ProfFuncion::where('NombProfes', 'LIKE', "%{$search}%")->pluck('idProfFunc')->toArray();
+
+          $funcEstabIds = Establecimiento::where('NombreEstablecimiento', 'LIKE', "%{$search}%")->pluck('idEst')->toArray();
+          $funcIdsFromEstab = FuncionarioEstablecimiento::whereIn('estID', $funcEstabIds)->pluck('funcID')->toArray();
+
+
 
           $funcionarios = Funcionario::with(['areas', 'cargos', 'establecimientos'])
             ->where('idFunc', 'LIKE', "%{$search}%")
             ->orWhere('funcNombres', 'LIKE', "%{$search}%")
             ->orWhere('funcCI', 'LIKE', "%{$search}%")
             ->orWhereIn('funcProfesion_funcion', $funcProfesion_funcion)
-            ->orWhereIn('funcArea', 'LIKE', "%{$search}%")
+            ->orWhereIn('idFunc', $funcIdsFromEstab)
             ->offset($start)
             ->limit($limit)
             ->orderBy($order, $dir)
@@ -189,6 +228,7 @@ class FuncionarioController extends Controller
             ->orWhere('funcNombres', 'LIKE', "%{$search}%")
             ->orWhere('funcCI', 'LIKE', "%{$search}%")
             ->orWhereIn('funcProfesion_funcion', $funcProfesion_funcion)
+            ->orWhereIn('idFunc', $funcIdsFromEstab)
             ->count();
         }
 
@@ -201,7 +241,7 @@ class FuncionarioController extends Controller
             //preparacion de algunos datos
 
           $funcProfesion_funcion = $funcionarios->pluck('funcProfesion_funcion')->toArray();
-          $profFunciones = ProfesionFuncion::whereIn('idProfFunc', $funcProfesion_funcion)
+          $profFunciones = ProfFuncion::whereIn('idProfFunc', $funcProfesion_funcion)
             ->get()
             ->pluck('NombProfes', 'idProfFunc')
             ->toArray();
@@ -219,9 +259,27 @@ class FuncionarioController extends Controller
             $profFuncName = $profFunciones[$profFuncId] ?? '';
             $nestedData['funcProfesion_funcion'] = $profFuncName;
             $nestedData['funcProfesion_funcionId'] = $profFuncId;
-            $nestedData['funcEstablecimientos'] = $funcionario->establecimientos->implode('nombreEstablecimiento', ', ');
+
+
+            $nestedData['funcEstablecimiento'] = $funcionario->establecimientos->map(function($establecimientoRel) {
+              return $establecimientoRel->establecimiento->NombreEstablecimiento ?? null;
+          })->implode(', ');
+
+            //$nestedData['funcEstablecimiento'] = $funcionario->establecimientos->implode('NombreEstablecimiento', ', ');
 
             $nestedData['idUser'] = $funcionario->idUser;
+
+            //$horas => $funcionario->vinculos->HorasVinc,
+            $nestedData['vinculosCount'] = $funcionario->vinculos->count();
+           // $nestedData['vinculoStatus'] = $funcionario->vinculos->vinculoStatus;
+
+            $nestedData['vinculos'] = $funcionario->vinculos->map(function ($vinculo) {
+                return [
+                    'horas' => $vinculo->HorasVinc,
+                    'establecimiento' => $vinculo->establecimiento->NombreEstablecimiento ?? null
+                ];
+            });
+            $nestedData['totalHoras'] = $funcionario->vinculos->sum('HorasVinc');
 
             $data[] = $nestedData;
           }
@@ -244,9 +302,25 @@ class FuncionarioController extends Controller
         }
       }
 
+
+      public function listaFuncionarios()
+    {
+        $funcionarios = Funcionario::all();
+        return view('funcionario.index', ['funcionarios' => $funcionarios]);
+    }
+
+
+
+    public function showFuncionario($id)
+    {
+        $funcionario = Funcionario::with(['vinculos', 'profesion', 'establecimientos'])
+            ->find($id);
+        return view('funcionario.show', ['funcionario' => $funcionario]);
+    }
+
     public function show($idFunc)
 {
-    $funcionario = Funcionario::with(['vinculos', 'profesiones', 'establecimientos'])
+    $funcionario = Funcionario::with(['vinculos', 'profesion', 'establecimientos'])
     ->find($idFunc);
 
 
@@ -254,8 +328,8 @@ class FuncionarioController extends Controller
         return response()->json(['error' => 'Funcionario no encontrado'], 404);
     }
 
-    if ($funcionario->profesiones) {
-        $funcionario->funcProfesion_funcion = $funcionario->profesiones->NombProfes;
+    if ($funcionario->profesion) {
+        $funcionario->funcProfesion_funcion = $funcionario->profesion->NombProfes;
     } else {
         $funcionario->funcProfesion_funcion = null;
     }
@@ -347,6 +421,29 @@ class FuncionarioController extends Controller
 
         return redirect()->route('funcionarios.index')
             ->with('success', 'Funcionario actualizado correctamente.');
+    }
+
+
+
+
+    public function assignVinculoToFuncionario(Request $request, $id)
+    {
+        // Lógica para asignar un vínculo a un Funcionario
+    }
+
+    public function removeVinculoFromFuncionario($funcionarioId, $vinculoId)
+    {
+        // Lógica para eliminar un vínculo de un Funcionario
+    }
+
+    public function assignFuncionarioToEstablecimiento(Request $request, $id)
+    {
+        // Lógica para asignar un Funcionario a un Establecimiento
+    }
+
+    public function removeFuncionarioFromEstablecimiento($funcionarioId, $establecimientoId)
+    {
+        // Lógica para desasignar un Funcionario de un Establecimiento
     }
 
 

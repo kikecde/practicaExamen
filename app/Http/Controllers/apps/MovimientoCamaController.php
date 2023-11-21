@@ -67,19 +67,19 @@ public function camasManagementEstablecimiento($establecimientoID)
 {
     // Obtener todos los movimientos de camas del establecimiento
     $movimientoCamas = MovimientoCama::whereHas('establecimientoServicio', function ($query) use ($establecimientoID) {
-        $query->where('estID', $establecimientoID);
+        $query->where('capacidadIdEst', $establecimientoID);
     })->with('establecimientoServicio')->get();
 
     $movimientoCount = MovimientoCama::where('fechaRegistro', '>=', now()->subDay())->count();
 
-    $camasOperativas = CapacidadCama::where('estID', $establecimientoID)->sum('capacidadUnidades');
+    $camasOperativas = CapacidadCama::where('capacidadIdEst', $establecimientoID)->sum('capacidadUnidades');
 
     $camasOcupadas = MovimientoCama::whereHas('establecimientoServicio', function ($query) use ($establecimientoID) {
-        $query->where('estID', $establecimientoID);
+        $query->where('capacidadIdEst', $establecimientoID);
     })->latest('fechaRegistro')->sum('camasOcupadas');
 
     $altasUltimas24Horas = MovimientoCama::whereHas('establecimientoServicio', function ($query) use ($establecimientoID) {
-        $query->where('estID', $establecimientoID);
+        $query->where('capacidadIdEst', $establecimientoID);
     })->where('tipoReporte', 1)->where('fechaRegistro', '>=', now()->subDay())->sum('altasUltimas24Horas');
 
     $serviciosSinCambios = CapacidadCama::where('estID', $establecimientoID)
@@ -88,7 +88,7 @@ public function camasManagementEstablecimiento($establecimientoID)
         })
         ->count();
 
-    $disponibles = CapacidadCama::where('estID', $establecimientoID)
+    $disponibles = CapacidadCama::where('capacidadIdEst', $establecimientoID)
         ->with(['movimientos' => function ($query) {
             $query->latest('fechaRegistro')->take(1);
         }])

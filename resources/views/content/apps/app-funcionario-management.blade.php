@@ -121,20 +121,20 @@
   <div class="card-header border-bottom">
     <h5 class="card-title">Filtro de Búsqueda</h5>
     <div class="d-flex justify-content-between align-items-center row py-3 gap-3 gap-md-0">
-      <div class="col-md-4 user_role"></div>
-      <div class="col-md-4 user_plan"></div>
+      <div class="col-md-4 user_estab"></div>
+      <div class="col-md-4 user_prof"></div>
       <div class="col-md-4 user_status"></div>
     </div>
   </div>
   <div class="card-datatable table-responsive">
-    <table class="datatables-users table border-top">
+    <table class="datatables-users table border-top compact">
       <thead>
         <tr>
           <th></th>
           <th>Funcionario</th>
           <th>Función/Profesión</th>
           <th>Area</th>
-          <th>Establecimiento</th>
+          <th>Establecimiento/s</th>
           <th>Status</th>
           <th>Acciones</th>
         </tr>
@@ -148,7 +148,11 @@
       <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
     </div>
     <div class="offcanvas-body mx-0 flex-grow-0">
-      <form class="add-new-user pt-0" id="addNewUserForm" onsubmit="return false">
+      <form class="add-new-user pt-0" id="addNewUserForm" >
+        <div class="mb-3">
+          <label class="form-label" for="add-user-cedula">Cédula Nro</label>
+          <input type="text" id="add-user-cedula" class="form-control" placeholder="7651238" aria-label="nrocedula" name="userCedula" />
+        </div>
         <div class="mb-3">
           <label class="form-label" for="add-user-fullname">Nombres y Apellidos</label>
           <input type="text" class="form-control" id="add-user-fullname" placeholder="Nombre Completo" name="userFullname" aria-label="John Doe" />
@@ -161,16 +165,10 @@
           <label class="form-label" for="add-user-contact">Telefono</label>
           <input class="form-control prefix-mask" id="add-user-contact" type="text" placeholder="983 123456" aria-label="telefono" name="userContact" />
         </div>
-        <div class="row d-flex justify-content-between mb-3">
-          <div class="col-6 mb-3">
-            <label class="form-label" for="add-user-cedula">Cédula Nro</label>
-            <input type="text" id="add-user-cedula" class="form-control" placeholder="7651238" aria-label="nrocedula" name="userCedula" />
-          </div>
-          <div class="col-6 mb-3">
+          <div class="mb-3">
             <label class="form-label" for="add-user-fNac">Fecha de Nacimiento</label>
             <input type="text" id="add-user-fNac" class="form-control" placeholder="21/09/1992" aria-label="fechaNacimiento" name="userFNAC" />
           </div>
-        </div>
         <div class="mb-3">
           <div class="form-check form-check-inline form-check-lg form-check-secondary  mt-3 mb-3">
             <label class="form-check-label" for="sexo_femenino">FEMENINO</label>
@@ -196,7 +194,7 @@
           </select>
         </div>
         {{-- "user-plan" --}}
-        <div class="mb-4">
+        <div class="mb-3">
           <label class="form-label" for="func-area">Seleccionar Area</label>
           <select id="func-area" name="userArea" class="select2 form-select">
             <option value="">Seleccione Area</option>

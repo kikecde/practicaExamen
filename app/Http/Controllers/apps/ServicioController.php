@@ -8,6 +8,7 @@ use App\Models\Area;
 use App\Models\Servicio;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\URL;
 
 class ServicioController extends Controller
@@ -52,14 +53,37 @@ class ServicioController extends Controller
             ->with('success', 'Servicio eliminado correctamente.');
     }
 
-    public function getServicios($idEst)
-{
-    $servicios = Servicio::join('establecimiento_servicio', 'servicios.idServ', '=', 'establecimiento_servicio.servicioID')
-                         ->where('establecimiento_servicio.estID', $idEst)
-                         ->select('servicios.*')
-                         ->get();
-    return response()->json($servicios);
-}
+//     public function getServicios($idEst = null)
+// {
+//     // Obtener todos los servicios
+//     $allServicios = Servicio::all();
+
+//     $estabServicios = [];
+
+//     // Si $idEst está presente, obten los servicios específicos de ese establecimiento
+//     if ($idEst) {
+//         $estabAreaIDs = DB::table('establecimiento_area')
+//                           ->where('estID', $idEst)
+//                           ->pluck('idEst_Area');
+
+//         $estabServicios = Servicio::join('establecimiento_area_servicio', 'servicios.idServ', '=', 'establecimiento_area_servicio.servID')
+//                                   ->whereIn('establecimiento_area_servicio.est_AreaID', $estabAreaIDs)
+//                                   ->select('servicios.*')
+//                                   ->get();
+//     }
+
+//     return response()->json(['allServicios' => $allServicios, 'estabServicios' => $estabServicios]);
+// }
+
+public function getServicios()
+  {
+      // Obtener todas las áreas
+      $allServicios = Servicio::all();
+
+      return response()->json(['allServicios' => $allServicios]);
+  }
+
+
 
 
 

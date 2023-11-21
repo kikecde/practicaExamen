@@ -16,11 +16,18 @@ class DistritoController extends Controller
     return view('distritos.index', compact('distritos'));
     }
 
-    public function getDistritosJson()
+    public function getDistritosJson($regionID = null)
     {
-      $distritos = Distrito::all();
-      return response()->json($distritos);
+        if ($regionID) {
+            $distritos = Distrito::where('regionID', $regionID)->get();
+        } else {
+            $distritos = Distrito::all();
+        }
+
+        return response()->json($distritos);
     }
+
+
 
     public function create()
     {

@@ -18,6 +18,8 @@ class Estudio extends Model
      */
     protected $fillable = [
         'nombreEstudio',
+        'servID',
+
 
     ];
 
@@ -35,10 +37,19 @@ class Estudio extends Model
      */
     protected $primaryKey = 'idEstudio';
 
-
     public function establecimientos()
     {
-        return $this->belongsToMany(Establecimiento::class, 'establecimiento_estudio', 'idEstudio', 'estudioID');
+        return $this->belongsToMany(Establecimiento::class, 'establecimiento_estudio', 'idEstudio', 'estID')
+                    ->withPivot('is_active');
     }
+
+
+    public function servicio()
+    {
+        return $this->belongsTo(Servicio::class, 'servID');
+    }
+
+
+
 
 }

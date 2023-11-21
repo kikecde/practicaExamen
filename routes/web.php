@@ -19,6 +19,8 @@ use App\Http\Controllers\apps\CapacidadCamaController;
 use App\Http\Controllers\apps\AreaController;
 use App\Http\Controllers\apps\ProfFuncionController;
 use App\Http\Controllers\apps\FuncionarioController;
+use App\Http\Controllers\apps\DepartamentoController;
+use App\Http\Controllers\apps\DepartamentoNoMedController;
 
 
 /*
@@ -281,14 +283,31 @@ Route::post('/store-scraped-data', [StatusMovilController::class, 'storeScrapedD
 Route::get('/pedido-traslado', $controller_path . '\apps\PedidoTraslado@index')->name('pedido-traslado');
 
 
-Route::get('/get-areas/{idEst}', [AreaController::class, 'getAreas'])->name('get-areas');
+Route::get('/get-areas/{idEst?}', [AreaController::class, 'getAreas']);
+Route::get('/get-servicios/{idEst?}', [ServicioController::class, 'getServicios']);
+
+
+Route::get('/get-departamentos/{idEst?}', [DepartamentoController::class, 'getDepartamentos']);
+Route::get('/get-departamentos-por-servicio/{idEst}/{idServ}', [DepartamentoController::class, 'getDepartamentosPorServicio'])->name('get-departamentos-por-servicio');
+
+Route::get('/get-departamentosNoMed/{idEst?}', [DepartamentoNoMedController::class, 'getDepartamentosNoMed']);
 
 
 //Establecimiento>Servicio>Sector
 Route::get('/establecimientos', [EstablecimientoController::class, 'index'])->name('establecimientos.index');
 Route::get('/get-establecimientos-json', [EstablecimientoController::class, 'getEstablecimientosJson']);
-Route::get('/get-servicios/{idEst}', [ServicioController::class, 'getServicios'])->name('get-servicios');
-Route::get('/get-sectores/{idEst}', [SectorController::class, 'getSectores'])->name('get-sectores');
+Route::post('/guardar-establecimiento', [EstablecimientoController::class, 'guardarEstabInfo'])->name('guardar-establecimiento');
+//Route::get('/get-servicios/{idEst}', [ServicioController::class, 'getServicios'])->name('get-servicios');
+Route::get('/get-sectores/{idEst?}', [SectorController::class, 'getSectores'])->name('get-sectores');
+
+Route::get('/get-sectores-establecimiento/{idEst?}', [SectorController::class, 'getSectoresPorEstablecimiento'])->name('get-sectores-establecimiento');
+
+
+Route::get('/get-estructura-establecimiento/{idEst}', [EstablecimientoController::class, 'getEstructuraEstablecimiento']);
+Route::get('/get-data-establecimiento/{idEst}', [EstablecimientoController::class, 'getDataEstablecimiento']);
+
+
+
 
 //Moviles
 // Route::get('/moviles', [MovilController::class, 'index'])->name('moviles.index');
@@ -297,9 +316,11 @@ Route::get('/get-sectores/{idEst}', [SectorController::class, 'getSectores'])->n
 
 //Establecimiento/Estudios
 Route::get('/get-estudios/{idEst}', [EstudioController::class, 'getEstudios'])->name('get-estudios');
+Route::get('/asignar-estudios', [EstudioController::class, 'addEstudioToEstablecimiento'])->name('asignar-estudios');
+
 
 Route::get('/distritos', [DistritoController::class, 'index'])->name('distritos.index');
-Route::get('/get-distritos-json', [DistritoController::class, 'getDistritosJson']);
+Route::get('/get-distritos-json/{regionID?}', [DistritoController::class, 'getDistritosJson']);
 
 
 Route::get('/app/ot-management', [OrdenTrabajoController::class, 'otManagement'])->name('app-ot-management');
@@ -338,5 +359,10 @@ Route::put('/capacidad/{capacidadCama}', [CapacidadCamaController::class, 'updat
 Route::delete('/capacidad/{capacidadCama}', [CapacidadCamaController::class, 'destroy'])->name('capacidad.destroy');
 
 // Ruta para buscar capacidades por establecimiento y servicio
-Route::get('/capacidad/buscar/{establecimientoID}/{servicioID?}', [CapacidadCamaController::class, 'buscarCapacidadesPorEstablecimiento'])->name('capacidad.buscar');
+Route::get('/capacidad/buscar/{establecimientoID}/{servID?}', [CapacidadCamaController::class, 'buscarCapacidadesPorEstablecimiento']);
+Route::get('/capacidad/filtrar/{idEst}/{idEst_Area_Serv_Depto?}', [CapacidadCamaController::class, 'filtrarCapacidades']);
 
+
+
+
+Route::get('/funcionarios/check/{funcCI}', [FuncionarioController::class, 'checkFuncionarioByCI']);

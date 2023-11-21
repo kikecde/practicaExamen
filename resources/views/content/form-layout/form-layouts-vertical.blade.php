@@ -22,7 +22,159 @@
 @section('content')
 <h4 class="py-3 mb-4"><span class="text-muted fw-light">Forms/</span> Vertical Layouts</h4>
 
-<!-- Basic Layout -->
+<!-- Form Establecimiento-->
+<div class="row">
+  <div class="col">
+    <h6 class="mt-4"> Estructura Establecimiento </h6>
+    <div class="nav-align-top mb-3">
+      <ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item">
+          <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#form-tabs-info" role="tab" aria-selected="true">Información Básica</button>
+        </li>
+        <li class="nav-item">
+          <button class="nav-link " data-bs-toggle="tab" data-bs-target="#form-tabs-estructura" role="tab" aria-selected="false">Estructura Establecimiento</button>
+        </li>
+        <li class="nav-item">
+          <button class="nav-link" data-bs-toggle="tab" data-bs-target="#form-tabs-capacidad" role="tab" aria-selected="false">Capacidad Internación</button>
+        </li>
+      </ul>
+      <div class="tab-content">
+        <div class="tab-pane fade active show" id="form-tabs-info" role="tabpanel">
+          <form>
+            <div class="row g-3">
+              <div class="col-md-4">
+                <label class="form-label" for="estTipo">Nivel de Establecimiento</label>
+                <select id="estTipo" class="form-select" data-allow-clear="true">
+                  <option value="">Seleccionar</option>
+                  <option value="HR" data-level="4" >HOSPITAL GENERAL REGIONAL</option>
+                  <option value="HD" data-level="3" >HOSPITAL DISTRITAL</option>
+                  <option value="CS" data-level="2" >CENTRO DE SALUD</option>
+                  <option value="USF ESTANDAR" data-level="1" >USF ESTANDAR</option>
+                  <option value="USF AMPLIADA" data-level="1" >USF AMPLIADA</option>
+                  <option value="USF SATELITE" data-level="1" >USF SATELITE</option>
+                  <option value="USF MOVIL" data-level="1" >USF MOVIL</option>
+                  <option value="PS" data-level="1" >PUESTO DE SALUD</option>
+                  <option value="HE" data-level="5" >HOSPITAL ESPECIALIZADO</option>
+                  <option value="PV" data-level="7" >PRIVADO</option>
+                  <option value="HR IPS" data-level="6" >HOSPITAL REGIONAL IPS</option>
+                  <option value="US IPS " data-level="6" >UNIDAD DE SALUD IPS</option>
+                  <option value="PS IPS" data-level="6" >PUESTO DE SALUD IPS</option>
+                  <option value="ADM" data-level="8" >ADMINISTRATIVO</option>
+                  <option value="CDN" data-level="8" >COORDINACION</option>
+                  <option value="HGN" data-level="5" >HOSPITAL GENERAL NACIONAL</option>
+                  <option value="PUB" data-level="8" >OTRO PUBLICO</option>
+                </select>
+              </div>
+              <div class="col-md-4">
+                <label class="form-label" for="NombreEstablecimiento">Nombre Establecimiento</label>
+                <div class="input-group input-group-merge">
+                  <span class="input-group-text" id="siglasEst"> </span>
+                  <input type="text" class="form-control" id="NombreEstablecimiento" placeholder="Ingresar nombre establecimiento"/>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <label class="form-label" for="estAbrev">Abreviación</label>
+                <input type="text" id="estAbrev" class="form-control" placeholder="HRCDE" />
+              </div>
+              <div class="col-md-4">
+                <label class="form-label" for="estRegionID">Región Sanitaria</label>
+                <select id="estRegionID" class="form-select" data-allow-clear="true">>
+                  <option value="">Seleccionar</option>
+                  <option value="1">I</option>
+                  <option value="2">II</option>
+                  <option value="3">III</option>
+                  <option value="4">IV</option>
+                  <option value="5">V</option>
+                  <option value="6">VI</option>
+                  <option value="7">VII</option>
+                  <option value="8">VIII</option>
+                  <option value="9">IX</option>
+                  <option value="10">X</option>
+                  <option value="11">XI</option>
+                  <option value="12">XII</option>
+                  <option value="13">XIII</option>
+                  <option value="14">XIV</option>
+                  <option value="15">XV</option>
+                  <option value="16">XVI</option>
+                  <option value="17">XVII</option>
+                  <option value="18">XVIII</option>
+                </select>
+              </div>
+              <div class="col-md-4">
+                <label class="form-label" for="estDistrito">Distrito</label>
+                <select id="estDistrito" class="form-select">
+                  <option value="" >Seleccionar</option>
+                </select>
+              </div>
+
+              <div class="col-md-4">
+                <label class="form-label" for="estMail">Correo Institucional</label>
+                  <input type="text" id="estMail" class="form-control" placeholder="hrcde@mspbs.gov.py"  />
+              </div>
+              <div class="col-md-4">
+                <label class="form-label" for="estTelefono">Telefono</label>
+                <input class="form-control prefix-mask" id="estTelefono" type="text" placeholder="983 123456" aria-label="telefono" name="estContact" />
+              </div>
+            </div>
+            <div class="pt-4">
+              <button type="submit" class="btn btn-primary me-sm-3 me-1">Siguiente</button>
+              <button type="reset" class="btn btn-label-secondary">Cancelar</button>
+            </div>
+          </form>
+        </div>
+        <div class="tab-pane fade" id="form-tabs-estructura" role="tabpanel">
+          <form>
+            <div class="row g-3">
+              <div class="col-md-6">
+                <label class="form-label" for="formtabs-serv">Username</label>
+                <input type="text" id="formtabs-serv" class="form-control" placeholder="john.doe" />
+              </div>
+
+              <div class="col-md-6">
+                <div class="form-password-toggle">
+                  <label class="form-label" for="formtabs-depto">Password</label>
+                  <div class="input-group input-group-merge">
+                    <input type="password" id="formtabs-depto" class="form-control" placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;" aria-describedby="formtabs-password2" />
+                    <span class="input-group-text cursor-pointer" id="formtabs-depto2"><i class="bx bx-hide"></i></span>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-password-toggle">
+                  <label class="form-label" for="formtabs-confirm-sector">Confirm Password</label>
+                  <div class="input-group input-group-merge">
+                    <input type="password" id="formtabs-confirm-sector" class="form-control" placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;" aria-describedby="formtabs-confirm-password2" />
+                    <span class="input-group-text cursor-pointer" id="formtabs-confirm-sector2"><i class="bx bx-hide"></i></span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="pt-4">
+              <button type="submit" class="btn btn-primary me-sm-3 me-1">Submit</button>
+              <button type="reset" class="btn btn-label-secondary">Cancel</button>
+            </div>
+          </form>
+        </div>
+        <div class="tab-pane fade" id="form-tabs-capacidad" role="tabpanel">
+          <form>
+            <div class="row g-3">
+              <div class="col-md-6">
+                <label class="form-label" for="formtabs-twi">Twitter</label>
+                <input type="text" id="formtabs-twi" class="form-control" placeholder="https://twitter.com/abc" />
+              </div>
+
+            </div>
+            <div class="pt-4">
+              <button type="submit" class="btn btn-primary me-sm-3 me-1">Submit</button>
+              <button type="reset" class="btn btn-label-secondary">Cancel</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{{-- <!-- Basic Layout -->
 <div class="row">
   <div class="col-xl">
     <div class="card mb-4">
@@ -110,10 +262,10 @@
       </div>
     </div>
   </div>
-</div>
+</div> --}}
 
 
-<!-- Multi Column with Form Separator -->
+{{-- <!-- Multi Column with Form Separator -->
 <div class="card mb-4">
   <h5 class="card-header">Multi Column with Form Separator</h5>
   <form class="card-body">
@@ -213,9 +365,9 @@
       <button type="reset" class="btn btn-label-secondary">Cancel</button>
     </div>
   </form>
-</div>
+</div> --}}
 
-<!-- Collapsible Section -->
+{{-- <!-- Collapsible Section -->
 <div class="row my-4">
   <div class="col">
     <h6> Collapsible Section </h6>
@@ -443,9 +595,9 @@
       </div>
     </div>
   </div>
-</div>
+</div> --}}
 
-<!-- Form with Tabs -->
+{{-- <!-- Form with Tabs -->
 <div class="row">
   <div class="col">
     <h6 class="mt-4"> Form with Tabs </h6>
@@ -603,10 +755,10 @@
       </div>
     </div>
   </div>
-</div>
+</div> --}}
 
 <!-- Form Alignment -->
-<div class="card">
+{{-- <div class="card">
   <h5 class="card-header">Form Alignment</h5>
   <div class="card-body">
     <div class="d-flex align-items-center justify-content-center h-px-500">
@@ -637,5 +789,5 @@
       </form>
     </div>
   </div>
-</div>
+</div> --}}
 @endsection

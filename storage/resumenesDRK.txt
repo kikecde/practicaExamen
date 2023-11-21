@@ -1,0 +1,800 @@
+php artisan optimize:clear && php artisan route:cache && php artisan route:list && php artisan serve
+
+
+
+
+Esta es la estructura de mis datos en relacion a la base de datos:
+Las tablas principales no relacionales son:
+- Tabla: 'Establecimientos' (PK: "idEst"; nombre del establecimiento: "NombreEstablecimiento") lista de todos los establecimientos.
+- Tabla: 'Areas' (PK: "idArea",nombre del area: "NombreArea") lista de todas las areas posibles.
+- Tabla: 'Servicios' (PK: "idServ",nombre del servicio: "NombreServ") lista de todos los servicios posibles.
+- Tabla: 'Departamentos' (PK: "idDepto",nombre del departamento: "NombreDepto") lista de todos los departamentos posibles.
+- Tabla: 'Sectores' (PK: "idSector",nombre del sector: "NombreSector") lista de todos los sectores posibles.
+- Tabla: 'DepartamentoNoMed' (PK: "idDeptoNoMed",nombre del departamento no medico: "NombreDepto") lista de los departamentos no medicos posibles.
+
+Las tablas que relacionan estas unidades entre si (tablas relacionales) son:
+- Tabla: 'establecimiento_area': (PK: "idEst_Area"; FK a tabla establecimientos: "estID"; FK a tabla areas: "areaID"). Relaciona las areas a un establecimiento.
+- Tabla: 'establecimiento_area_servicio': (PK: "idEst_Area_Serv"; FK a tabla establecimiento_area: "est_AreaID"; FK a tabla servicios: "servID"). Relaciona los servicios medicos al area medica de un establecimiento.
+- Tabla: 'establecimiento_area_servicio_departamento': (PK: "idEst_Area_Serv_Depto"; FK a tabla establecimiento_area_servicio: "est_Area_ServID"; FK a tabla departamentos: "deptoID"). Relaciona los departamentos a los servicios del area medica de un establecimiento.
+- Tabla: 'establecimiento_area_servicio_departamento_sector': (PK: "idEst_Area_Serv_Depto_Sector"; FK a tabla establecimiento_area_servicio_departamento: "est_Area_Serv_DeptoID"; FK a tabla sectores: "sectorID"). Relaciona los sectores que poseen los departamentos de los servicios del area medica de un establecimiento.
+- Tabla: 'establecimiento_area_departamentoNoMed': (PK: "idEst_Area_DeptoNoMed"; FK a tabla establecimiento_area: "est_AreaID"; FK a tabla DepartamentosNoMed: "deptoNoMedID"). Relaciona los departamentos no medicos a las areas no medicas de un establecimiento.
+
+Las relaciones mas relevantes dentro de mis modelos actuales son las siguientes:
+1. Establecimiento.php
+class Establecimiento extends Model
+{
+    use HasFactory;
+
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array<int, string>
+     */
+    protected $fillable = [
+        'NombreEstablecimiento',
+        'estTipo',
+        'estNivel',
+        'estMail',
+        'estTelefono',
+        'estDistritoID',
+        'estRegionID',
+        'estUbicacionLatitud',
+        'estUbicacionLongitud',
+        'estAbrev',
+        'estLogoPath',
+        'created_at',
+        'updated_at',
+    ];
+
+    /**
+     * The primary key associated with the table.
+     *
+     * @var string
+     */
+    protected $primaryKey = 'idEst';
+
+        public function areas()
+    {
+        return $this->belongsToMany(Area::class,
+        'establecimiento_area',         // Tabla intemedia que relaciona las tablas principales Establecimientos con Areas
+        'estID',                        // Clave foránea en establecimiento_area (PK de tabla principal Establecimientos)
+        'areaID'                        // Clave foránea en establecimiento_area (PK de tabla principal Areas)
+        );
+    }
+}
+
+2. Area.php
+
+class Area extends Model
+{
+    use HasFactory;
+    protected $table = 'Areas';
+    protected $primaryKey =  'idArea';
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array<int, string>
+     */
+    protected $fillable = [
+
+        'NombreArea',
+    ];
+
+    public function establecimientos()
+    {
+        return $this->belongsToMany(Establecimiento::class, 'establecimiento_area', 'areaID', 'estID');
+    }
+
+    public function servicios()
+    {
+        return $this->hasManyThrough(
+            Servicio::class,
+            EstablecimientoAreaServicio::class, // Modelo de Tabla pivot que relaciona la tabla pivot establecimiento_area con la tabla principal Servicios
+            'est_AreaID',  // Clave foránea en EstablecimientoAreaServicio referenciando a EstablecimientoArea
+            'idServ',      // Clave foránea en Servicio
+            'idArea',      // Clave local en Area (PK de la tabla Areas)
+            'servID'       // Clave local en EstablecimientoAreaServicio referenciando a Servicio
+          );
+
+    }
+
+    // Solo si la área no es médica
+    public function departamentosNoMed()
+    {
+      return $this->hasManyThrough(
+        DepartamentoNoMed::class,
+        EstablecimientoAreaDepartamentoNoMed::class,  // Modelo de Tabla pivot que relaciona la tabla pivot establecimiento_area con la tabla principal DepartamentosNoMed
+        'est_AreaID',                                 // Clave foránea en EstablecimientoAreaDepartamentoNoMed referenciando a PK de tabla intermedia establecimiento_area
+        'idDeptoNoMed',                        // Clave  referenciando a tabla principal DepartamentoNoMed
+        'idArea',                                     // Clave local en Area
+        'deptoNoMedID'                                // Clave foránea en EstablecimientoAreaDepartamentoNoMed referenciando a DepartamentoNoMed
+
+      );
+    }
+}
+
+3. Servicio.php
+
+class Servicio extends Model
+{
+    use HasFactory;
+
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array<int, string>
+     */
+    protected $fillable = [
+        'NombreServ',
+        'areasID',
+
+    ];
+
+    /**
+     * The attributes that aren't mass assignable.
+     *
+     * @var array<int, string>
+     */
+    protected $guarded = [];
+
+    /**
+     * The primary key associated with the table.
+     *
+     * @var string
+     */
+    protected $primaryKey = 'idServ';
+
+   public function establecimientos()
+    {
+        return $this->belongsToMany(
+          Establecimiento::class,
+          'establecimiento_area_servicio',      // Tabla intermedia que relaciona la tabla pivot establecimiento_area con la tabla principal Servicios
+          'servID',                         // Clave foránea en EstablecimientoAreaServicio referenciando a PK de tabla principal Servicios
+          'est_AreaID');                        // Clave foránea en EstablecimientoAreaServicio referenciando a PK de tabla intermedia establecimiento_area
+    }
+
+    public function areas()
+    {
+        return $this->belongsToMany(
+        Area::class,
+        'establecimiento_area_servicio',  // Tabla intermedia relaciona la tabla pivot establecimiento_area con la tabla principal Servicios
+        'servID',                     // Clave foránea en EstablecimientoAreaServicio referenciando a PK de tabla principal Servicios
+        'est_AreaID'                      // Clave foránea en EstablecimientoAreaServicio referenciando a PK de tabla intermedia establecimiento_area
+      );
+    }
+
+    public function departamentos()
+    {
+        return $this->hasManyThrough(
+          Departamento::class,
+          EstablecimientoAreaServicioDepartamento::class, // Modelo de Tabla pivot que relaciona la tabla pivot establecimiento_area_servicio con la tabla principal Departamentos
+          'est_Area_ServID',  // Clave foránea en EstablecimientoAreaServicioDepartamento referenciando a EstablecimientoAreaServicio
+          'idDepto',      // Clave primaria en Departamento (PK de la tabla Departamentos)
+          'idServ',      // Clave local en Servicio (PK de la tabla Servicios)
+          'deptoID'       // Clave foránea en EstablecimientoAreaServicioDepartamento referenciando a Departamento
+      );
+    }
+
+    public function area()
+    {
+        return $this->belongsTo(Area::class, 'areaID');
+    }
+
+    public function departamento()
+    {
+        return $this->hasMany(Departamento::class, 'deptoID');
+    }
+}
+
+4. Departamento.php
+
+class Departamento extends Model
+{
+    use HasFactory;
+    protected $table = 'Departamentos';
+    protected $primaryKey =  'idDepto';
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array<int, string>
+     */
+    protected $fillable = [
+
+        'NombreDepto',
+        'departamento_padreID'
+
+    ];
+
+   public function servicios()
+    {
+        return $this->belongsToMany(
+            Servicio::class,
+            'establecimiento_area_servicio_departamento',     // Tabla intermedia que relaciona la tabla pivot establecimiento_area_servicio con la tabla principal Departamentos
+            'deptoID',                                        // Clave foránea en EstablecimientoAreaServicioDepartamento referenciando a PK de tabla principal Departamentos
+            'est_Area_ServID'                                 // Clave foránea en EstablecimientoAreaServicioDepartamento referenciando a PK de tabla intermedia establecimiento_area_servicio
+        );
+    }
+
+
+    public function sectores()
+    {
+
+      return $this->belongsToMany(
+        Sector::class,
+        EstablecimientoAreaServicioDepartamentoSector::class, // Modelo de Tabla pivot que relaciona la tabla pivot establecimiento_area_servicio_departamento con la tabla principal Sectores
+
+        'est_Area_Serv_DeptoID',  // Clave foránea en EstablecimientoAreaServicioDepartamentoSector referenciando a EstablecimientoAreaServicioDepartamento
+        'sectorID',               // Clave foránea en EstablecimientoAreaServicioDepartamentoSector referenciando a Sector
+        'idDepto'                // Clave local en Departamento (PK de la tabla Departamentos)
+
+      );
+    }
+
+}
+
+5. Sector.php
+
+class Sector extends Model
+{
+    use HasFactory;
+
+    /**
+     * The table associated with the model.
+     *
+     * @var string
+     */
+    protected $table = 'Sectores';
+
+    /**
+     * Indicates if the model should be timestamped.
+     *
+     * @var bool
+     */
+    public $timestamps = false;
+
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = [
+        'NombreSector',
+    ];
+
+    /**
+     * The primary key associated with the table.
+     *
+     * @var string
+     */
+    protected $primaryKey = 'idSector';
+
+public function establecimientos()
+     {
+         return $this->belongsToMany(
+             Establecimiento::class,
+             'establecimiento_area_servicio_departamento_sector',  // Tabla intermedia que relaciona la tabla pivot establecimiento_area_servicio_departamento con la tabla principal Sectores
+             'idSector',                                           // Clave local en Sector (PK de tabla principal Sectores)
+             'est_Area_Serv_DeptoID'                               // Clave foranea en EstablecimientoAreaServicioDepartamentoSector (PK de tabla intermedia establecimiento_area_servicio_departamento)
+         );
+     }
+
+     public function departamentos()
+     {
+         return $this->belongsToMany(
+             Departamento::class,
+             'establecimiento_area_servicio_departamento_sector',  // Tabla intermedia que relaciona la tabla pivot establecimiento_area_servicio_departamento con la tabla principal Sectores
+             'sectorID',                                           // Clave foránea en la tabla intermedia establecimiento_area_servicio_departamento_sector que referencia a PK de tabla principal Sectores
+             'est_Area_Serv_DeptoID'                               // Clave foránea en la tabla intermedia establecimiento_area_servicio_departamento_sector que referencia a PK de tabla intermedia establecimiento_area_servicio_departamento
+         );
+     }
+
+    public function departamento()
+    {
+        return $this->belongsTo(Departamento::class, 'deptoID');
+    }
+}
+
+6. DepartamentoNoMed.php
+
+class DepartamentoNoMed extends Model
+{
+    use HasFactory;
+    protected $table = 'DepartamentosNoMed';
+    protected $primaryKey =  'idDeptoNoMed';
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array<int, string>
+     */
+    protected $fillable = [
+
+        'NombreDeptoNoMed',
+        'departamentoNoMed_padreID'
+
+    ];
+
+   public function establecimientos()
+    {
+        return $this->belongsToMany(
+          Establecimiento::class,
+          'establecimiento_area_departamentoNoMed',     // Tabla intermedia que relaciona la tabla pivot establecimiento_area con la tabla principal DepartamentosNoMed
+          'deptoNoMedID',                               // Clave foránea en EstablecimientoAreaDepartamentoNoMed referenciando a PK de tabla principal DepartamentosNoMed
+          'est_AreaID');                                // Clave foránea en EstablecimientoAreaDepartamentoNoMed referenciando a PK de tabla intermedia establecimiento_area
+    }
+
+    public function areas()
+    {
+        return $this->belongsToMany(
+        Area::class,
+        'establecimiento_area_departamentoNoMed',   // Tabla intermedia relaciona la tabla pivot establecimiento_area con la tabla principal DepartamentosNoMed
+        'deptoNoMedID',                             // Clave foránea en EstablecimientoAreaDepartamentoNoMed referenciando a PK de tabla principal DepartamentosNoMed
+        'est_AreaID'                                // Clave foránea en EstablecimientoAreaDepartamentoNoMed referenciando a PK de tabla intermedia establecimiento_area
+      );
+    }
+
+}
+
+
+Estos son los modelos de las tablas relacionales:
+
+1. EstablecimientoArea.php
+class EstablecimientoArea extends Pivot
+{
+    protected $table = 'establecimiento_area';
+    protected $primaryKey =  'idEst_Area';
+
+    // Si tu tabla no tiene timestamps, puedes desactivarlos
+    public $timestamps = false;
+
+    protected $fillable = [
+        'estID',
+        'areaID'
+    ];
+}
+
+2. EstablecimientoAreaServicio
+class EstablecimientoAreaServicio extends Pivot
+{
+    protected $table = 'establecimiento_area_servicio';
+    protected $primaryKey =  'idEst_Area_Serv';
+
+    public $timestamps = false;
+
+    protected $fillable = [
+        'est_AreaID',
+        'servID'
+    ];
+}
+
+3. EstablecimientoAreaServicioDepartamento
+class EstablecimientoAreaServicioDepartamento extends Pivot
+{
+    protected $table = 'establecimiento_area_servicio_departamento';
+    protected $primaryKey =  'idEst_Area_Serv_Depto';
+
+    public $timestamps = false;
+
+    protected $fillable = [
+        'est_Area_ServID',
+        'deptoID'
+    ];
+}
+
+4. EstablecimientoAreaServicioDepartamentoSector
+class EstablecimientoAreaServicioDepartamentoSector extends Pivot
+{
+    protected $table = 'establecimiento_area_servicio_departamento_sector';
+    protected $primaryKey =  'idEst_Area_Serv_Depto_Sector';
+
+    public $timestamps = false;
+
+    protected $fillable = [
+        'est_Area_Serv_DeptoID',
+        'sectorID'
+    ];
+}
+
+5. class EstablecimientoAreaDepartamentoNoMed extends Pivot
+class EstablecimientoAreaDepartamentoNoMed extends Pivot
+{
+    protected $table = 'establecimiento_area_departamentoNoMed';
+    protected $primaryKey =  'idEst_Area_DeptoNoMed';
+
+    public $timestamps = false;
+
+    protected $fillable = [
+        'est_AreaID',
+        'deptoNoMedID'
+    ];
+}
+
+
+
+
+
+/////////////////
+
+MODELOS DE LAS TABLAS PRINCIPALES Y SUS RELACIONES
+
+1. Modelo Establecimiento.php
+class Establecimiento extends Model
+{
+    use HasFactory;
+
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array<int, string>
+     */
+    protected $fillable = [
+        'NombreEstablecimiento',
+        'estTipo',
+        'estNivel',
+        'estMail',
+        'estTelefono',
+        'estDistritoID',
+        'estRegionID',
+        'estUbicacionLatitud',
+        'estUbicacionLongitud',
+        'estAbrev',
+        'estLogoPath',
+        'created_at',
+        'updated_at',
+    ];
+
+    /**
+     * The primary key associated with the table.
+     *
+     * @var string
+     */
+    protected $primaryKey = 'idEst';
+
+    public function areas()
+    {
+        return $this->belongsToMany
+        (Area::class,
+        'establecimiento_area',         // Tabla intemedia que relaciona las tablas principales Establecimientos con Areas
+        'estID',                        // Clave foránea en establecimiento_area (PK de tabla principal Establecimientos)
+        'areaID'                        // Clave foránea en establecimiento_area (PK de tabla principal Areas)
+        );
+    }
+}
+
+
+2. Modelo Area.php
+
+class Area extends Model
+{
+    use HasFactory;
+    protected $table = 'Areas';
+    protected $primaryKey =  'idArea';
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array<int, string>
+     */
+    protected $fillable = [
+
+        'NombreArea',
+
+    ];
+
+    public function establecimientos()
+    {
+        return $this->belongsToMany
+        (Establecimiento::class,
+        'establecimiento_area',         // Tabla intemedia que relaciona las tablas principales Establecimientos con Areas
+        'estID',                        // Clave foránea en establecimiento_area (PK de tabla principal Establecimientos)
+        'areaID'                        // Clave foránea en establecimiento_area (PK de tabla principal Areas)
+        'idArea',                       // Clave local en modelo Area
+        );
+    }
+
+    public function servicios()
+    {
+        return $this->hasManyThrough(
+            Servicio::class,
+            EstablecimientoAreaServicio::class, // Modelo de Tabla pivot que relaciona la tabla pivot establecimiento_area con la tabla principal Servicios
+            'est_AreaID',                       // Clave foránea en EstablecimientoAreaServicio referenciando a PK de tabla intermedia establecimiento_area
+            'servID',                       // Clave foránea en EstablecimientoAreaServicio referenciando a PK de tabla principal Servicio
+            'idArea',                           // Clave local en Area
+            'idEst_Area_Serv'                   // Clave local en EstablecimientoAreaServicio (PK de tabla intermedia establecimiento_area_servicio)
+        );
+    }
+
+    // Solo si la área no es médica
+    public function departamentosNoMed()
+    {
+      return $this->hasManyThrough(
+        Area::class,
+        EstablecimientoAreaDepartamentoNoMed::class,  // Modelo de Tabla pivot que relaciona la tabla pivot establecimiento_area con la tabla principal DepartamentosNoMed
+        'est_AreaID',                                 // Clave foránea en EstablecimientoAreaDepartamentoNoMed referenciando a PK de tabla intermedia establecimiento_area
+        'departamentoNoMedID',                        // Clave foránea en EstablecimientoAreaDepartamentoNoMed referenciando a tabla principal DepartamentoNoMed
+        'idArea',                                     // Clave local en Area
+        'idEst_Area_DeptoNoMed'                       // Clave local en EstablecimientoAreaDepartamentoNoMed (PK de tabla intermedia establecimiento_area_departamentoNoMed)
+      );
+    }
+}
+
+
+3. Modelo Servicio.php:
+
+class Servicio extends Model
+{
+    use HasFactory;
+
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array<int, string>
+     */
+    protected $fillable = [
+        'NombreServ',
+        'areasID',
+
+    ];
+    /**
+     * The primary key associated with the table.
+     *
+     * @var string
+     */
+    protected $primaryKey = 'idServ';
+
+    public function establecimientos()
+    {
+        return $this->belongsToMany(
+          Establecimiento::class,
+          'establecimiento_area_servicio',      // Tabla intermedia que relaciona la tabla pivot establecimiento_area con la tabla principal Servicios
+          'servID',                         // Clave foránea en EstablecimientoAreaServicio referenciando a PK de tabla principal Servicios
+          'est_AreaID');                        // Clave foránea en EstablecimientoAreaServicio referenciando a PK de tabla intermedia establecimiento_area
+    }
+
+    public function areas()
+    {
+        return $this->belongsToMany(
+        Area::class,
+        'establecimiento_area_servicio',  // Tabla intermedia relaciona la tabla pivot establecimiento_area con la tabla principal Servicios
+        'servID',                     // Clave foránea en EstablecimientoAreaServicio referenciando a PK de tabla principal Servicios
+        'est_AreaID'                      // Clave foránea en EstablecimientoAreaServicio referenciando a PK de tabla intermedia establecimiento_area
+      );
+    }
+
+    public function departamentos()
+    {
+        return $this->hasManyThrough(
+            Departamento::class,
+            EstablecimientoAreaServicioDepartamento::class,   // Modelo de Tabla pivot que relaciona la tabla pivot establecimiento_area_servicio con la tabla principal Departamentos
+            'servID',                                     // Clave foránea en EstablecimientoAreaServicio referenciando a PK de tabla principal Servicios
+            'deptoID',                                        // Clave foránea en EstablecimientoAreaServicioDepartamento referenciando a PK de tabla principal Departamentos
+            'idServ',                                         // Clave local en Servicio (PK de tabla principal Servicios)
+            'est_Area_ServID'                                 // Clave foranea en EstablecimientoAreaServicioDepartamento (PK de tabla intermedia establecimiento_area_servicio)
+        );
+    }
+}
+
+
+4. Modelo Departamento.php:
+
+class Departamento extends Model
+{
+    use HasFactory;
+    protected $table = 'Departamentos';
+    protected $primaryKey =  'idDepto';
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array<int, string>
+     */
+    protected $fillable = [
+
+        'NombreDepto',
+        'departamento_padreID'
+
+    ];
+
+    public function servicios()
+    {
+        return $this->belongsToMany(
+            Servicio::class,
+            'establecimiento_area_servicio_departamento',     // Tabla intermedia que relaciona la tabla pivot establecimiento_area_servicio con la tabla principal Departamentos
+            'deptoID',                                        // Clave foránea en EstablecimientoAreaServicioDepartamento referenciando a PK de tabla principal Departamentos
+            'est_Area_ServID'                                 // Clave foránea en EstablecimientoAreaServicioDepartamento referenciando a PK de tabla intermedia establecimiento_area_servicio
+        );
+    }
+
+
+    public function sectores()
+    {
+        return $this->belongsToMany(
+          Sector::class,
+          EstablecimientoAreaServicioDepartamentoSector::class,   // Modelo de Tabla pivot que relaciona la tabla pivot establecimiento_area_servicio_departamento con la tabla principal Sectores
+          'deptoID',                                              // Clave foránea en EstablecimientoAreaServicioDepartamento referenciando a PK de tabla principal Departamentos
+          'sectorID',                                             // Clave foránea en EstablecimientoAreaServicioDepartamentoSector referenciando a PK de tabla principal Sectores
+          'idDepto',                                              // Clave local en Departamento (PK de tabla principal Departamentos)
+          'est_Area_Serv_DeptoID'                                 // Clave foranea en EstablecimientoAreaServicioDepartamentoSector (PK de tabla intermedia establecimiento_area_servicio_departamento)
+      );
+    }
+}
+
+5. Modelo Sector.php:
+
+class Sector extends Model
+{
+    use HasFactory;
+
+    /**
+     * The table associated with the model.
+     *
+     * @var string
+     */
+    protected $table = 'Sectores';
+
+    /**
+     * Indicates if the model should be timestamped.
+     *
+     * @var bool
+     */
+    public $timestamps = false;
+
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = [
+        'NombreSector',
+    ];
+
+    /**
+     * The primary key associated with the table.
+     *
+     * @var string
+     */
+    protected $primaryKey = 'idSector';
+
+    public function establecimientos()
+    {
+        return $this->belongsToMany(
+            Establecimiento::class,
+            'establecimiento_area_servicio_departamento_sector',  // Tabla intermedia que relaciona la tabla pivot establecimiento_area_servicio_departamento con la tabla principal Sectores
+            'idSector',                                           // Clave local en Sector (PK de tabla principal Sectores)
+            'est_Area_Serv_DeptoID'                               // Clave foranea en EstablecimientoAreaServicioDepartamentoSector (PK de tabla intermedia establecimiento_area_servicio_departamento)
+        );
+    }
+
+    public function departamentos()
+    {
+        return $this->belongsToMany(
+            Departamento::class,
+            'establecimiento_area_servicio_departamento_sector',  // Tabla intermedia que relaciona la tabla pivot establecimiento_area_servicio_departamento con la tabla principal Sectores
+            'sectorID',                                           // Clave foránea en la tabla intermedia establecimiento_area_servicio_departamento_sector que referencia a PK de tabla principal Sectores
+            'est_Area_Serv_DeptoID'                               // Clave foránea en la tabla intermedia establecimiento_area_servicio_departamento_sector que referencia a PK de tabla intermedia establecimiento_area_servicio_departamento
+        );
+    }
+}
+
+
+6. Modelo DepartamentoNoMed.php:
+
+class DepartamentoNoMed extends Model
+{
+    use HasFactory;
+    protected $table = 'DepartamentosNoMed';
+    protected $primaryKey =  'idDeptoNoMed';
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array<int, string>
+     */
+    protected $fillable = [
+
+        'NombreDeptoNoMed',
+        'departamentoNoMed_padreID'
+
+    ];
+
+
+    public function establecimientos()
+    {
+        return $this->belongsToMany(
+          Establecimiento::class,
+          'establecimiento_area_departamentoNoMed',     // Tabla intermedia que relaciona la tabla pivot establecimiento_area con la tabla principal DepartamentosNoMed
+          'deptoNoMedID',                               // Clave foránea en EstablecimientoAreaDepartamentoNoMed referenciando a PK de tabla principal DepartamentosNoMed
+          'est_AreaID');                                // Clave foránea en EstablecimientoAreaDepartamentoNoMed referenciando a PK de tabla intermedia establecimiento_area
+    }
+
+    public function areas()
+    {
+        return $this->belongsToMany(
+        Area::class,
+        'establecimiento_area_departamentoNoMed',   // Tabla intermedia relaciona la tabla pivot establecimiento_area con la tabla principal DepartamentosNoMed
+        'deptoNoMedID',                             // Clave foránea en EstablecimientoAreaDepartamentoNoMed referenciando a PK de tabla principal DepartamentosNoMed
+        'est_AreaID'                                // Clave foránea en EstablecimientoAreaDepartamentoNoMed referenciando a PK de tabla intermedia establecimiento_area
+      );
+    }
+}
+
+    public function area()
+  {
+      return $this->belongsTo(Area::class, 'areaID');
+  }
+
+}
+
+MODELOS DE TABLAS PIVOT (INTERMEDIAS O RELACIONALES)
+
+1. Modelo EstablecimientoArea.php:
+
+class EstablecimientoArea extends Pivot
+{
+    protected $table = 'establecimiento_area';
+    protected $primaryKey =  'idEst_Area';
+
+    // Si tu tabla no tiene timestamps, puedes desactivarlos
+    public $timestamps = false;
+
+    protected $fillable = [
+        'estID',            // Clave foránea en establecimiento_area (PK de tabla principal Establecimientos)
+        'areaID'            // Clave foránea en establecimiento_area (PK de tabla principal Areas)
+    ];
+}
+
+2. Modelo EstablecimientoAreaServicio.php:
+
+class EstablecimientoAreaServicio extends Pivot
+{
+    protected $table = 'establecimiento_area_servicio';
+    protected $primaryKey =  'idEst_Area_Serv';
+
+    public $timestamps = false;
+
+    protected $fillable = [
+        'est_AreaID',       // Clave foránea en establecimiento_area_servicio (PK de tabla intermedia establecimiento_area)
+        'servID'        // Clave foránea en establecimiento_area_servicio (PK de tabla principal Servicios)
+    ];
+}
+
+3. Modelo EstablecimientoAreaServicioDepartamento.php:
+
+class EstablecimientoAreaServicioDepartamento extends Pivot
+{
+    protected $table = 'establecimiento_area_servicio_departamento';
+    protected $primaryKey =  'idEst_Area_Serv_Depto';
+
+    public $timestamps = false;
+
+    protected $fillable = [
+        'est_Area_ServID',  // Clave foránea en establecimiento_area_servicio_departamento (PK de tabla intermedia establecimiento_area_servicio)
+        'deptoID'           // Clave foránea en establecimiento_area_servicio_departamento (PK de tabla principal Departamentos)
+    ];
+}
+
+4. Modelo EstablecimientoAreaServicioDepartamentoSector.php:
+
+class EstablecimientoAreaServicioDepartamentoSector extends Pivot
+{
+    protected $table = 'establecimiento_area_servicio_departamento_sector';
+    protected $primaryKey =  'idEst_Area_Serv_Depto_Sector';
+
+    public $timestamps = false;
+
+    protected $fillable = [
+        'est_Area_Serv_DeptoID',    // Clave foránea en establecimiento_area_servicio_departamento_sector (PK de tabla intermedia establecimiento_area_servicio_departamento)
+        'sectorID'                  // Clave foránea en establecimiento_area_servicio_departamento_sector (PK de tabla principal Sectores)
+    ];
+}
+
+5. Modelo EstablecimientoAreaDepartamentoNoMed.php:
+
+class EstablecimientoAreaDepartamentoNoMed extends Pivot
+{
+    protected $table = 'establecimiento_area_departamentoNoMed';
+    protected $primaryKey =  'idEst_Area_DeptoNoMed';
+
+    public $timestamps = false;
+
+    protected $fillable = [
+        'est_AreaID',           // Clave foránea en establecimiento_area_departamentoNoMed (PK de tabla intermedia establecimiento_area)
+        'deptoNoMedID'          // Clave foránea en establecimiento_area_departamentoNoMed (PK de tabla principal DepartamentosNoMed)
+    ];
+}

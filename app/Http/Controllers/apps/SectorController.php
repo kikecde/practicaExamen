@@ -7,6 +7,8 @@ use App\Models\Sector;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\URL;
 use App\Models\Establecimiento;
+use App\Models\Departamento;
+use App\Models\Servicio;
 use Illuminate\Support\Facades\DB;
 
 class SectorController extends Controller
@@ -46,14 +48,69 @@ class SectorController extends Controller
             ->with('success', 'Sector eliminado correctamente.');
     }
 
-    public function getSectores($idEst)
+    public function getSectores()
+  {
+      // Obtener todas las áreas
+      $allSectores = Sector::all();
+
+      return response()->json(['allSectores' => $allSectores]);
+  }
+
+  public function getSectoresPorEstablecimiento($idEst = null)
 {
-    $sectores = Sector::join('establecimiento_sector', 'sectores.idSector', '=', 'establecimiento_sector.sectorID')
-                      ->where('establecimiento_sector.estID', $idEst)
-                      ->select('sectores.*')
-                      ->get();
-    return response()->json($sectores);
+    $allSectores = Sector::all();
+    $estabSectores = [];
+
+    if ($idEst) {
+        // Obtener los sectores asociados al establecimiento con sus relaciones
+        $estabSectores = Sector::join('establecimiento_area_servicio_departamento_sector', 'sectores.idSector', '=', 'establecimiento_area_servicio_departamento_sector.sectorID')
+            ->join('establecimiento_area_servicio_departamento', 'establecimiento_area_servicio_departamento.idEst_Area_Serv_Depto', '=', 'establecimiento_area_servicio_departamento_sector.est_Area_Serv_DeptoID')
+            ->join('departamentos', 'establecimiento_area_servicio_departamento.deptoID', '=', 'departamentos.idDepto')
+            ->join('establecimiento_area_servicio', 'establecimiento_area_servicio_departamento.est_Area_ServID', '=', 'establecimiento_area_servicio.idEst_Area_Serv')
+            ->join('servicios', 'establecimiento_area_servicio.servID', '=', 'servicios.idServ')
+            ->join('establecimiento_area', 'establecimiento_area_servicio.est_AreaID', '=', 'establecimiento_area.idEst_Area')
+
+            ->select(
+                'sectores.*',
+                'departamentos.idDepto as deptoID',
+                'departamentos.NombreDepto as NombreDepto',
+                'servicios.idServ as servID',
+                'servicios.NombreServ as NombreServ',
+                'establecimiento_area_servicio_departamento_sector.idEst_Area_Serv_Depto_Sector as est_Area_Serv_Depto_sectorID',
+            )
+            ->where('establecimiento_area.estID', $idEst)
+            ->get();
+    }
+
+    return response()->json(['allSectores' => $allSectores, 'estabSectores' => $estabSectores]);
 }
+
+
+    // public function getSectoresPorEstablecimiento($idEst = null)
+    // {
+    //     $allSectores = Sector::all();
+    //     $estabSectores = [];
+
+    //     if ($idEst) {
+    //         // Obtener los IDs de departamento asociados con el establecimiento
+    //         $deptoIDs = Departamento::join('establecimiento_area_servicio_departamento', 'departamentos.idDepto', '=', 'establecimiento_area_servicio_departamento.deptoID')
+    //                                 ->join('establecimiento_area_servicio', 'establecimiento_area_servicio.idEst_Area_Serv', '=', 'establecimiento_area_servicio_departamento.est_Area_ServID')
+    //                                 ->join('establecimiento_area', 'establecimiento_area.idEst_Area', '=', 'establecimiento_area_servicio.est_AreaID')
+    //                                 ->where('establecimiento_area.estID', $idEst)
+    //                                 ->pluck('departamentos.idDepto');
+
+    //         // Obtener los sectores asociados a los departamentos del establecimiento
+    //         $estabSectores = Sector::join('establecimiento_area_servicio_departamento_sector', 'sectores.idSector', '=', 'establecimiento_area_servicio_departamento_sector.sectorID')
+    //                               ->join('establecimiento_area_servicio_departamento', 'establecimiento_area_servicio_departamento.idEst_Area_Serv_Depto', '=', 'establecimiento_area_servicio_departamento_sector.est_Area_Serv_DeptoID')
+    //                               ->whereIn('establecimiento_area_servicio_departamento.deptoID', $deptoIDs)
+    //                               ->select('sectores.*')
+    //                               ->get();
+    //     }
+
+    //     return response()->json(['allSectores' => $allSectores, 'estabSectores' => $estabSectores]);
+    // }
+
+
 
 
 //     public function store(int $idEst, array $sectoresArray)

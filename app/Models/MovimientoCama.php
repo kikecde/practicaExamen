@@ -27,6 +27,6 @@ class MovimientoCama extends Model
 
     public function establecimientoServicio()
     {
-        return $this->belongsTo(CapacidadCama::class, 'establecimientoServicio', 'idEst_serv');
+        return $this->belongsTo(CapacidadCama::class, 'establecimientoServicio', 'idCapacidadCamas');
     }
 }

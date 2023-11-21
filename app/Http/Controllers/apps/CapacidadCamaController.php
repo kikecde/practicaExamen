@@ -4,6 +4,13 @@ namespace App\Http\Controllers\apps;
 
 use Illuminate\Http\Request;
 use App\Models\Distrito;
+use App\Models\Establecimiento;
+use App\Models\CapacidadCama;
+use App\Models\Servicio;
+use App\Models\Region;
+use App\Models\Departamento;
+use App\Models\MovimientoCama;
+use App\Models\EstablecimientoAreaServicioDepartamento;
 use App\Http\Controllers\Controller;
 
 class CapacidadCamaController extends Controller
@@ -15,13 +22,13 @@ class CapacidadCamaController extends Controller
         return view('capacidad.index', compact('capacidades'));
     }
 
-    public function buscarCapacidadesPorEstablecimiento($establecimientoID, $servicioID = null, $regionID = null)
+    public function buscarCapacidadesPorEstablecimiento($establecimientoID, $servID = null, $regionID = null)
 {
-    $query = CapacidadCama::where('estID', $establecimientoID);
+    $query = CapacidadCama::where('capacidadIdEst', $establecimientoID);
 
-    // Si se proporciona un servicioID, filtrar por ese servicio
-    if ($servicioID !== null) {
-        $query->where('servicioID', $servicioID);
+    // Si se proporciona un servID, filtrar por ese servicio
+    if ($servID !== null) {
+        $query->where('capacidadIdServ', $servID);
     }
 
     // Si se proporciona un regionID, aplicar el filtro por región
@@ -49,8 +56,8 @@ class CapacidadCamaController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'estID' => 'required',
-            'servicioID' => 'required',
+            'capacidadIdEst' => 'required',
+            'capacidadIdServ' => 'required',
             'capacidadUnidades' => 'required',
         ]);
 
@@ -76,8 +83,8 @@ class CapacidadCamaController extends Controller
     public function update(Request $request, CapacidadCama $capacidadCama)
     {
         $request->validate([
-            'estID' => 'required',
-            'servicioID' => 'required',
+            'capacidadIdEst' => 'required',
+            'capacidadIdServ' => 'required',
             'capacidadUnidades' => 'required',
         ]);
 
@@ -95,4 +102,31 @@ class CapacidadCamaController extends Controller
         return redirect()->route('capacidad.index')
             ->with('success', 'Capacidad de camas eliminada con éxito.');
     }
+
+    public function filtrarCapacidades($idEst, $idEst_Area_Serv_Depto = null)
+    {
+        // Iniciar la consulta con filtro por establecimiento
+        $query = CapacidadCama::where('capacidadIdEst', $idEst);
+
+        // Filtrar por servicio si se proporciona
+        // if (!is_null($servID)) {
+        //     $query->where('capacidadIdServ', $servID);
+        // }
+
+        // Filtrar por departamento si se proporciona
+        if (!is_null($idEst_Area_Serv_Depto)) {
+            $query->where('capacidadEst_Area_Serv_DeptoID', $idEst_Area_Serv_Depto);
+        }
+
+        // Obtener los resultados de la consulta
+        $capacidades = $query->get();
+
+        // Devolver una vista o respuesta JSON con los resultados
+        // return view('tu_vista', compact('capacidades'));
+        return response()->json(['capacidades' => $capacidades]);
+    }
+
+
+
+
 }

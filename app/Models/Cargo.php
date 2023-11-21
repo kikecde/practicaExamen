@@ -19,7 +19,7 @@ class Cargo  extends Model
      *
      * @var array<int, string>
      */
-    protected $primaryKey = 'idCargos';
+    protected $primaryKey = 'idCargo';
      protected $fillable = [
 
         'nombreCargo',

@@ -55,12 +55,45 @@ class EstudioController extends Controller
 
     public function getEstudios($idEst)
 {
-    $estudios = Estudio::join('establecimiento_estudio', 'estudios.idEstudio', '=', 'establecimiento_estudio.estudioID')
-                         ->where('establecimiento_estudio.estID', $idEst)
-                         ->select('estudios.*')
-                         ->get();
+    $establecimiento = Establecimiento::find($idEst);
+
+    if (!$establecimiento) {
+        return response()->json(['error' => 'Establecimiento no encontrado'], 404);
+    }
+
+    $estudios = $establecimiento->estudios->map(function ($estudio) {
+        return [
+            'idEstudio' => $estudio->idEstudio,
+            'NombreEstudio' => $estudio->NombreEstudio,
+            'is_active' => $estudio->pivot->is_active
+        ];
+    });
+
     return response()->json($estudios);
 }
+
+public function addEstudioToEstablecimiento(Request $request, $idEst)
+{
+    $establecimiento = Establecimiento::find($idEst);
+    if (!$establecimiento) {
+        return response()->json(['error' => 'Establecimiento no encontrado'], 404);
+    }
+
+    $estudioId = $request->input('estudioID');
+    $isActive = $request->input('is_active', true);
+    $servId = $request->input('servID');
+    $areaId = $request->input('areaID');
+
+    $establecimiento->estudios()->attach($estudioId, [
+        'is_active' => $isActive,
+        'servID' => $servId,
+        'areaID' => $areaId
+    ]);
+
+    return response()->json(['message' => 'Estudio añadido al establecimiento con éxito']);
+}
+
+
 
 
 
